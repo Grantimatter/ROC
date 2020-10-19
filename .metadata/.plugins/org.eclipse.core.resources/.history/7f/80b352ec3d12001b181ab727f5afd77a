@@ -1,0 +1,11 @@
+package eg2;
+import eg3;
+
+public class Demo2 {
+
+	public static void main(String[] args) {
+		Calculator.helloStaticCalci();
+		Animal.helloStaticAnimal
+	}
+
+}

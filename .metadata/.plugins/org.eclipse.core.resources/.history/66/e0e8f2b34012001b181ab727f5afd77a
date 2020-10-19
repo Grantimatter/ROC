@@ -1,0 +1,18 @@
+package eg4;
+
+public class Product {
+	
+	// name and cost are global but are instance or object level
+	String name;
+	float cost;
+	static float discount = 9.5f;
+	
+	public static void main(String[] args) {
+		
+	}
+
+	public void printProduct() {
+		System.out.println("Product Name : " + name);
+		
+	}
+}

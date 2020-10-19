@@ -1,0 +1,7 @@
+package eg2;
+
+public class Calculator {
+	public static void helloStaticCalci() {
+		System.out.println("Hello from helloStaticCalci()");
+	}
+}

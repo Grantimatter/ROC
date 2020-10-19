@@ -1,0 +1,15 @@
+package eg4;
+
+public class Product {
+	
+	// x and y are global but are instance or object level
+	int x;
+	int y;
+	static int z;
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

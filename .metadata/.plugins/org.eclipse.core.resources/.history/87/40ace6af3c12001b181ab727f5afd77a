@@ -1,0 +1,15 @@
+package eg1;
+
+public class Demo1 {
+	public static void main(String[] args) {
+		myStaticMethod();
+	}
+	
+	public static void myStaticMethod() {
+		System.out.println("Hello from myStaticMethod()");
+	}
+	
+	public void myNonStaticMethod() {
+		System.out.println("Hello from myNonStaticMethod()");
+	}
+}

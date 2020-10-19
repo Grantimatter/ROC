@@ -1,0 +1,9 @@
+package eg3;
+
+public class Animal {
+
+	public static void helloStaticAnimal() {
+		System.out.println("Hello from helloStaticAnimal()");
+	}
+
+}
