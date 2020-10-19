@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename compilation unit &apos;eg4.Demo4.java&apos; to &apos;Product.java&apos;&#x0D;&#x0A;- Original project: &apos;static_nonstatic_demo&apos;&#x0D;&#x0A;- Original element: &apos;eg4.Demo4.java&apos;&#x0D;&#x0A;- Renamed element: &apos;eg4.Product.java&apos;" description="Rename compilation unit &apos;Demo4.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;eg4{Demo4.java" name="Product.java" references="false" stamp="1603135327197" version="1.0"/>
-</session>
