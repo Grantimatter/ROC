@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/access_modifiers_demo.iml" filepath="$PROJECT_DIR$/access_modifiers_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/constructors_demo.iml" filepath="$PROJECT_DIR$/constructors_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data_types_demo.iml" filepath="$PROJECT_DIR$/data_types_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/first_project_demo.iml" filepath="$PROJECT_DIR$/first_project_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/my_learning_examples.iml" filepath="$PROJECT_DIR$/my_learning_examples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/static_nonstatic_demo.iml" filepath="$PROJECT_DIR$/static_nonstatic_demo.iml" />
+    </modules>
+  </component>
+</project>

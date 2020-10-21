@@ -13,5 +13,4 @@ public class PlayerMain {
 		System.out.println("\nPrinting p2");
 		p2.printPlayer();
 	}
-
 }
