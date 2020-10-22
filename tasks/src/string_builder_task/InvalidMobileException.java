@@ -4,7 +4,6 @@ public class InvalidMobileException extends RuntimeException{
 
 	public InvalidMobileException() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public InvalidMobileException(final String message) {
