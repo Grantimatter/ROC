@@ -13,6 +13,7 @@ public class CoffeeTable extends Table {
 	}
 	
 	// Describe properties of a coffee table
+	@Override
 	public void DescribeFurniture() {
 		super.DescribeFurniture();
 		System.out.println("Height: "+(int)height+"\"");

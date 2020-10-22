@@ -15,6 +15,7 @@ public class Table extends Furniture {
 	}
 	
 	// Print the extra properties that tables have over abstract furniture
+	@Override
 	public void DescribeFurniture() {
 		super.DescribeFurniture();
 		System.out.println("Finish: "+finish);

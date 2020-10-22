@@ -19,6 +19,8 @@ public abstract class Furniture {
 		System.out.println("Seats: "+seatCount);
 	}
 	
+	// Static, private, and final methods cannot be overriden by child classes
+	
 	
 	// Getters and Setters
 	public int getSeatPrice() {
@@ -33,7 +35,6 @@ public abstract class Furniture {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
 	public String getName() {
 		return name;
 	}

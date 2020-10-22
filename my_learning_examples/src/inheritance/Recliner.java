@@ -11,6 +11,7 @@ public class Recliner extends Furniture {
 	}
 	
 	// Print properties of a recliner.
+	@Override
 	public void DescribeFurniture() {
 		super.DescribeFurniture();
 		System.out.println("Material: "+material);
