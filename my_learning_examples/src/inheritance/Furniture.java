@@ -16,7 +16,7 @@ public abstract class Furniture {
 	public void DescribeFurniture() {
 		System.out.println("\nName: "+name);
 		System.out.println("Price: $"+(int)price);
-		System.out.println("Seats: "+seatCount);
+		System.out.println("Seats: " +seatCount);
 	}
 	
 	// Static, private, and final methods cannot be overriden by child classes
