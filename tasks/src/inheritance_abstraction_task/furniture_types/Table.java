@@ -1,4 +1,6 @@
-package inheritance;
+package inheritance_abstraction_task.furniture_types;
+
+import inheritance_abstraction_task.Furniture;
 
 public class Table extends Furniture {
 	

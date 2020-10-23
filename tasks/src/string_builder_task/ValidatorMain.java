@@ -8,9 +8,9 @@ public class ValidatorMain {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please input a phone number: ");
 		String n = scanner.nextLine();
-		MobileValidater validater = new MobileValidater();
+		MobileValidater validator = new MobileValidater();
 		try {
-			validater.validatePhoneNumber(n);
+			validator.validatePhoneNumber(n);
 		} catch(InvalidMobileException e) {
 			System.out.println(e.getMessage());
 		}

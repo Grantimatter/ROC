@@ -1,4 +1,4 @@
-package inheritance;
+package inheritance_abstraction_task;
 
 public abstract class Furniture {
 	protected int seatCount;

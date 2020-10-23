@@ -1,4 +1,6 @@
-package inheritance;
+package inheritance_abstraction_task;
+
+import inheritance_abstraction_task.furniture_types.*;
 
 public class FurnitureMain {
 	public static void main(String[] args) {

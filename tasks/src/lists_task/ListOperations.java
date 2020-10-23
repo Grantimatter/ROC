@@ -20,7 +20,8 @@ public class ListOperations {
 		
 		return null;
 	}
-	
+
+	// Generic List creation (not working)
 	/*
 	public static <T> List<T> createGenericList(Collection<T> c) throws Exception {
 		try {

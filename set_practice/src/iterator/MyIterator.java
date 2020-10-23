@@ -33,9 +33,14 @@ public class MyIterator {
 //            }
 //        }
 
+        // Set up the iterator
         Iterator<Entry<Integer, String>> i=hm.entrySet().iterator();
+        // Continue looping if there is a next entry
         while(((java.util.Iterator) i).hasNext()){
+            // Select the next entry in the set
             Entry<Integer, String> e=i.next();
+
+            // Remove the entry if it is divisible by 10 or has a null value
             if(e.getKey()%10==0 || e.getValue() == null){
                 i.remove();
             }

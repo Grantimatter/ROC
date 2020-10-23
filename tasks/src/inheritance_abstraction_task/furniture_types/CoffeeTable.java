@@ -1,4 +1,4 @@
-package inheritance;
+package inheritance_abstraction_task.furniture_types;
 
 public class CoffeeTable extends Table {
 
