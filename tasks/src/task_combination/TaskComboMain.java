@@ -1,7 +1,10 @@
 package task_combination;
-import java.util.*;
 
 import string_builder_task.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class TaskComboMain {
 	public static void main(String[] args) {

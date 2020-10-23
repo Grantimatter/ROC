@@ -9,6 +9,5 @@ public class Calculator {
 		Operations.equalTo(45, 92);
 		Operations.equalTo("Yogurt", "Yogurt");
 		Operations.equalTo("Yogurt", "yogurt");
-		
 	}
 }
