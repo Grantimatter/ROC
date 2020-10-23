@@ -1,4 +1,4 @@
-package operators;
+package operator_task;
 
 public class Operations {
 	public static int add(int a, int b) {

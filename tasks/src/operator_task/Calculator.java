@@ -1,4 +1,4 @@
-package operators;
+package operator_task;
 
 public class Calculator {
 	public static void main(String[] args) {
