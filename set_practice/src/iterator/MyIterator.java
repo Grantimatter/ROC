@@ -15,9 +15,9 @@ public class MyIterator {
         hm.put(101, "alpha");
         hm.put(992, "nation");
         hm.put(231, "applesauce");
-        hm.put(442, "unique");
-        hm.put(200, "unique");
-        hm.put(300, "unique");
+        hm.put(442, "unique1");
+        hm.put(200, "unique2");
+        hm.put(300, "unique3");
         hm.put(657, null);
         hm.put(23, null);
         hm.put(14, null);

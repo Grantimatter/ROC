@@ -1,7 +1,7 @@
 # Revature Training Repository
 A repository that contains Java projects created during Revature's 4-week training program.
 
-Training taken with Dr. Vinay Ingalahahlli.
+Instructor:  Dr. Vinay Ingalahahlli.
 
 **[GitHub Profile](https://www.github.com/Grantimatter)**
 
