@@ -5,29 +5,18 @@ import string_builder_task.*;
 
 public class TaskComboMain {
 	public static void main(String[] args) {
-		List<String> numberList = new ArrayList();
-		MobileValidater validater = new MobileValidater();
-		
-		// Receive a list of phone numbers from user and add them to a list correctly formatted and display them back when finished
-		// Currently has bug where directions are not printed the second time but every time after it is fine
+		List<Person> people = new ArrayList<Person>();
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("How many people will you be adding to the list?");
+		int peopleCount = scanner.nextInt();
 		do {
-			try {
-				System.out.print("Type a phone number");
-				
-				if(!numberList.isEmpty()) {
-					System.out.print(" or type \"quit\" to finish");
-				}
-				
-				System.out.println();
-				String num = scanner.nextLine();
-				numberList.add(validater.validatePhoneNumber(num));
-			} catch(InvalidMobileException e) {
-				System.out.println(e.getMessage());
-			}
-			
-		}while(!scanner.hasNext("quit") || numberList.isEmpty());
-		
-		System.out.println("Phone Number List : "+numberList);
+			Person newPerson = RetrieveInformation.retrieveAllInfo();
+			people.add(newPerson);
+		} while(people.size() < peopleCount);
+
+		for(Person p:people) {
+			p.printInfo();
+			System.out.println();
+		}
 	}
 }

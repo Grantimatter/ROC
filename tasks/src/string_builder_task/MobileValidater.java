@@ -11,7 +11,7 @@ public class MobileValidater {
 		
 		// Now that we know it is a valid number we can make it look a little nicer
 		String formattedNumber = FormatNumber(number);
-		System.out.println(formattedNumber + " parsed and validated succesfully");
+		//System.out.println(formattedNumber + " parsed and validated succesfully");
 		return formattedNumber;
 		
 	}
