@@ -2,7 +2,7 @@ package string_builder_task;
 
 public class MobileValidater {
 	// Checks if the number is valid and throws an exception if it is invalid
-	public boolean isValidMobileNumber(String number) throws InvalidMobileException {
+	public String validatePhoneNumber(String number) throws InvalidMobileException {
 		number = number.replaceAll("\\D", "");
 		
 		if(number.length() < 10 || number.length() > 11) {
@@ -10,8 +10,9 @@ public class MobileValidater {
 		}
 		
 		// Now that we know it is a valid number we can make it look a little nicer
-		System.out.println(FormatNumber(number) + " parsed and validated succesfully");
-		return true;
+		String formattedNumber = FormatNumber(number);
+		System.out.println(formattedNumber + " parsed and validated succesfully");
+		return formattedNumber;
 		
 	}
 	

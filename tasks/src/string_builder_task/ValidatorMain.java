@@ -10,7 +10,7 @@ public class ValidatorMain {
 		String n = scanner.nextLine();
 		MobileValidater validater = new MobileValidater();
 		try {
-			validater.isValidMobileNumber(n);
+			validater.validatePhoneNumber(n);
 		} catch(InvalidMobileException e) {
 			System.out.println(e.getMessage());
 		}
