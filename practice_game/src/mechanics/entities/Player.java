@@ -1,25 +1,23 @@
 package mechanics.entities;
 
+import items.weapons.Fist;
 import items.weapons.Weapon;
 
 public class Player extends Entity {
 
-    Weapon weapon;
-
     public Player(){
-
+        super(100, "Player");
     }
-    public Player(Weapon weapon){
-        this.weapon = weapon;
+    public Player(String name){
+        super(100, name, new Fist());
+    }
+    public Player(int health, String name, Weapon weapon){
+        super(health, name, new Fist());
     }
 
     @Override
-    public void defeat() {
+    public void defeat(Entity attacker) {
 
-    }
-
-    public void printPlayer(){
-        System.out.println(weapon.toString());
     }
 
     @Override

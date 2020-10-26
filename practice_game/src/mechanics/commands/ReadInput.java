@@ -1,6 +1,7 @@
 package mechanics.commands;
 
 import exceptions.InvalidInputException;
+import mechanics.entities.Entity;
 import messages.GenericMessages;
 import mechanics.commands.GeneralCommands;
 
@@ -10,7 +11,7 @@ public class ReadInput {
 
     private static Scanner scanner;
 
-    public static boolean read() throws InvalidInputException {
+    public static void read(Entity entity) throws InvalidInputException {
         if(scanner == null) scanner = new Scanner(System.in);
 
         try {
@@ -20,41 +21,38 @@ public class ReadInput {
                 case "?": case "help":
                     GenericMessages.helpMessage();
                     break;
-                case "r":
-                case "reload":
-
+                case "i": case "inventory":
+                    GeneralCommands.openInventory(entity.getInventory());
                     break;
-                case "q":
-                case "quit":
+                case "q": case "quit":
                     GeneralCommands.wrapUp();
                     break;
                 default:
                     throw new InvalidInputException("Please input a valid command, type \"?\" or \"help\" to see a list of valid commands");
             }
         } catch (InvalidInputException e){
-            e.getMessage();
+            System.out.println(e.getMessage());
+            read(entity);
         }
-
-        return false;
     }
 
-    public static boolean ynRead() throws InvalidInputException{
+    public static boolean ynRead(Entity entity) throws InvalidInputException{
         if(scanner == null) scanner = new Scanner(System.in);
-
         try {
             String str = scanner.next();
 
             switch (str) {
-                case "y":
+                case "y": case "yes":
                     return true;
-                case "n":
+                case "n": case "no":
                     return false;
                 default:
                     throw new InvalidInputException("Please input either \"Y\" or \"N\"\n");
             }
+
         } catch(InvalidInputException e){
             System.out.print(e.getMessage());
-            return ynRead();
+            return ynRead(entity);
         }
     }
 

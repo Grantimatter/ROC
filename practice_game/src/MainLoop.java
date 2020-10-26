@@ -1,11 +1,5 @@
-import java.util.Scanner;
-
-import items.weapons.Stick;
-import items.weapons.Weapon;
-import mechanics.commands.GeneralCommands;
 import mechanics.commands.ReadInput;
 import mechanics.entities.Player;
-import mechanics.entities.enemies.Enemy;
 import messages.GenericMessages;
 import messages.Gui;
 
@@ -20,28 +14,23 @@ public class MainLoop {
     private static Player player;
 
     public static void main(String[] args) {
-
-        Stick stick = new Stick();
-        Enemy enemy = createEnemy();
-        System.out.println("Stick : "+stick.toString());
-        stick.attack(enemy);
-
+        // Before the game loop initiates
         beforeFirstLoop();
         do{
             beginLoop();
-            player.printPlayer();
             endLoop();
         }while(runGame);
+        // Once game has ended
         endGame();
     }
 
     public static void beforeFirstLoop(){
         player = createPlayer();
-        System.out.println("Printing player");
-        player.printPlayer();
-
+        // Print player information
+        //System.out.println(player.toString());
         GenericMessages.newGameMessage();
-        if(ReadInput.ynRead()){
+        // Ask if instructions are required
+        if(ReadInput.ynRead(player)){
             GenericMessages.helpMessage();
         }
     }
@@ -49,15 +38,11 @@ public class MainLoop {
     public static void beginLoop(){
         Gui.displayGui();
         System.out.println("Input your command");
-        ReadInput.read();
+        ReadInput.read(player);
     }
 
     public static void endLoop(){
         loops++;
-    }
-
-    public static void terminate(){
-        runGame = false;
     }
 
     public static void endGame(){

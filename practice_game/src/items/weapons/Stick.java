@@ -3,7 +3,7 @@ package items.weapons;
 public class Stick extends Weapon {
 
     public Stick(){
-        super(8,"Stick");
+        super("Stick", 8, 8, 6,2);
     }
 
     @Override

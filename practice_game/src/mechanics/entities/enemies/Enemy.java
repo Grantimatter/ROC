@@ -8,7 +8,7 @@ public abstract class Enemy extends Entity {
     }
 
     @Override
-    public void defeat() {
+    public void defeat(Entity attacker) {
 
     }
 }
