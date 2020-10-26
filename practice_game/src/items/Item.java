@@ -30,7 +30,7 @@ public abstract class Item {
     protected int getValue(){
         return value;
     }
-    protected String getName(){
+    public String getName(){
         return name;
     }
 
@@ -39,7 +39,7 @@ public abstract class Item {
         String[] valueNames = new String[]{"Value","Durability"};
         String[] values = new String[]{Integer.toString(value),Integer.toString(durability)};
 
-        String s = name + StringFormatting.formatAttributes(valueNames,values,0);
+        String s = StringFormatting.formatAttributes(valueNames,values,0);
         if(!hasDurability){
             // Remove durability if the item does not have a durability;
             s.replaceAll("(?m)^[Durability].*", "");

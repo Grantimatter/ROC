@@ -1,18 +1,19 @@
 package messages;
 
 import formatting.StringFormatting;
+import mechanics.entities.Player;
 
 public class GenericMessages {
 
-    public static void newGameMessage(){
-        System.out.println("Welcome to the game!\nWould you like to see the controls? Y/N");
+    public static void newGameMessage(Player player){
+        System.out.println("Welcome to the game, " + player.getName() + "!\nWould you like to see the Help Screen? Y/N");
     }
 
     public static void helpMessage(){
-        String[] leftSide = new String[]{"[H]elp / ?", "[A]ttack", "[H]eal", "[I]nventory"};
-        String[] rightside = new String[]{"Help screen (this screen)", "Use weapon", "Use healing item", "Open inventory"};
+        String[] leftSide = new String[]{"HELP SCREEN","[H]elp / ?", "[A]ttack", "[H]eal", "[I]nventory"};
+        String[] rightSide = new String[]{"Help screen", "Use weapon", "Use healing item", "Open inventory"};
 
-        System.out.println(StringFormatting.formatAttributes(leftSide, rightside, 0));
+        System.out.println(StringFormatting.formatAttributes(leftSide, rightSide, 0) + "\n");
     }
 
     public static void endMessage(){

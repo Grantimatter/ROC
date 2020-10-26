@@ -1,9 +1,10 @@
 package mechanics.commands;
 
+import exceptions.InvalidAttackException;
 import exceptions.InvalidInputException;
+import interfaces.IAttackable;
 import mechanics.entities.Entity;
 import messages.GenericMessages;
-import mechanics.commands.GeneralCommands;
 
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class ReadInput {
 
     private static Scanner scanner;
 
-    public static void read(Entity entity) throws InvalidInputException {
+    public static void read(Entity entity) throws InvalidInputException, InvalidAttackException {
         if(scanner == null) scanner = new Scanner(System.in);
 
         try {
@@ -21,7 +22,23 @@ public class ReadInput {
                 case "?": case "help":
                     GenericMessages.helpMessage();
                     break;
-                case "i": case "inventory":
+                case "a": case "attack":
+                    try{
+                        IAttackable targetEntity = entity.getTargetEntity();
+                        if(targetEntity instanceof IAttackable) {
+                            HostileCommands.attackCommand(targetEntity, entity);
+                        }
+                        if(targetEntity == null){
+                            throw new InvalidAttackException("You must be targeting something to attack!");
+                        }
+
+                    } catch(InvalidAttackException e){
+                        System.out.println(e.getMessage());
+                        read(entity);
+                    }
+
+                    break;
+                case "i": case "inventory": case "inv":
                     GeneralCommands.openInventory(entity.getInventory());
                     break;
                 case "q": case "quit":
@@ -36,7 +53,7 @@ public class ReadInput {
         }
     }
 
-    public static boolean ynRead(Entity entity) throws InvalidInputException{
+    public static boolean ynRead() throws InvalidInputException{
         if(scanner == null) scanner = new Scanner(System.in);
         try {
             String str = scanner.next();
@@ -52,7 +69,7 @@ public class ReadInput {
 
         } catch(InvalidInputException e){
             System.out.print(e.getMessage());
-            return ynRead(entity);
+            return ynRead();
         }
     }
 

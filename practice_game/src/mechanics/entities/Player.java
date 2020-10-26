@@ -2,6 +2,8 @@ package mechanics.entities;
 
 import items.weapons.Fist;
 import items.weapons.Weapon;
+import mechanics.commands.GameFlow;
+import mechanics.commands.GeneralCommands;
 
 public class Player extends Entity {
 
@@ -17,7 +19,8 @@ public class Player extends Entity {
 
     @Override
     public void defeat(Entity attacker) {
-
+        super.defeat(attacker);
+        GameFlow.playerDeath();
     }
 
     @Override

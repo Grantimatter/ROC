@@ -1,7 +1,9 @@
 package messages;
 
+import items.Inventory;
+
 public class PlayerMessages {
-    public static void inventoryMessage(){
-        System.out.println("Inventory -> ");
+    public static void inventoryMessage(Inventory inventory){
+        System.out.print(inventory.toString()+"\n");
     }
 }
