@@ -1,60 +1,59 @@
 package mechanics.encounters;
 
-import com.sun.prism.ReadbackRenderTarget;
 import mechanics.commands.ReadInput;
 import mechanics.entities.Entity;
-import mechanics.entities.enemies.Enemy;
+import messages.EntityMessages;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class Encounter {
 
-    protected Entity starterEntity;
-    protected Entity targetEntity;
+    protected List<Entity> startingEntities;
+    protected List<Entity> approachingEntities;
+    protected abstract boolean inProgress();
 
-    public Encounter(){}
-
-    public Encounter(Entity starterEntity, Entity targetEntity){
-        this.starterEntity = starterEntity;
-        this.targetEntity = targetEntity;
+    public Encounter(Entity[] startingEntities, Entity... approachingEntities){
+        this.startingEntities = Arrays.asList(startingEntities);
+        this.approachingEntities = Arrays.asList(approachingEntities);
     }
 
     public void startEncounter(){
-        starterEntity.setTargetEntity(targetEntity);
-        startMessage(targetEntity);
-        encounterLoop(starterEntity, targetEntity);
-    }
 
-    protected void encounterLoop(Entity starterEntity, Entity targetEntity){
-        do{
-            ReadInput.read(starterEntity);
-        }while (inProgress());
-
-        endEncounter();
-    }
-
-    protected void startMessage(Entity targetEntity) {
-        String name = targetEntity.getName();
-        String equippedWeaponString = targetEntity.getEquippedWeapon().getName().toLowerCase();
-        String announcementString = "\nA " + name + " has approached";
-        if (targetEntity.getEquippedWeapon() != null) {
-            announcementString += ", equipped with a ";
-            char c = equippedWeaponString.charAt(0);
-            if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
-                announcementString = new StringBuilder(announcementString).insert(25, 'n').toString();
+        // Refine this and add a targeting feature (only targets the first entity)
+        if(startingEntities.size() > 0 && approachingEntities.size() > 0) {
+            for (int i = 0; i < startingEntities.size(); i++) {
+                startingEntities.get(i).setTargetEntity(approachingEntities.get(0));
             }
-            announcementString += equippedWeaponString + " w";
-        } else {
-            announcementString += ". W";
+            for (int i = 0; i < approachingEntities.size(); i++) {
+                approachingEntities.get(i).setTargetEntity(startingEntities.get(0));
+                //EnityMessages.(approachingEntities[i]);
+            }
+
+            EntityMessages.announceEntities((Entity[])approachingEntities.toArray());
+            encounterLoop();
         }
-        announcementString += "hat do you do?\n";
-        System.out.print(announcementString);
-
     }
 
-    protected void endEncounter(){
-
-    }
-
-    protected boolean inProgress(){
-        return true;
+    protected void encounterLoop(){
+        //allEntities = startingEntities + approachingEntities;
+        //allEntities = ArrayUtils.addAll();
+        List<Entity> allEntities = new ArrayList<>(startingEntities);
+        allEntities.addAll(approachingEntities);
+        do{
+            for(Entity e:allEntities){
+                if(e.isAlive()) {
+                    while (true) {
+                        try {
+                            ReadInput.read(e, e.getEntityCommand());
+                            break;
+                        } catch (Exception ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
+                }
+            }
+        } while (inProgress());
     }
 }

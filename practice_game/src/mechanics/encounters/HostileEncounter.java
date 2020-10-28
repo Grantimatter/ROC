@@ -5,25 +5,35 @@ import mechanics.entities.enemies.Enemy;
 
 public class HostileEncounter extends Encounter{
 
-    public HostileEncounter(Entity starterEntity, Enemy targetEnemy){
-        super(starterEntity, targetEnemy);
+    public HostileEncounter(Entity[] starterEntities, Entity... approachingEntities){
+        super(starterEntities, approachingEntities);
     }
 
     @Override
     public boolean inProgress() {
-        return (starterEntity.isAlive() && targetEntity.isAlive());
-    }
+        Entity[] targets = new Entity[approachingEntities.size()];
+        for(int i = 0; i < targets.length; i++){
+            targets[i] = approachingEntities.get(i);
+        }
 
-    @Override
-    public void endEncounter(){
-        System.out.println(getVictor() + " has defeated " + getLoser());
+        return (Entity.isAlive(targets));
     }
 
     private String getVictor(){
-        return starterEntity.isAlive() ? starterEntity.getName() : targetEntity.getName();
+        return Entity.isAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])startingEntities.toArray()) : getEntityNames((Entity[])approachingEntities.toArray());
     }
 
     private String getLoser(){
-        return starterEntity.isAlive() ? targetEntity.getName() : starterEntity.getName();
+        return Entity.isAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])approachingEntities.toArray()) : getEntityNames((Entity[])startingEntities.toArray());
+    }
+
+    private String getEntityNames(Entity... entities){
+        String names = "";
+        for (Entity e:entities){
+            names += e.getName() + ", ";
+        }
+        names += " ";
+        names.replace(",  ", "");
+        return names;
     }
 }

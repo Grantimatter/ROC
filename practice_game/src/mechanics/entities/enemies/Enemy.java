@@ -16,4 +16,14 @@ public abstract class Enemy extends Entity {
     public void defeat(Entity attacker) {
         super.defeat(attacker);
     }
+
+    @Override
+    public String getEntityCommand() {
+        if(energy > 0) {
+            return "attack";
+        }
+        else{
+            return "pass";
+        }
+    }
 }

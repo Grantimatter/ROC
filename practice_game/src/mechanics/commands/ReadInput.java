@@ -12,46 +12,47 @@ public class ReadInput {
 
     private static Scanner scanner;
 
-    public static void read(Entity entity) throws InvalidInputException, InvalidAttackException {
-        if(scanner == null) scanner = new Scanner(System.in);
+    public static void read(Entity entity, String command) throws InvalidInputException, InvalidAttackException {
 
-        System.out.println("Input your command");
-        try {
-            String str = scanner.next().toLowerCase();
+        switch (command) {
+            case "?":
+            case "help":
+                GenericMessages.helpMessage();
+                break;
+            case "a":
+            case "attack":
 
-            switch (str) {
-                case "?": case "help":
-                    GenericMessages.helpMessage();
-                    break;
-                case "a": case "attack":
-                    try{
-                        IAttackable targetEntity = entity.getTargetEntity();
-                        if(targetEntity instanceof IAttackable) {
-                            HostileCommands.attackCommand(targetEntity, entity);
-                        }
-                        if(targetEntity == null){
-                            throw new InvalidAttackException("You must be targeting something to attack!");
-                        }
+                IAttackable targetEntity = entity.getTargetEntity();
+                if (targetEntity instanceof IAttackable) {
+                    HostileCommands.attackCommand(targetEntity, entity);
+                }
+                if (targetEntity == null) {
+                    throw new InvalidAttackException("You must be targeting something to attack!");
+                }
+                break;
 
-                    } catch(InvalidAttackException e){
-                        System.out.println(e.getMessage());
-                        read(entity);
-                    }
-
-                    break;
-                case "i": case "inventory": case "inv":
-                    GeneralCommands.openInventory(entity.getInventory());
-                    break;
-                case "q": case "quit":
-                    GeneralCommands.wrapUp();
-                    break;
-                default:
-                    throw new InvalidInputException("Please input a valid command, type \"?\" or \"help\" to see a list of valid commands");
-            }
-        } catch (InvalidInputException e){
-            System.out.println(e.getMessage());
-            read(entity);
+            case "p":
+            case "pass":
+                break;
+            case "i":
+            case "inventory":
+            case "inv":
+                GeneralCommands.openInventory(entity.getInventory());
+                break;
+            case "q":
+            case "quit":
+                GeneralCommands.wrapUp();
+                break;
+            default:
+                throw new InvalidInputException("Please input a valid command, type \"?\" or \"help\" to see a list of valid commands");
         }
+    }
+
+    public static String readUserInput(Entity entity) throws InvalidInputException{
+        if(scanner == null) scanner = new Scanner(System.in);
+        System.out.println("Input your command");
+
+        return scanner.next();
     }
 
     public static boolean ynRead() throws InvalidInputException{

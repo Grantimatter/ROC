@@ -16,6 +16,8 @@ abstract public class Entity implements IAttackable {
     protected ItemTool equippedTool;
     protected Inventory inventory;
     protected Entity targetEntity;
+    protected int baseDamage = 2;
+    protected int baseEnDrain = 2;
 
     public Entity(){
         inventory = new Inventory();
@@ -65,6 +67,33 @@ abstract public class Entity implements IAttackable {
 
     public boolean isAlive(){
         return health > 0;
+    }
+
+    // Test a group of entities and return true if any of them are alive
+    public static boolean isAlive(Entity[] entities){
+        boolean alive = false;
+
+        for(Entity e:entities){
+            if(e.isAlive()){
+                alive = true;
+                break;
+            }
+        }
+
+        return alive;
+    }
+
+    public abstract String getEntityCommand();
+
+    public void attack(IAttackable attackable){
+        if(equippedWeapon != null){
+            equippedWeapon.attack(attackable, this);
+        }
+        else{
+            System.out.println(name + " spends " + baseEnDrain + " energy to attack "+ ((Entity)attackable).getName() + " for " + baseDamage + " damage");
+            attackable.takeDamage(baseDamage, this);
+            drainEnergy(baseEnDrain);
+        }
     }
 
     @Override

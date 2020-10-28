@@ -5,6 +5,7 @@ import items.weapons.Fist;
 import items.weapons.Weapon;
 import mechanics.commands.GameFlow;
 import mechanics.commands.GeneralCommands;
+import mechanics.commands.ReadInput;
 
 public class Player extends Entity {
 
@@ -19,6 +20,11 @@ public class Player extends Entity {
     }
     public Player(int health, String name, Weapon weapon){
         super(health, name, new Fist());
+    }
+
+    @Override
+    public String getEntityCommand() {
+        return ReadInput.readUserInput(this);
     }
 
     @Override

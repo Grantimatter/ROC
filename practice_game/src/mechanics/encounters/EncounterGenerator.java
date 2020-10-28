@@ -18,7 +18,7 @@ public class EncounterGenerator {
                 .add(15, new Thief())
                 .add(10, new Barbarian());
 
-        return new HostileEncounter(starterEntity, randomEnemy.next());
+        return new HostileEncounter(new Entity[] {starterEntity}, randomEnemy.next());
     }
 
     public static Encounter generatePeacefulEncounter(Entity starterEntity){

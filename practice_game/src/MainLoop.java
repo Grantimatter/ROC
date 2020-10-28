@@ -1,9 +1,7 @@
 import mechanics.commands.ReadInput;
 import mechanics.encounters.Encounter;
 import mechanics.encounters.EncounterGenerator;
-import mechanics.encounters.HostileEncounter;
 import mechanics.entities.Player;
-import mechanics.entities.enemies.Warlock;
 import messages.GenericMessages;
 import messages.Gui;
 
@@ -20,6 +18,7 @@ public class MainLoop {
         do{
             beginLoop();
         }while(runGame);
+
         // Once game has ended
     }
 
@@ -30,9 +29,6 @@ public class MainLoop {
         if(ReadInput.ynRead()){
             GenericMessages.helpMessage();
         }
-
-        //Warlock warlock = new Warlock();
-        //new HostileEncounter(player, warlock).startEncounter();
     }
 
     public static void beginLoop(){
@@ -41,11 +37,9 @@ public class MainLoop {
         if(encounter != null){
             encounter.startEncounter();
         }
-        //beginEncounter(player, warlock);
     }
 
     public static void getCommandInput(){
-
-        ReadInput.read(player);
+        ReadInput.readUserInput(player);
     }
 }
