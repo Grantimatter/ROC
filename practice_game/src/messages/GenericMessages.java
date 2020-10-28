@@ -3,6 +3,8 @@ package messages;
 import formatting.StringFormatting;
 import mechanics.entities.Player;
 
+import java.util.Scanner;
+
 public class GenericMessages {
 
     public static void newGameMessage(Player player){
@@ -13,7 +15,9 @@ public class GenericMessages {
         String[] leftSide = new String[]{"HELP SCREEN","[H]elp / ?", "[A]ttack", "[H]eal", "[I]nventory"};
         String[] rightSide = new String[]{"Help screen", "Use weapon", "Use healing item", "Open inventory"};
 
-        System.out.println(StringFormatting.formatAttributes(leftSide, rightSide, 0) + "\n");
+        System.out.println(StringFormatting.formatAttributes(leftSide, rightSide, 0) + "\n\nInsert anything to continue");
+
+        new Scanner(System.in).nextLine();
     }
 
     public static void endMessage(){

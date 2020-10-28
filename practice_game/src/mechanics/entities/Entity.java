@@ -32,10 +32,6 @@ abstract public class Entity implements IAttackable {
         this.equippedWeapon = weapon;
     }
 
-    public void announce(){
-        System.out.println("A "+name + " has approached, holding a(n) "+getEquippedWeapon().getName() + ". What do you do?\n");
-    }
-
     public void drainEnergy(int energyDrain){
         energy -= energyDrain;
     }
@@ -67,10 +63,17 @@ abstract public class Entity implements IAttackable {
         this.targetEntity = targetEntity;
     }
 
+    public boolean isAlive(){
+        return health > 0;
+    }
+
     @Override
     public void takeDamage(int damage, Entity attacker) {
         health -= damage;
-        System.out.print(name+" has taken "+damage+ " damage and now has " +health + " health remaining.\n");
+        health = health > 0 ? health : 0;
+
+        System.out.println(name+ " has " +health + " health remaining.\n");
+
         if(health <= 0){
             defeat(attacker);
         }

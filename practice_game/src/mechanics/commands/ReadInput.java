@@ -15,6 +15,7 @@ public class ReadInput {
     public static void read(Entity entity) throws InvalidInputException, InvalidAttackException {
         if(scanner == null) scanner = new Scanner(System.in);
 
+        System.out.println("Input your command");
         try {
             String str = scanner.next().toLowerCase();
 

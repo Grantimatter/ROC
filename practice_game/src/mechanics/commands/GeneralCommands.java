@@ -19,10 +19,6 @@ public class GeneralCommands {
         return player;
     }
 
-    public static Enemy createEnemy(){
-        return new Warlock();
-    }
-
     public static void openInventory(Inventory inventory){
         PlayerMessages.inventoryMessage(inventory);
     }

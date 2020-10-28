@@ -21,6 +21,7 @@ public abstract class Weapon extends Item {
 
     public void attack(IAttackable attackable, Entity attacker){
         if(attacker.getEnergy() > energyCost){
+            System.out.println(attacker.getName() + " spends " + energyCost + " energy to attack "+ ((Entity)attackable).getName() + " for " + damage + " damage");
             attackable.takeDamage(damage, attacker);
             attacker.drainEnergy(energyCost);
         }
