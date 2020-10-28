@@ -10,7 +10,8 @@ public class ModifyDatabase {
 		Statement statement;
 		try {
 			statement = connection.createStatement();
-			statement.executeUpdate("update roc_revature.player set age = 21 where teamName='Braves' ");
+			statement.executeUpdate(command);
+			System.out.println("Database updated");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

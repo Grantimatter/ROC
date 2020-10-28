@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLQueries {
-	public static ResultSet queryPlayerTable(Connection connection, String query) {
+	public static ResultSet sendQuery(Connection connection, String query) {
 		try {
 			// Step 3 - Create statement
 			Statement statement = connection.createStatement();
@@ -20,17 +20,6 @@ public class SQLQueries {
 			System.out.println("Query Executed\n");
 
 			return rs;
-
-			// Step 5 - Process Results
-			/*
-			 * while (rs.next()) { System.out.print("ID = " + rs.getInt("id"));
-			 * System.out.print(" | NAME = " + rs.getString("name"));
-			 * System.out.print(" | GENDER = " + rs.getString("gender"));
-			 * System.out.print(" | TEAM = " + rs.getString("teamName"));
-			 * System.out.print(" | CONTACT = " + rs.getString("contact"));
-			 * System.out.println(); } System.out.println("\nResults Processed");
-			 */
-
 		} catch (SQLException e) {
 			System.out.println(e);
 			return null;
@@ -54,7 +43,7 @@ public class SQLQueries {
 					String value = rs.getString(columnName);
 					System.out.print("| " + columnName.toUpperCase() + " : " + value+ " ");
 				}
-				System.out.println();
+				System.out.print(" |\n");
 			}
 			System.out.println();
 		} catch (SQLException e) {
