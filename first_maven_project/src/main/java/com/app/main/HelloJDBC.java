@@ -1,7 +1,10 @@
 package com.app.main;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.Scanner;
+
+import static com.app.main.SQLQueries.queryPrintPlayerTable;
 
 public class HelloJDBC {
 
@@ -30,11 +33,11 @@ public class HelloJDBC {
     }
 
     public static void test2(Connection connection){
-        System.out.println("Input SQL Query...\n");
-        SQLQueries.printQuery(SQLQueries.sendQuery(connection, new Scanner(System.in).nextLine()));
+        System.out.println("Input SQL Command...\n");
+        ResultSet rs = SQLQueries.sendQuery(connection, new Scanner(System.in).nextLine());
+        if(rs != null)
+            SQLQueries.printQuery(SQLQueries.sendQuery(connection, new Scanner(System.in).nextLine()));
+        else
+            queryPrintPlayerTable(connection);
     }
-	
-	public static void queryPrintPlayerTable(Connection connection) {
-		SQLQueries.printQuery(SQLQueries.sendQuery(connection, "select teamName, name, age, gender, contact, id from roc_revature.player"));
-	}
 }

@@ -10,6 +10,9 @@ import java.util.List;
 
 public class SQLQueries {
 	public static ResultSet sendQuery(Connection connection, String query) {
+		if(!query.toLowerCase().contains("select")){
+			ModifyDatabase.sendCommand(connection, query);
+		}
 		try {
 			// Step 3 - Create statement
 			Statement statement = connection.createStatement();
@@ -49,5 +52,9 @@ public class SQLQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void queryPrintPlayerTable(Connection connection) {
+		SQLQueries.printQuery(SQLQueries.sendQuery(connection, "select teamName, name, age, gender, contact, id from roc_revature.player"));
 	}
 }

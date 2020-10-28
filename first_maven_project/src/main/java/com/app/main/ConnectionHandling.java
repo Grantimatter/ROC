@@ -26,7 +26,6 @@ public class ConnectionHandling {
 			connection.close();
 			System.out.println("Connection Closed");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e);
 		}
 	}
