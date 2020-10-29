@@ -25,10 +25,10 @@ public abstract class Encounter {
         // Refine this and add a targeting feature (only targets the first entity)
         if(startingEntities.size() > 0 && approachingEntities.size() > 0) {
             for (int i = 0; i < startingEntities.size(); i++) {
-                startingEntities.get(i).setTargetEntity(approachingEntities.get(0));
+                startingEntities.get(i).getEntityData().setTargetEntity(approachingEntities.get(0));
             }
             for (int i = 0; i < approachingEntities.size(); i++) {
-                approachingEntities.get(i).setTargetEntity(startingEntities.get(0));
+                approachingEntities.get(i).getEntityData().setTargetEntity(startingEntities.get(0));
                 //EnityMessages.(approachingEntities[i]);
             }
 

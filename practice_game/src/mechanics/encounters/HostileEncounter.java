@@ -1,6 +1,7 @@
 package mechanics.encounters;
 
 import mechanics.entities.Entity;
+import mechanics.entities.EntityMethods;
 import mechanics.entities.enemies.Enemy;
 
 public class HostileEncounter extends Encounter{
@@ -16,21 +17,21 @@ public class HostileEncounter extends Encounter{
             targets[i] = approachingEntities.get(i);
         }
 
-        return (Entity.isAlive(targets));
+        return (EntityMethods.areAlive(targets));
     }
 
     private String getVictor(){
-        return Entity.isAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])startingEntities.toArray()) : getEntityNames((Entity[])approachingEntities.toArray());
+        return EntityMethods.areAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])startingEntities.toArray()) : getEntityNames((Entity[])approachingEntities.toArray());
     }
 
     private String getLoser(){
-        return Entity.isAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])approachingEntities.toArray()) : getEntityNames((Entity[])startingEntities.toArray());
+        return EntityMethods.areAlive((Entity[])startingEntities.toArray()) ? getEntityNames((Entity[])approachingEntities.toArray()) : getEntityNames((Entity[])startingEntities.toArray());
     }
 
     private String getEntityNames(Entity... entities){
         String names = "";
         for (Entity e:entities){
-            names += e.getName() + ", ";
+            names += e.getEntityData().getName() + ", ";
         }
         names += " ";
         names.replace(",  ", "");

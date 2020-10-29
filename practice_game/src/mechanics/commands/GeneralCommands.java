@@ -1,4 +1,5 @@
 package mechanics.commands;
+import data.PlayerData;
 import formatting.StringFormatting;
 import items.Inventory;
 import mechanics.entities.Player;
@@ -14,12 +15,11 @@ public class GeneralCommands {
         System.out.print("Enter Player Name : ");
 
         Scanner scanner = new Scanner(System.in);
-        Player player = new Player(StringFormatting.capEveryWord(scanner.nextLine()));
+        Player player = new Player(new PlayerData(StringFormatting.capEveryWord(scanner.nextLine()), 10));
         return player;
     }
 
     public static void openInventory(Inventory inventory){
-        Gui.displayGui();
         PlayerMessages.inventoryMessage(inventory);
     }
 

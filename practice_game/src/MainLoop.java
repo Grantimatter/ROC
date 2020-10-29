@@ -1,3 +1,4 @@
+import formatting.ScreenFormatter;
 import mechanics.commands.ReadInput;
 import mechanics.encounters.Encounter;
 import mechanics.encounters.EncounterGenerator;
@@ -39,7 +40,6 @@ public class MainLoop {
     }
 
     public static void beginLoop(){
-        Gui.displayGui();
         Encounter encounter = EncounterGenerator.generateRandomEncounter(player);
         if(encounter != null){
             encounter.startEncounter();
@@ -51,6 +51,7 @@ public class MainLoop {
     }
 
     public static void getCommandInput(){
-        ReadInput.readUserInput(player);
+        player.getEntityCommand();
+        //ReadInput.readUserInput(player);
     }
 }

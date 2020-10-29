@@ -1,15 +1,13 @@
 package mechanics.entities.enemies;
 
+import data.EntityData;
 import items.weapons.Weapon;
 import mechanics.entities.Entity;
 
 public abstract class Enemy extends Entity {
 
-    public Enemy(int health, String name){
-        super(health, name);
-    }
-    public Enemy(int health, String name, Weapon weapon){
-        super(health, name, weapon);
+    public Enemy(EntityData entityData) {
+        super(entityData);
     }
 
     @Override
@@ -19,7 +17,7 @@ public abstract class Enemy extends Entity {
 
     @Override
     public String getEntityCommand() {
-        if(energy > 0) {
+        if(data.getEnergy() > 0) {
             return "attack";
         }
         else{

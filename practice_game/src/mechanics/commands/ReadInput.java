@@ -23,7 +23,7 @@ public class ReadInput {
             case "a":
             case "attack":
 
-                IAttackable targetEntity = entity.getTargetEntity();
+                IAttackable targetEntity = entity.getEntityData().getTargetEntity();
                 if (targetEntity instanceof IAttackable) {
                     HostileCommands.attackCommand(targetEntity, entity);
                 }
@@ -38,7 +38,7 @@ public class ReadInput {
             case "i":
             case "inventory":
             case "inv":
-                GeneralCommands.openInventory(entity.getInventory());
+                GeneralCommands.openInventory(entity.getEntityData().getInventory());
                 break;
             case "q":
             case "quit":
@@ -53,7 +53,6 @@ public class ReadInput {
         if(scanner == null) scanner = new Scanner(System.in);
         System.out.println("Input your command");
         String input = scanner.next();
-        Gui.displayGui();
         return input;
     }
 

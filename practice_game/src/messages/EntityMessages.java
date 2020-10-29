@@ -1,15 +1,16 @@
 package messages;
 
+import formatting.ScreenFormatter;
 import mechanics.entities.Entity;
 
 public class EntityMessages {
 
     public static void announceEnity(Entity entity){
-        String name = entity.getName();
+        String name = entity.getEntityData().getName();
         String announcementString = "\nA " + name + " has approached";
 
-        if (entity.getEquippedWeapon() != null) {
-            String equippedWeaponString = entity.getEquippedWeapon().getName().toLowerCase();
+        if (entity.getEntityData().getEquippedWeapon() != null) {
+            String equippedWeaponString = entity.getEntityData().getEquippedWeapon().getName().toLowerCase();
 
             announcementString += ", equipped with a";
             char c = equippedWeaponString.charAt(0);
@@ -19,7 +20,8 @@ public class EntityMessages {
             announcementString += " " + equippedWeaponString;
         }
         announcementString += ". What do you do?\n";
-        System.out.print(announcementString);
+        //System.out.print(announcementString);
+        ScreenFormatter.addString(announcementString);
     }
 
     public static void announceEntities(Entity[] entities){

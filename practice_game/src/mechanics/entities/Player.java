@@ -1,28 +1,32 @@
 package mechanics.entities;
 
 import data.PlayerData;
+import formatting.ScreenFormatter;
 import items.weapons.Weapon;
 import mechanics.commands.GameFlow;
 import mechanics.commands.ReadInput;
 
 public class Player extends Entity {
 
+    public static Player instance;
     private PlayerData playerData;
 
-    public Player(){
-        super(100, "Player");
-        playerData = new PlayerData();
+    public Player(PlayerData playerData){
+        super(playerData);
+        this.playerData = playerData;
+        instance = this;
     }
-    public Player(String name){
-        super(100, name);
-    }
-    public Player(int health, String name, Weapon weapon){
-        super(health, name);
+
+    @Override
+    public PlayerData getEntityData() {
+        return playerData;
     }
 
     @Override
     public String getEntityCommand() {
-        return ReadInput.readUserInput(this);
+        ScreenFormatter.refreshScreen(this, data.getTargetEntity());
+        String command = ReadInput.readUserInput(this);
+        return command;
     }
 
     @Override
@@ -33,6 +37,6 @@ public class Player extends Entity {
 
     @Override
     public String toString() {
-        return super.toString();
+        return playerData.toString();
     }
 }

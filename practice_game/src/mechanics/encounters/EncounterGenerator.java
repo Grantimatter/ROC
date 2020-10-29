@@ -1,5 +1,6 @@
 package mechanics.encounters;
 
+import formatting.ScreenFormatter;
 import general.RandomCollection;
 import mechanics.entities.Entity;
 import mechanics.entities.enemies.*;
@@ -22,7 +23,8 @@ public class EncounterGenerator {
     }
 
     public static Encounter generatePeacefulEncounter(Entity starterEntity){
-        System.out.println("Peaceful Encounter! (Not finished)\n");
+        //System.out.println("Peaceful Encounter! (Not finished)\n");
+        ScreenFormatter.addString("Peaceful Encounter! (Not finished)\n");
         return null;
         //throw new NotImplementedException();
     }

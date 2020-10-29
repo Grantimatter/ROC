@@ -1,12 +1,23 @@
 package messages;
 
-public class Gui {
-    public static void displayGui(){
-        clearConsole();
-    }
+import data.EntityData;
+import data.PlayerData;
+import formatting.StringFormatting;
+import mechanics.entities.Entity;
+import mechanics.entities.Player;
 
-    public static void clearConsole(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+public class Gui {
+    public static String getGuiString(Entity entity){
+        if(entity == null || entity.getEntityData() == null) return null;
+
+        EntityData data = entity.getEntityData();
+
+        String ui = "";
+
+        String[] valueNames = {"HEALTH","ENERGY"};
+        String[] values = {Integer.toString(data.getHealth()), Integer.toString(data.getEnergy())};
+        ui = StringFormatting.formatAttributesInline(data.getName(), valueNames, values, "|");
+
+        return ui;
     }
 }
