@@ -15,9 +15,7 @@ public class PlayerDAOImpl implements PlayerDAO {
     public int createPlayer(Player player) throws BusinessException {
         int c=0;
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            String sql =
-                    "INSERT INTO roc_revature.player(id, name, age, gender, teamName, contact) "
-                            + "VALUES(?,?,?,?,?,?)";
+            String sql =PlayerQueries.INSERT_PLAYER;
 
             // Prepare the prepared statement
             PreparedStatement preparedStatement=connection.prepareStatement(sql);
@@ -39,8 +37,7 @@ public class PlayerDAOImpl implements PlayerDAO {
     public int updatePlayerContact(int id, long newContact) throws BusinessException {
         int c = 0;
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            String sql = "UPDATE roc_revature.player SET contact=? WHERE id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(PlayerQueries.UPDATE_PLAYER_CONTACT);
             preparedStatement.setLong(1, newContact);
             preparedStatement.setInt(2, id);
 
@@ -54,8 +51,7 @@ public class PlayerDAOImpl implements PlayerDAO {
 
     public void deletePlayer(int id) throws BusinessException {
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            String sql = "DELETE FROM roc_revature.player WHERE id=?";
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    PreparedStatement preparedStatement = connection.prepareStatement(PlayerQueries.INSERT_PLAYER);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch(ClassNotFoundException | SQLException e){
@@ -67,8 +63,7 @@ public class PlayerDAOImpl implements PlayerDAO {
     public Player getPlayerById(int id) throws BusinessException {
         Player player = null;
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            String sql = "select name, age, gender, teamName, contact from roc_revature.player where id=?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(PlayerQueries.GET_PLAYER_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){

@@ -2,7 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.app</groupId>
     <artifactId>jdbc_demo_2</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
+    <modules>
+        <module>../player_search_maven_app</module>
+    </modules>
     <name>jdbc_demo_2</name>
     <description>This is the correct implementation of a Maven project to connect with DB Postgres using JDBC</description>
 
