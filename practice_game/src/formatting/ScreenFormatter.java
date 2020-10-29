@@ -32,15 +32,14 @@ public class ScreenFormatter {
 
     public static void refreshScreen(Player player, Entity target) {
         String[] uiArray = getGuis(player, target);
+        StringBuilder uiBuilder = new StringBuilder();
         for (String ui : uiArray) {
             if (ui != null && ui.length() > 0) {
-                if (sb == null) sb = new StringBuilder(ui);
-                sb.insert(0, ui);
+                if (uiBuilder == null) uiBuilder = new StringBuilder(uiBuilder);
+                uiBuilder.append("\n"+ui+"\n");
             }
-            sb.append("          ");
         }
-
-        sb.append("\n");
+        sb.insert(0, uiBuilder.toString() + "\n");
 
         clearConsole();
         if (sb.toString().length() > 0)

@@ -1,10 +1,8 @@
-import formatting.ScreenFormatter;
 import mechanics.commands.ReadInput;
 import mechanics.encounters.Encounter;
 import mechanics.encounters.EncounterGenerator;
 import mechanics.entities.Player;
 import messages.GenericMessages;
-import messages.Gui;
 
 import static mechanics.commands.GeneralCommands.createPlayer;
 

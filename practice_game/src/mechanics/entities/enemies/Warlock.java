@@ -1,9 +1,10 @@
 package mechanics.entities.enemies;
 
+import data.EntityData;
 import items.weapons.Stick;
 
 public class Warlock extends Enemy {
     public Warlock(){
-        super(2, "Warlock", new Stick());
+        super(new EntityData("Warlock").setHealth(20).setEquippedWeapon(new Stick()));
     }
 }

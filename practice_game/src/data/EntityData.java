@@ -22,39 +22,39 @@ public class EntityData {
 
     public int getHealth() { return health; }
 
-    public void setHealth(int health) { this.health = health; }
+    public EntityData setHealth(int health) { this.health = health; return this;}
 
     public int getEnergy() { return energy; }
 
-    public void setEnergy(int energy) { this.energy = energy; }
+    public EntityData setEnergy(int energy) { this.energy = energy; return this;}
 
     public int getEnergyRegen() { return energyRegen; }
 
-    public void setEnergyRegen(int energyRegen) { this.energyRegen = energyRegen; }
+    public EntityData setEnergyRegen(int energyRegen) { this.energyRegen = energyRegen; return this;}
 
     public int getBaseDamage() { return baseDamage; }
 
-    public void setBaseDamage(int baseDamage) { this.baseDamage = baseDamage; }
+    public EntityData setBaseDamage(int baseDamage) { this.baseDamage = baseDamage; return this;}
 
     public int getBaseEnergyDrain() { return baseEnergyDrain; }
 
-    public void setBaseEnergyDrain(int baseEnergyDrain) { this.baseEnergyDrain = baseEnergyDrain; }
+    public EntityData setBaseEnergyDrain(int baseEnergyDrain) { this.baseEnergyDrain = baseEnergyDrain; return this;}
 
     public String getName() { return name; }
 
-    public void setName(String name) { this.name = name; }
+    public EntityData setName(String name) { this.name = name; return this;}
 
     public Entity getTargetEntity() { return targetEntity; }
 
-    public void setTargetEntity(Entity targetEntity) { this.targetEntity = targetEntity; }
+    public EntityData setTargetEntity(Entity targetEntity) { this.targetEntity = targetEntity; return this;}
 
     public Inventory getInventory() { return inventory; }
 
-    public void setInventory(Inventory inventory) { this.inventory = inventory; }
+    public EntityData setInventory(Inventory inventory) { this.inventory = inventory; return this;}
 
     public Weapon getEquippedWeapon() { return equippedWeapon; }
 
-    public void setEquippedWeapon(Weapon equippedWeapon) { this.equippedWeapon = equippedWeapon; }
+    public EntityData setEquippedWeapon(Weapon equippedWeapon) { this.equippedWeapon = equippedWeapon; return this;}
 
     @Override
     public String toString() {

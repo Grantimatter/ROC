@@ -40,7 +40,6 @@ abstract public class Entity implements IAttackable {
     public void takeDamage(int damage, Entity attacker) {
         int health = data.getHealth() - damage;
         data.setHealth(health > 0 ? health : 0);
-        ScreenFormatter.addString(data.getName()+ " has " +health + " health remaining.\n");
         if(health <= 0) defeat(attacker);
     }
 
