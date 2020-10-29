@@ -1,4 +1,4 @@
-package com.app.main;
+package com.app.jdbc_demo.jdbutil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,7 +11,7 @@ import java.util.List;
 public class SQLQueries {
 	public static ResultSet sendQuery(Connection connection, String query) {
 		if(!query.toLowerCase().contains("select")){
-			ModifyDatabase.sendCommand(connection, query);
+			SQLCommands.sendCommand(connection, query);
 		}
 		try {
 			// Step 3 - Create statement

@@ -1,4 +1,4 @@
-package com.app.main;
+package com.app.jdbc_demo.general_operations;
 
 import java.util.Random;
 

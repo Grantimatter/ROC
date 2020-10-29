@@ -1,10 +1,13 @@
-package com.app.main;
+package com.app.jdbc_demo;
+
+import com.app.jdbc_demo.general_operations.RandomData;
+import com.app.jdbc_demo.jdbutil.ConnectionHandling;
+import com.app.jdbc_demo.jdbutil.SQLCommands;
+import com.app.jdbc_demo.jdbutil.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Scanner;
-
-import static com.app.main.SQLQueries.queryPrintPlayerTable;
 
 public class HelloJDBC {
 
@@ -14,7 +17,7 @@ public class HelloJDBC {
 		
 		// Run all commands while connection is active
         // Query table as is
-        queryPrintPlayerTable(connection);
+        SQLQueries.queryPrintPlayerTable(connection);
 
         test1(connection);
         test2(connection);
@@ -27,9 +30,9 @@ public class HelloJDBC {
 	public static void test1(Connection connection){
 	    System.out.println("Editing table and printing results!\n");
         // Apply random age to everyone on the team "braves"
-        ModifyDatabase.sendCommand(connection, "update roc_revature.player set age="+RandomData.generateRandomAge(18, 48)+ " where teamName=\'Braves\'");
+        SQLCommands.sendCommand(connection, "update roc_revature.player set age="+ RandomData.generateRandomAge(18, 48)+ " where teamName=\'Braves\'");
         // Query the table again to examine changes
-        queryPrintPlayerTable(connection);
+        SQLQueries.queryPrintPlayerTable(connection);
     }
 
     public static void test2(Connection connection){
@@ -38,6 +41,6 @@ public class HelloJDBC {
         if(rs != null)
             SQLQueries.printQuery(SQLQueries.sendQuery(connection, new Scanner(System.in).nextLine()));
         else
-            queryPrintPlayerTable(connection);
+            SQLQueries.queryPrintPlayerTable(connection);
     }
 }

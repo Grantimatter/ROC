@@ -1,4 +1,4 @@
-package com.app.main;
+package com.app.jdbc_demo.jdbutil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
