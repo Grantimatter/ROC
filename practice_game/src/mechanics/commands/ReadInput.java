@@ -5,6 +5,7 @@ import exceptions.InvalidInputException;
 import interfaces.IAttackable;
 import mechanics.entities.Entity;
 import messages.GenericMessages;
+import messages.Gui;
 
 import java.util.Scanner;
 
@@ -51,8 +52,9 @@ public class ReadInput {
     public static String readUserInput(Entity entity) throws InvalidInputException{
         if(scanner == null) scanner = new Scanner(System.in);
         System.out.println("Input your command");
-
-        return scanner.next();
+        String input = scanner.next();
+        Gui.displayGui();
+        return input;
     }
 
     public static boolean ynRead() throws InvalidInputException{

@@ -9,17 +9,24 @@ import static mechanics.commands.GeneralCommands.createPlayer;
 
 public class MainLoop {
 
-    private static boolean runGame = true;
     private static Player player;
+    private static int loops;
 
     public static void main(String[] args) {
         // Before the game loop initiates
         beforeFirstLoop();
         do{
             beginLoop();
-        }while(runGame);
+            loops++;
+        }while(runGame());
 
         // Once game has ended
+        if(player.isAlive()){
+            GenericMessages.winMessage();
+        }
+        else{
+            GenericMessages.failMessage();
+        }
     }
 
     public static void beforeFirstLoop(){
@@ -37,6 +44,10 @@ public class MainLoop {
         if(encounter != null){
             encounter.startEncounter();
         }
+    }
+
+    public static boolean runGame(){
+        return loops < 100 && player.isAlive();
     }
 
     public static void getCommandInput(){

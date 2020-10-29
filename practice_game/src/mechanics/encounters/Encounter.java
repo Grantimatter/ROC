@@ -3,6 +3,7 @@ package mechanics.encounters;
 import mechanics.commands.ReadInput;
 import mechanics.entities.Entity;
 import messages.EntityMessages;
+import messages.Gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;

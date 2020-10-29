@@ -2,9 +2,8 @@ package mechanics.commands;
 import formatting.StringFormatting;
 import items.Inventory;
 import mechanics.entities.Player;
-import mechanics.entities.enemies.Enemy;
-import mechanics.entities.enemies.Warlock;
 import messages.GenericMessages;
+import messages.Gui;
 import messages.PlayerMessages;
 
 import java.util.Scanner;
@@ -20,6 +19,7 @@ public class GeneralCommands {
     }
 
     public static void openInventory(Inventory inventory){
+        Gui.displayGui();
         PlayerMessages.inventoryMessage(inventory);
     }
 

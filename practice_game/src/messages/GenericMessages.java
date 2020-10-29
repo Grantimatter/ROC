@@ -20,12 +20,19 @@ public class GenericMessages {
         new Scanner(System.in).nextLine();
     }
 
-    public static void endMessage(){
-        System.out.println("Thanks for playing, goodbye!");
+    public static void winMessage(){
+        Gui.clearConsole();
+        System.out.println("You have won the game, congratulations!");
     }
 
-    public static void failureMessage(){
+    public static void failMessage(){
+        Gui.clearConsole();
+        System.out.println("You have lost the game!");
+    }
 
+    public static void endMessage(){
+        Gui.clearConsole();
+        System.out.println("Thanks for playing, goodbye!");
     }
 
 }

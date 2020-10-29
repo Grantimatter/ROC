@@ -1,10 +1,8 @@
 package mechanics.entities;
 
 import data.PlayerData;
-import items.weapons.Fist;
 import items.weapons.Weapon;
 import mechanics.commands.GameFlow;
-import mechanics.commands.GeneralCommands;
 import mechanics.commands.ReadInput;
 
 public class Player extends Entity {
@@ -16,10 +14,10 @@ public class Player extends Entity {
         playerData = new PlayerData();
     }
     public Player(String name){
-        super(100, name, new Fist());
+        super(100, name);
     }
     public Player(int health, String name, Weapon weapon){
-        super(health, name, new Fist());
+        super(health, name);
     }
 
     @Override
