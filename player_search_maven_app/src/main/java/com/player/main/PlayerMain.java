@@ -115,7 +115,7 @@ public class PlayerMain {
                         e.printStackTrace();
                     }
                     break;
-                case 8: System.out.println("Thank you for using the search, please come again soon!");
+                case 8: System.out.println("Thank you for using the search application, please come again soon!");
 
                     break;
                 default: System.out.println("Incorrect choice, please select (1-8)");
