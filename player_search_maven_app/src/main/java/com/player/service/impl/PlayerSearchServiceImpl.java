@@ -3,8 +3,8 @@ package com.player.service.impl;
 import com.player.dao.PlayerSearchDAO;
 import com.player.dao.impl.PlayerSearchDAOImpl;
 import com.player.service.PlayerSearchService;
-import exception.BusinessException;
-import model.Player;
+import com.player.exception.BusinessException;
+import com.player.model.Player;
 
 import java.util.List;
 

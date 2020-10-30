@@ -2,8 +2,8 @@ package com.player.main;
 
 import com.player.service.PlayerSearchService;
 import com.player.service.impl.PlayerSearchServiceImpl;
-import exception.BusinessException;
-import model.Player;
+import com.player.exception.BusinessException;
+import com.player.model.Player;
 
 import java.util.List;
 import java.util.Scanner;
@@ -41,7 +41,7 @@ public class PlayerMain {
                             Player player = playerSearchService.getPlayerById(id);
                             System.out.println("Player with ID : "+id+" found. Printing Player...\n" + player.toString());
                         } catch(NumberFormatException | BusinessException e){
-                            System.out.println("ID should be a whole number only, please try entering another ID");
+                            System.out.println("ID should be a 3-digit whole number only, please try entering another ID");
                         }
                     break;
                 case 2: System.out.println("Please enter player name to find matching players");
@@ -72,7 +72,7 @@ public class PlayerMain {
                     try{
                         String gender = scanner.nextLine();
                         List<Player> playerList = playerSearchService.getPlayersByGender(gender.toUpperCase());
-                        System.out.println("Player(s) found with the age "+gender+". Printing all...");
+                        System.out.println("Player(s) found with the gender "+gender.toUpperCase()+". Printing all...");
                         for (Player p:playerList){
                             System.out.println(p);
                         }

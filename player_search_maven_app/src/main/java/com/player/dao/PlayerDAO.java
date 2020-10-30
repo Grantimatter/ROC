@@ -1,7 +1,7 @@
 package com.player.dao;
 
-import exception.BusinessException;
-import model.Player;
+import com.player.exception.BusinessException;
+import com.player.model.Player;
 
 // DAO - Data Access Object
 // A DAO represents that all the code which is related to your DB or persistence or storage will be written inside this.

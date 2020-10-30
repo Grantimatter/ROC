@@ -1,9 +1,9 @@
 package com.player.dao.impl;
 
 import com.player.dao.PlayerSearchDAO;
-import exception.BusinessException;
-import jdbutil.PostgresSqlConnection;
-import model.Player;
+import com.player.exception.BusinessException;
+import com.player.jdbutil.PostgresSqlConnection;
+import com.player.model.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

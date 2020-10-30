@@ -1,7 +1,7 @@
 package com.player.service;
 
-import exception.BusinessException;
-import model.Player;
+import com.player.exception.BusinessException;
+import com.player.model.Player;
 import java.util.List;
 
 public interface PlayerSearchService {
