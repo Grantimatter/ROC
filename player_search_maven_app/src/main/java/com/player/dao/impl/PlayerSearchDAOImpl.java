@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerSearchDAOImpl implements PlayerSearchDAO {
+
     private static Player getPlayerFromResultSet(ResultSet resultSet) {
         Player player = null;
         try {
@@ -37,13 +38,10 @@ public class PlayerSearchDAOImpl implements PlayerSearchDAO {
             while (resultSet.next()) {
                 playerList.add(getPlayerFromResultSet(resultSet));
             }
-            return playerList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return playerList;
     }
 
     @Override
