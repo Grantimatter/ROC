@@ -9,19 +9,16 @@ import java.util.Scanner;
 public class BankMain {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         int choice = 0;
-        System.out.println("Welcome to the Banking App!\n");
+        System.out.println("Welcome to the Banking App!");
         do {
             System.out.println(MenuFormatting.createOptionsMenu("Login","Create new account", "Customer Login", "Employee Login", "Exit Application"));
-            String input = scanner.nextLine();
-            if(input.length() < 1) input = "999";
             choice = InputUtil.getIntInput();
             switch (choice){
                 case 1: System.out.println("Option not yet implemented, try again soon!");
                     break;
                 case 2:
-                    new CustomerMenus().startLoginDialog(scanner);
+                    new CustomerMenus().startLoginDialog();
                     break;
                 case 3: System.out.println("Option not yet implemented, try again soon!");
                     break;

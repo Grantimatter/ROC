@@ -15,22 +15,28 @@ public class MenuFormatting {
 
         sb.insert(0, "\n");
 
-        //  create
+        String titleString = "| " + title + " |";
+        longest = titleString.length() > longest ? titleString.length() : longest;
+
+        //  Create menu border
         String border = "";
         for (int i = 0; i < longest + 2; i++) {
             border += ("=");
         }
-        sb.insert(0, border);
-        sb.append(border);
 
-        // Insert Title
-        StringBuilder sb2 = new StringBuilder("| " + title + " |");
+        // Create Title StringBuilder
+        StringBuilder sb2 = new StringBuilder(titleString);
         int titleMiddle = sb2.length() / 2;
         for (int i = 0; i < (border.length() / 2) - titleMiddle; i++) {
             sb2.insert(0, " ");
         }
+
+        sb.insert(0, border);
+        sb.append(border);
+
+
         sb.insert(0, sb2.toString() + "\n");
-        sb.append("\nPlease select an option from above(1-" + options.length + ")\n");
-        return sb.toString();
+        sb.append("\nPlease select an option from above (1-" + options.length + ")\n");
+        return "\n" + sb.toString();
     }
 }

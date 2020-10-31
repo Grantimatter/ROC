@@ -34,15 +34,17 @@ public class CustomerMenus {
     public void startCustomerMenuLoggedIn(Customer customer){
         int choice = 0;
         do{
-            System.out.println(MenuFormatting.createOptionsMenu(customer.getName() + " | " + customer.getContactEmail(), "View Account(s)", "Create a New Account"));
+            System.out.println(MenuFormatting.createOptionsMenu(customer.getName() + " | " + customer.getContactEmail(), "View Account(s)", "Create a New Account", "Logout"));
             choice = InputUtil.getIntInput();
             switch (choice){
                 case 1:
-                        int account = InputUtil.getIntInput();
                         if(customer.getAccountNumbers() != null && customer.getAccountNumbers().length > 0){
                             startAccountMenu(customer);
                         }
                     break;
+
+                default:
+                    System.out.println("Please input a correct");
             }
         }while(choice != 4);
     }
@@ -50,13 +52,22 @@ public class CustomerMenus {
     public void startAccountMenu(Customer customer){
         int choice = 0;
         do{
-            String[] accountStrings = new String[] {customer.getAccountNumbers().toString()};
-            MenuFormatting.createOptionsMenu("Accounts", accountStrings);
+            int accountNumberLength = customer.getAccountNumbers().length;
+            String[] accountStrings = new String[accountNumberLength];
+
+            for(int i = 0; i < accountNumberLength; i++){
+                accountStrings[i] = String.valueOf(customer.getAccountNumbers()[i]);
+            }
+
+            System.out.println(MenuFormatting.createOptionsMenu("Accounts | " + customer.getName() + " | " + customer.getContactEmail(), accountStrings));
+
             choice = InputUtil.getIntInput();
+            /*
             switch (choice){
                 case 1:
                     break;
             }
+            */
         }while(choice != 3);
     }
 
