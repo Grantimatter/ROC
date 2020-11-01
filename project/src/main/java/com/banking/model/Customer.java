@@ -1,18 +1,20 @@
 package com.banking.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Customer {
     private int id;
-    private int[] accountNumbers;
+    private List<Account> accounts;
     private String name;
     private String password;
     private String contactEmail;
     private long contactNumber;
 
-    public Customer(int id, int[] accountNumbers, String name, String contactEmail, long contactNumber) {
+    public Customer(int id, List<Account> accounts, String name, String contactEmail, long contactNumber) {
         this.id = id;
-        this.accountNumbers = accountNumbers;
+        this.accounts = accounts;
         this.name = name;
         this.contactEmail = contactEmail;
         this.contactNumber = contactNumber;
@@ -26,13 +28,9 @@ public class Customer {
         this.contactNumber = contactNumber;
     }
 
-    public Customer(int id, int[] accountNumbers, String name, String password, String contactEmail, long contactNumber) {
-        this.id = id;
-        this.accountNumbers = accountNumbers;
-        this.name = name;
+    public Customer(int id, List<Account> accounts, String name, String password, String contactEmail, long contactNumber) {
+        this(id, accounts, name, contactEmail, contactNumber);
         this.password = password;
-        this.contactEmail = contactEmail;
-        this.contactNumber = contactNumber;
     }
 
     public int getId() {
@@ -43,13 +41,9 @@ public class Customer {
         this.id = id;
     }
 
-    public int[] getAccountNumbers() {
-        return accountNumbers;
-    }
+    public List<Account> getAccounts() { return accounts; }
 
-    public void setAccountNumbers(int[] accountNumbers) {
-        this.accountNumbers = accountNumbers;
-    }
+    public void setAccounts(List<Account> accounts) { this.accounts = accounts; }
 
     public String getName() {
         return name;
@@ -87,7 +81,7 @@ public class Customer {
     public String toString() {
         return "Customer {" +
                 "id=" + id +
-                ", accountNumbers=" + Arrays.toString(accountNumbers) +
+                ", accounts=" + accounts.toString() +
                 ", name='" + name + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", contactNumber=" + contactNumber +
