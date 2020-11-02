@@ -44,6 +44,12 @@ public class Customer {
 
     public List<Account> getAccounts() { return accounts; }
 
+    public void setAccount(Account account) {
+        if(accounts.contains(account)){
+            accounts.set(accounts.indexOf(account), account);
+        }
+    }
+
     public void setAccounts(List<Account> accounts) { this.accounts = accounts; }
 
     public String getFirst_name() {

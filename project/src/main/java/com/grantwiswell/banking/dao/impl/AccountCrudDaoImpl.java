@@ -8,6 +8,7 @@ import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountCrudDaoImpl implements AccountCrudDao {
@@ -23,6 +24,32 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Account was unable to be created...");
         } catch (SQLException | ClassNotFoundException e) {
+            DaoUtil.internalError(e);
+        }
+    }
+
+    @Override
+    public void depositToAccount(double depositAmount, int number) throws BankException {
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = PostgresSqlConnection.getConnection().prepareStatement(AccountCrud.DEPOSIT_TO_ACCOUNT);
+            preparedStatement.setDouble(1, depositAmount);
+            preparedStatement.setInt(2, number);
+            int results = preparedStatement.executeUpdate();
+            if(results == 0) throw new BankException("Error completing deposit, please try again later");
+        }catch (SQLException | ClassNotFoundException e) {
+            DaoUtil.internalError(e);
+        }
+    }
+
+    @Override
+    public void withdrawalFromAccount(double withdrawalAmount, int number) throws BankException {
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountCrud.WITHDRAWAL_FROM_ACCOUNT);
+            preparedStatement.setDouble(1, withdrawalAmount);
+            preparedStatement.setInt(2, number);
+            int results = preparedStatement.executeUpdate();
+            if(results == 0) throw new BankException("Error completing withdrawal, please try again later.");
+        }catch (SQLException | ClassNotFoundException e) {
             DaoUtil.internalError(e);
         }
     }
