@@ -11,7 +11,7 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
     private CustomerLoginDao customerLoginDao = new CustomerLoginDaoImpl();
 
     @Override
-    public Customer validateLogin(String contactEmail, String password) throws BankException {
+    public Customer getCustomerFromLogin(String contactEmail, String password) throws BankException {
         Customer customer = null;
         if(password.length() > 7){
             customer = customerLoginDao.validateLogin(contactEmail, password);

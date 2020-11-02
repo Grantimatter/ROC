@@ -47,7 +47,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return  name +
+        return  "| "+name +
                 " | Acct# : " + number +
                 " | Balance : $" + balance + " |";
     }

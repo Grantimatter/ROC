@@ -15,6 +15,11 @@ public class InputUtil {
         return isValidInput(str) ? Integer.parseInt(str) : 0;
     }
 
+    public static double getDoubleInput(){
+        String str = scanner.nextLine();
+        return isValidInput(str) ? Double.parseDouble(str) : 0d;
+    }
+
     private static boolean isValidInput(String str){
         return (str != null && str.length() > 0) ? true : false;
     }
