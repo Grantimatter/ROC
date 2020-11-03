@@ -5,6 +5,7 @@ import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.service.AccountSearchService;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +16,25 @@ public class AccountSearchServiceImpl implements AccountSearchService {
 
     @Override
     public Account getAccountByNumber(int number) throws BankException {
-        return null;
+        Account account = null;
+        if(number > 99999 && number < 1000000){
+            try {
+                account = accountSearchDao.getAccountByNumber(number);
+            } catch (BankException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        else{
+            throw new BankException("Invalid Account Number. Account number must be a 6 digits");
+        }
+        return account;
     }
 
     @Override
     public List<Account> getAccountInBalanceRange(double minBalance, double maxBalance) throws BankException {
         List<Account> accounts = new ArrayList();
-
-        return accounts;
+            throw new NotImplementedException();
+        //return accounts;
     }
 
     @Override

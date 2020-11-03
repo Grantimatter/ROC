@@ -37,7 +37,6 @@ public class MenuFormatting {
 
 
         sb.insert(0, sb2.toString() + "\n");
-        sb.append("\nPlease select an option from above (1-" + options.length + ")\n");
-        return "\n" + sb.toString();
+        return "\n" + sb.toString() + "\n";
     }
 }

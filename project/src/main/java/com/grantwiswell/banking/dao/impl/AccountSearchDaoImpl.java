@@ -18,7 +18,21 @@ import java.util.List;
 public class AccountSearchDaoImpl implements AccountSearchDao {
     @Override
     public Account getAccountByNumber(int number) throws BankException {
-        return null;
+        Account account = null;
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.GET_ACCOUNT_BY_NUMBER);
+            preparedStatement.setInt(1, number);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                account = DaoAccountUtil.getAccountFromResultSet(resultSet);
+            }
+            else{
+                throw new BankException("Account with number "+number+" not found...");
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            DaoUtil.internalError(e);
+        }
+        return account;
     }
 
     @Override

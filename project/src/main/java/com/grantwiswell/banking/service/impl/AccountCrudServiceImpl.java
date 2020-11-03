@@ -13,13 +13,14 @@ public class AccountCrudServiceImpl implements AccountCrudService {
 
     @Override
     public void createNewAccount(int customer_id, double balance, String name) throws BankException {
-        if (customer_id > 99 && customer_id < 1000) {
-            try {
-                accountCrudDao.createNewAccount(customer_id, RandomUtil.generateAccountNumber(), balance, name);
-            } catch (BankException e) {
-                System.out.println(e.getMessage());
-            }
+        if (customer_id < 100 || customer_id > 999) throw new BankException("Customer ID is invalid");
+        if (balance <= 0) throw new BankException ("You cannot start an account with a negative balance...");
+        try {
+            accountCrudDao.createNewAccount(customer_id, RandomUtil.generateAccountNumber(), balance, name);
+        } catch (BankException e) {
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Override
@@ -35,7 +36,8 @@ public class AccountCrudServiceImpl implements AccountCrudService {
     @Override
     public void withdrawalFromAccount(double withdrawalAmount, Account account) throws BankException {
         if (withdrawalAmount <= 0) throw new BankException("You must withdrawal a positive amount of money...");
-        if (withdrawalAmount > account.getBalance()) throw new BankException("You cannot withdrawal more money than you have in your account...");
+        if (withdrawalAmount > account.getBalance())
+            throw new BankException("You cannot withdrawal more money than you have in your account...");
         try {
             accountCrudDao.withdrawalFromAccount(withdrawalAmount, account.getNumber());
         } catch (BankException e) {

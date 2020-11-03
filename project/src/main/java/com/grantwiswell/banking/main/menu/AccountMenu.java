@@ -5,9 +5,10 @@ import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.AccountCrudService;
 import com.grantwiswell.banking.service.AccountSearchService;
+import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.impl.AccountCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.AccountSearchServiceImpl;
-import com.grantwiswell.banking.util.FormatStrings;
+import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
 
 import java.text.NumberFormat;
@@ -17,6 +18,7 @@ public class AccountMenu {
 
     private static AccountCrudService accountCrudService = new AccountCrudServiceImpl();
     private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
+    private static CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
 
     public static void startAccountListMenu(Customer customer){
         int choice = 0;
@@ -40,14 +42,18 @@ public class AccountMenu {
                         startAccountViewMenu(customer.getAccounts().get(i));
                     }
                 }
+
+                try {
+                    customer = customerSearchService.getCustomerById(customer.getId());
+                } catch (BankException e) {
+                    System.out.println("Error updating customer information");
+                }
             } while(choice != accountNumberLength + 1);
     }
 
     private static void startAccountViewMenu(Account account){
         int choice = 0;
         do{
-            try{
-                account = accountSearchService.getAccountByNumber(account.getNumber());
                 System.out.println(MenuFormatting.createOptionsMenu(account.toString(), "Make A Deposit", "Make A Withdrawal", "Transfer Funds", "Delete Account", "<- View Accounts"));
                 choice = InputUtil.getIntInput();
                 switch (choice){
@@ -81,9 +87,7 @@ public class AccountMenu {
                     default: System.out.println("Please select a valid option (1-5)");
                         break;
                 }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            account = accountSearchService.getAccountByNumber(account.getNumber());
         }while(choice != 5);
     }
 }
