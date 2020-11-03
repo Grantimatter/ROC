@@ -5,13 +5,13 @@ import java.util.Locale;
 
 public class Account {
     private int customer_id;
-    private int number;
+    private int id;
     private double balance;
     private String name;
 
-    public Account(int customer_id, int number, double balance, String name) {
+    public Account(int customer_id, int id, double balance, String name) {
         this.customer_id = customer_id;
-        this.number = number;
+        this.id = id;
         this.balance = balance;
         this.name = name;
     }
@@ -24,12 +24,12 @@ public class Account {
         this.customer_id = customer_id;
     }
 
-    public int getNumber() {
-        return number;
+    public int getId() {
+        return id;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getBalance() {
@@ -51,7 +51,7 @@ public class Account {
     @Override
     public String toString() {
         return  name.toUpperCase() +
-                " | Acct# : " + number +
+                " | Acct# : " + id +
                 " | Balance : " + NumberFormat.getCurrencyInstance(Locale.US).format(balance);
     }
 }

@@ -5,6 +5,7 @@ import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.service.AccountSearchService;
+import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
@@ -14,14 +15,16 @@ public class AccountSearchServiceImpl implements AccountSearchService {
 
     AccountSearchDao accountSearchDao = new AccountSearchDaoImpl();
 
+    private Logger log = Logger.getLogger(AccountSearchServiceImpl.class);
+
     @Override
-    public Account getAccountByNumber(int number) throws BankException {
+    public Account getAccountById(int number) throws BankException {
         Account account = null;
         if(number > 99999 && number < 1000000){
             try {
                 account = accountSearchDao.getAccountByNumber(number);
             } catch (BankException e) {
-                System.out.println(e.getMessage());
+                log.info(e.getMessage());
             }
         }
         else{
@@ -44,7 +47,7 @@ public class AccountSearchServiceImpl implements AccountSearchService {
             try {
                 accounts = accountSearchDao.getAccountsByCustomerId(customerId);
             } catch(BankException e){
-                System.out.println(e.getMessage());
+                log.info(e.getMessage());
             }
         }else{
             throw new BankException("Invalid ID... Customer ID must be a 3-digit whole number");

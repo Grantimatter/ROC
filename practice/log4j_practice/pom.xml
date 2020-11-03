@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.grantwiswell.banking</groupId>
-    <artifactId>bank_project</artifactId>
+    <groupId>com.grantwiswell.log4j_practice</groupId>
+    <artifactId>log4j_practice</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,16 +15,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.2.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.12</version>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.12</version>
         </dependency>
     </dependencies>
+
 
 </project>

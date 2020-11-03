@@ -3,10 +3,10 @@ package com.grantwiswell.banking.dao.impl;
 import com.grantwiswell.banking.dao.CustomerSearchDao;
 import com.grantwiswell.banking.dao.queries.CustomerQueries;
 import com.grantwiswell.banking.dao.util.DaoCustomerUtil;
-import com.grantwiswell.banking.dao.util.DaoUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Customer;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerSearchDaoImpl implements CustomerSearchDao {
+
+    Logger log = Logger.getLogger(CustomerSearchDaoImpl.class);
 
     @Override
     public Customer getCustomerById(int id) throws BankException {
@@ -31,7 +33,7 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
                 throw new BankException("Customer with ID : "+id+" not found, please try again...");
             }
         } catch (SQLException | ClassNotFoundException e) {
-            DaoUtil.internalError(e);
+            log.error(e);
         }
 
         return customer;
@@ -65,7 +67,7 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
                 throw new BankException("There are no customers in the database.");
             }
         } catch (SQLException | ClassNotFoundException e) {
-            DaoUtil.internalError(e);
+            log.error(e);
         }
         return customers;
     }

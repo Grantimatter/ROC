@@ -1,5 +1,6 @@
 package com.grantwiswell.banking.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Customer {
@@ -11,6 +12,8 @@ public class Customer {
     private String contactEmail;
     private long contactNumber;
 
+    private Date dob;
+
     public Customer(int id, List<Account> accounts, String first_name, String last_name, String contactEmail, long contactNumber) {
         this.id = id;
         this.accounts = accounts;
@@ -20,18 +23,33 @@ public class Customer {
         this.contactNumber = contactNumber;
     }
 
-    public Customer(int id, String name, String password, String contactEmail, long contactNumber) {
+    public Customer(int id, String first_name, String last_name, String password, String contactEmail) {
         this.id = id;
-        this.first_name = name;
-        this.last_name = name;
+        this.first_name = first_name;
+        this.last_name = last_name;
         this.password = password;
         this.contactEmail = contactEmail;
-        this.contactNumber = contactNumber;
+    }
+
+    public Customer(String first_name, String last_name, String contactEmail, String password, Date dob) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.contactEmail = contactEmail;
+        this.dob = dob;
     }
 
     public Customer(int id, List<Account> accounts, String first_name, String last_name, String password, String contactEmail, long contactNumber) {
         this(id, accounts, first_name, last_name, contactEmail, contactNumber);
         this.password = password;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 
     public int getId() {

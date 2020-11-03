@@ -2,16 +2,17 @@ package com.grantwiswell.banking.dao.impl;
 
 import com.grantwiswell.banking.dao.AccountCrudDao;
 import com.grantwiswell.banking.dao.queries.AccountCrud;
-import com.grantwiswell.banking.dao.util.DaoUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountCrudDaoImpl implements AccountCrudDao {
+
+    private Logger log = Logger.getLogger(AccountCrudDaoImpl.class);
 
     @Override
     public void createNewAccount(int customer_id, int number, double balance, String name) throws BankException {
@@ -24,7 +25,7 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Account was unable to be created...");
         } catch (SQLException | ClassNotFoundException e) {
-            DaoUtil.internalError(e);
+            log.error(e);
         }
     }
 
@@ -37,20 +38,20 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Error completing deposit, please try again later");
         }catch (SQLException | ClassNotFoundException e) {
-            DaoUtil.internalError(e);
+            log.error(e);
         }
     }
 
     @Override
-    public void withdrawalFromAccount(double withdrawalAmount, int number) throws BankException {
+    public void withdrawalFromAccount(double withdrawalAmount, int id) throws BankException {
         try(Connection connection = PostgresSqlConnection.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(AccountCrud.WITHDRAWAL_FROM_ACCOUNT);
             preparedStatement.setDouble(1, withdrawalAmount);
-            preparedStatement.setInt(2, number);
+            preparedStatement.setInt(2, id);
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Error completing withdrawal, please try again later.");
         }catch (SQLException | ClassNotFoundException e) {
-            DaoUtil.internalError(e);
+            log.error(e);
         }
     }
 }

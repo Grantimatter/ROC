@@ -5,12 +5,14 @@ import com.grantwiswell.banking.dao.impl.CustomerSearchDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerSearchService;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class CustomerSearchServiceImpl implements CustomerSearchService {
 
     private static CustomerSearchDao customerSearchDao = new CustomerSearchDaoImpl();
+    private Logger log = Logger.getLogger(CustomerSearchServiceImpl.class);
 
     @Override
     public Customer getCustomerById(int id) throws BankException {
@@ -19,7 +21,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
             try{
                 customer = customerSearchDao.getCustomerById(id);
             } catch (BankException e) {
-                System.out.println(e.getMessage());
+                log.info(e);
             }
         }
         else{

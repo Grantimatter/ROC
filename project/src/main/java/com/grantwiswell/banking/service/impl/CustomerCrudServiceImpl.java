@@ -3,16 +3,43 @@ package com.grantwiswell.banking.service.impl;
 import com.grantwiswell.banking.dao.CustomerCrudDao;
 import com.grantwiswell.banking.dao.impl.CustomerCrudDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerCrudService;
+import org.apache.log4j.Logger;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class CustomerCrudServiceImpl implements CustomerCrudService {
 
     CustomerCrudDao customerCrudDao = new CustomerCrudDaoImpl();
+    private Logger log = Logger.getLogger(CustomerCrudServiceImpl.class);
 
     @Override
-    public boolean createNewCustomer(String contact_email, String password, String fullName) throws BankException {
+    public boolean createNewCustomer(String contact_email, String password, String fullName, String dobString) throws BankException {
         if(!isValidEmail(contact_email)) throw new BankException("Invalid email address! please try again.");
         if(password.length() < 8)throw new BankException("Password must be at least 8 characters! Please try again.");
+        LocalDate localDob = null;
+
+        try{
+            localDob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        log.info(localDob);
+
+        if(Period.between(localDob, LocalDate.now()).getYears() < 16) throw new BankException("You must be at least 16 years old to register");
+
+        Date dob = Date.from(localDob.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        //if()
+        if (!dob.before(new Date())) throw new BankException("You cannot be born today...");
 
         String[] names = fullName.split(" ");
         if(names.length > 2){
@@ -24,9 +51,10 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
 
         boolean createSuccessful = false;
         try{
-            createSuccessful = customerCrudDao.createNewCustomer(contact_email, password, names[0], names[1]);
+            Customer customer = new Customer(names[0], names[1], contact_email, password, dob);
+            createSuccessful = customerCrudDao.createNewCustomer(customer);
         } catch (BankException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
         }
 
         return createSuccessful;
