@@ -20,7 +20,8 @@ public class AccountCrudServiceImpl implements AccountCrudService {
         if (customer_id < 100 || customer_id > 999) throw new BankException("Customer ID is invalid");
         if (balance <= 0) throw new BankException ("You cannot start an account with a negative balance...");
         try {
-            accountCrudDao.createNewAccount(customer_id, RandomUtil.generateAccountNumber(), balance, name);
+            Account account = new Account(customer_id, RandomUtil.generateAccountNumber(), balance, name);
+            accountCrudDao.createNewAccount(account);
         } catch (BankException e) {
             log.info(e.getMessage());
         }
@@ -28,10 +29,10 @@ public class AccountCrudServiceImpl implements AccountCrudService {
     }
 
     @Override
-    public void depositToAccount(double depositAmount, int number) throws BankException {
+    public void depositToAccount(double depositAmount, Account account) throws BankException {
         if (depositAmount <= 0) throw new BankException("You must deposit a positive amount of money...");
         try {
-            accountCrudDao.depositToAccount(depositAmount, number);
+            accountCrudDao.depositToAccount(depositAmount, account);
         } catch (BankException e) {
             log.info(e.getMessage());
         }
@@ -43,19 +44,7 @@ public class AccountCrudServiceImpl implements AccountCrudService {
         if (withdrawalAmount > account.getBalance())
             throw new BankException("You cannot withdrawal more money than you have in your account...");
         try {
-            accountCrudDao.withdrawalFromAccount(withdrawalAmount, account.getId());
-        } catch (BankException e) {
-            log.info(e.getMessage());
-        }
-    }
-
-    public void withdrawalFromAccount(double withdrawalAmount, int id) throws BankException {
-        Account account = accountSearchService.getAccountById(id);
-        if (withdrawalAmount <= 0) throw new BankException("You must withdrawal a positive amount of money...");
-        if (withdrawalAmount > account.getBalance())
-            throw new BankException("You cannot withdrawal more money than you have in your account...");
-        try {
-            accountCrudDao.withdrawalFromAccount(withdrawalAmount, id);
+            accountCrudDao.withdrawalFromAccount(withdrawalAmount, account);
         } catch (BankException e) {
             log.info(e.getMessage());
         }

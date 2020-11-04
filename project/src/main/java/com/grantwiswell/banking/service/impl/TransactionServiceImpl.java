@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
             log.info(date);
             Transaction transaction = new Transaction(account_from_id, account_to_id, amount, new Date());
             transactionDao.createTransaction(transaction);
-            accountCrudService.withdrawalFromAccount(amount, account_from_id);
+            accountCrudService.withdrawalFromAccount(amount, account_from);
         } catch (BankException e) {
             log.info(e);
         }

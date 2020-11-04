@@ -51,6 +51,8 @@ public class AccountSearchDaoImpl implements AccountSearchDao {
                 Account account = DaoAccountUtil.getAccountFromResultSet(resultSet);
                 accountList.add(account);
             }
+
+            log.debug(accountList);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

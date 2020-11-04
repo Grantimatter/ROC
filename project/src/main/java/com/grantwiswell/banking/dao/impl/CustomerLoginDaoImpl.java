@@ -27,9 +27,8 @@ public class CustomerLoginDaoImpl implements CustomerLoginDao {
             if(resultSet.next()){
                 customer = DaoCustomerUtil.getCustomerFromResultSet(resultSet);
             }
-            else{
-                throw new BankException("User and Password combo not found, please try again...");
-            }
+            else { throw new BankException("User and Password combo not found, please try again..."); }
+            log.debug("Customer " + customer.getContactEmail() + " logged in successfully");
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

@@ -67,8 +67,7 @@ public class AccountMenu {
                         try{
                             log.info("Please input the amount you would like to deposit...");
                             double amount = InputUtil.getDoubleInput();
-                            accountCrudService.depositToAccount(amount, account.getId());
-                            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(amount) + " deposited into " + account.getName());
+                            accountCrudService.depositToAccount(amount, account);
                         }catch(BankException e){
                             log.info(e.getMessage());
                         }
@@ -78,7 +77,6 @@ public class AccountMenu {
                         log.info("Please input the amount you would like to withdrawal...");
                         double amount = InputUtil.getDoubleInput();
                         accountCrudService.withdrawalFromAccount(amount, account);
-                        log.info(NumberFormat.getCurrencyInstance(Locale.US).format(amount) + " withdrawn from " + account.getName());
                         }catch(BankException e){
                         log.info(e.getMessage());
                     }

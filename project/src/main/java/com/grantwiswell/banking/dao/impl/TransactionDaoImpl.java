@@ -24,13 +24,15 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public void createTransaction(Transaction transaction) throws BankException {
-        try(Connection connection = PostgresSqlConnection.getConnection()){
+        try (Connection connection = PostgresSqlConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(TransactionQueries.CREATE_NEW_TRANSACTION);
             preparedStatement.setInt(1, transaction.getAccount_from());
             preparedStatement.setInt(2, transaction.getAccount_to());
             preparedStatement.setDouble(3, transaction.getAmount());
             preparedStatement.setTimestamp(4, new java.sql.Timestamp(Instant.now().getEpochSecond() * 1000L));
-            preparedStatement.executeUpdate();
+            int results = preparedStatement.executeUpdate();
+            if (results == 0) throw new BankException("Transaction was unable to be created.");
+            log.debug("Transaction created : " + transaction.toString());
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -39,11 +41,13 @@ public class TransactionDaoImpl implements TransactionDao {
     @Override
     public List<Transaction> getTransactions(int account_id) throws BankException {
         List<Transaction> transactions = new ArrayList<>();
-        try(Connection connection = PostgresSqlConnection.getConnection()) {
+        try (Connection connection = PostgresSqlConnection.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(TransactionQueries.GET_TRANSACTIONS_INVOLVING_ACCOUNT);
             preparedStatement.setInt(1, account_id);
             preparedStatement.setInt(2, account_id);
             transactions = DaoTransactionUtil.getTransactionsFromResultSet(preparedStatement.executeQuery());
+            if (transactions.size() <= 0) throw new BankException("No transactions were found.");
+            log.debug("Transactions from account : " + account_id + "\n" + transactions);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

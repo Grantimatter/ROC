@@ -70,7 +70,7 @@ public class TransactionMenu {
                 transactionService.createTransaction(account.getId(), account_id, amount);
                 account = accountSearchService.getAccountById(account.getId());
         } catch (BankException e) {
-            log.info(e);
+            log.info(e.getMessage());
         }
     }
 }

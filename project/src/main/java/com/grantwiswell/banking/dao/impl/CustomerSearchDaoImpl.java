@@ -63,9 +63,8 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
             while(resultSet.next()){
                 customers.add(DaoCustomerUtil.getCustomerFromResultSet(resultSet));
             }
-            if(customers.size() == 0){
-                throw new BankException("There are no customers in the database.");
-            }
+            if(customers.size() == 0) throw new BankException("There are no customers in the database.");
+            log.debug("All customers : " + customers);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

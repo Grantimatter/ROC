@@ -26,9 +26,8 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
             preparedStatement.setString(4,customer.getPassword());
             preparedStatement.setDate(5, new java.sql.Date(customer.getDob().getTime()));
             results = preparedStatement.executeUpdate();
-            if(results == 0){
-                throw new BankException("Unable to add customer account...");
-            }
+            if(results == 0){ throw new BankException("Unable to add customer account..."); }
+            log.debug("Created new customer : " + customer);
         } catch (SQLException | ClassNotFoundException e) {
                 log.error(e);
         }
