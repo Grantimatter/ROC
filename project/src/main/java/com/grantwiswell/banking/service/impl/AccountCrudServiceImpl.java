@@ -9,6 +9,9 @@ import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.util.RandomUtil;
 import org.apache.log4j.Logger;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class AccountCrudServiceImpl implements AccountCrudService {
 
     AccountCrudDao accountCrudDao = new AccountCrudDaoImpl();
@@ -23,7 +26,7 @@ public class AccountCrudServiceImpl implements AccountCrudService {
             Account account = new Account(customer_id, RandomUtil.generateAccountNumber(), balance, name);
             accountCrudDao.createNewAccount(account);
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
 
     }
@@ -33,8 +36,9 @@ public class AccountCrudServiceImpl implements AccountCrudService {
         if (depositAmount <= 0) throw new BankException("You must deposit a positive amount of money...");
         try {
             accountCrudDao.depositToAccount(depositAmount, account);
+            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(depositAmount) + " deposited into " + account.getName() + " (#"+account.getId()+")");
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 
@@ -45,8 +49,9 @@ public class AccountCrudServiceImpl implements AccountCrudService {
             throw new BankException("You cannot withdrawal more money than you have in your account...");
         try {
             accountCrudDao.withdrawalFromAccount(withdrawalAmount, account);
+            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(withdrawalAmount) + " withdrawn from " + account.getName() + " (#"+account.getId()+")");
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 }

@@ -30,7 +30,7 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
         try{
             localDob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
         } catch (Exception e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
         log.info(localDob);
 
@@ -54,7 +54,7 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
             Customer customer = new Customer(names[0], names[1], contact_email, password, dob);
             createSuccessful = customerCrudDao.createNewCustomer(customer);
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
 
         return createSuccessful;

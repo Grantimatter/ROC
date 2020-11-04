@@ -27,7 +27,7 @@ public class CustomerMenu {
     public static void startCustomerLoginDialog() {
         int choice = 0;
         do {
-            log.info(MenuFormatting.createOptionsMenu("Customer Login", "Returning Customer", "New Customer", "<- Main Menu"));
+            log.info(MenuFormatting.createOptionsMenu("Customer Login", "Returning Customer", "New Customer", "Main Menu"));
             choice = InputUtil.getIntInput();
             switch (choice) {
                 case 1:
@@ -59,7 +59,7 @@ public class CustomerMenu {
             }
             if (customer != null) startCustomerLoggedInMenu(customer);
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ public class CustomerMenu {
                     startCustomerLoggedInMenu(customer);
                 }
             } catch (BankException e) {
-                log.info(e.getMessage());
+                log.warn(e.getMessage());
             }
     }
 
@@ -94,7 +94,7 @@ public class CustomerMenu {
             if (customer != null && customer.getAccounts() != null && customer.getAccounts().size() > 0)
                 choices.add("View Account" + ((customer.getAccounts().size() > 1) ? "s" : ""));
             choices.add("Open A New Account");
-            choices.add("<- Logout");
+            choices.add("Logout");
 
             String[] choiceArray = choices.stream().toArray(String[]::new);
             log.info(MenuFormatting.createOptionsMenu(customer.getFirst_name() + " " + customer.getLast_name() + " | " + customer.getContactEmail(), choiceArray));
@@ -136,7 +136,7 @@ public class CustomerMenu {
         try{
             accountCrudService.createNewAccount(customer.getId(), balance, accountName);
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 }

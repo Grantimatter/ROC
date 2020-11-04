@@ -26,38 +26,122 @@ public class TransactionMenu {
         int choice = 0;
         try {
             do {
-                List<Transaction> transactions = transactionService.getTransactions(account.getId());
+                List<Transaction> transactions = transactionService.getTransactionsByAccountId(account.getId());
+                List<Transaction> completedTransactionList = new ArrayList<>();
                 List<String> optionList = new ArrayList();
-
-                for(Transaction t:transactions){
-                    if(t.getAccount_from() == account.getId()){
-                        optionList.add("Outgoing : " + NumberFormat.getCurrencyInstance(Locale.US).format(t.getAmount())
-                                + " | Destination : #"+t.getAccount_to()
-                                + " | Status : " + t.getStatus() + " | Date Created : "+t.getDate_created());
+                optionList.add("Start a transfer");
+                if(transactions != null && transactions.size() > 0) {
+                    for (Transaction t : transactions) {
+                        if(t != null) {
+                            if(t.getStatus().equalsIgnoreCase("COMPLETED") || t.getStatus().equalsIgnoreCase("REJECTED")){
+                                completedTransactionList.add(t);
+                                continue;
+                            }
+                        }
                     }
-                    else{
-                        optionList.add("INCOMING");
+                    transactions.removeAll(completedTransactionList);
+                    for (Transaction t: transactions){
+                        String option = formatTransaction(account, t);
+                        optionList.add(option);
                     }
                 }
 
-                optionList.add("Start a transfer");
-                optionList.add("<- Exit");
+                if(completedTransactionList.size() > 0) optionList.add("Completed Transactions");
+                optionList.add("Exit");
                 String[] options = optionList.stream().toArray(String[]::new);
                 optionCount = options.length;
                 log.info(MenuFormatting.createOptionsMenu("Transfers | " + account.toString(), options));
 
                 choice = InputUtil.getIntInput();
-                if (choice == optionCount - 1) {
+                if (choice == 1) {
                     startCreateTransactionMenu(account);
                 }
+                else if(completedTransactionList.size() > 0 && choice == 2){
+                    startCreateCompletedTransactionMenu(account, completedTransactionList);
+                }
+                else if (transactions.size() > 0){
+                    startViewTransactionMenu(account, transactions.get(choice - 2));
+                }
 
-                for (int i = 0; i < optionCount; i++) {
-
+                try{
+                    account = accountSearchService.getAccountById(account.getId());
+                } catch (BankException e) {
+                    log.warn("Unable to update account information " + e.getMessage());
                 }
             } while (choice != optionCount);
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
+    }
+
+    private static void startCreateCompletedTransactionMenu(Account account, List<Transaction> transactions){
+        int choice = 0;
+        int optionCount = 0;
+        do {
+            List<String> options = new ArrayList<>();
+            for (Transaction t:transactions){
+                String option = formatTransaction(account, t);
+                options.add(option);
+            }
+            options.add("Pending Transfers");
+            String[] optionsArray = options.stream().toArray(String[]::new);
+            optionCount = options.size();
+            log.info(MenuFormatting.createOptionsMenu("Completed Transactions | " + account.toString(), optionsArray));
+            choice = InputUtil.getIntInput();
+            if(choice > 0 && choice <= optionCount && optionsArray != null && optionsArray.length > 0) {
+                startViewTransactionMenu(account, transactions.get(choice - 1));
+            }
+        }while (choice != optionCount);
+    }
+
+    public static void startViewTransactionMenu(Account account, Transaction transaction){
+        int choice = 0;
+        String[] options;
+        do{
+            boolean isActionable = !(transaction.getStatus().equalsIgnoreCase("COMPLETED") || transaction.getStatus().equalsIgnoreCase("REJECTED"));
+
+            if(isActionable) options = new String[]{"Accept Transaction", "Reject Transaction", "Transfers"};
+            else options = new String[] {"Transfers"};
+            log.info(MenuFormatting.createOptionsMenu(formatTransaction(account, transaction), options));
+            choice = InputUtil.getIntInput();
+            switch (choice){
+                case 1:
+                    if((account.getId() == transaction.getAccount_from() && account.getId() == transaction.getAccount_to()) || account.getId() == transaction.getAccount_to()){
+                        try{
+                            transactionService.completeTransaction(transaction);
+                        } catch (BankException e) {
+                            log.info(e.getMessage());
+                        }
+                    }
+                    break;
+                case 2:
+                    if((account.getId() == transaction.getAccount_from() && account.getId() == transaction.getAccount_to()) || account.getId() == transaction.getAccount_to()){
+                        try{
+                            transactionService.rejectTransaction(transaction);
+                        } catch (BankException e) {
+                            log.info(e.getMessage());
+                        }
+                    }
+                    break;
+                case 3:
+                    break;
+                default: log.info("Invalid input, you must select an option (1-3)...");
+                    break;
+            }
+            transaction = transactionService.getTransactionById(transaction.getId());
+        }while(choice != options.length);
+
+
+    }
+
+    // Make transaction pretty and readable
+    private static String formatTransaction(Account account, Transaction transaction){
+        String amount = NumberFormat.getCurrencyInstance(Locale.US).format(transaction.getAmount());
+        String going = transaction.getAccount_from() == account.getId() ? " | Outgoing : " : " | Incoming : ";
+        String destination = transaction.getAccount_to() == account.getId() ? " | From : #" + transaction.getAccount_from() : " | Destination : #" + transaction.getAccount_to();
+        String status = "Status : " + transaction.getStatus();
+        String timestamp = " | Created : " + transaction.getTimestamp();
+        return status + going + amount + destination + timestamp;
     }
 
     public static void startCreateTransactionMenu(Account account){
@@ -70,7 +154,7 @@ public class TransactionMenu {
                 transactionService.createTransaction(account.getId(), account_id, amount);
                 account = accountSearchService.getAccountById(account.getId());
         } catch (BankException e) {
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 }

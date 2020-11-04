@@ -5,9 +5,12 @@ import com.grantwiswell.banking.dao.queries.CustomerQueries;
 import com.grantwiswell.banking.dao.util.DaoCustomerUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
+import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import org.apache.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.xml.bind.NotIdentifiableEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -27,7 +30,9 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                return DaoCustomerUtil.getCustomerFromResultSet(resultSet);
+                customer = DaoCustomerUtil.getCustomerFromResultSet(resultSet);
+                log.debug("Customer found by ID : " + customer);
+                return customer;
             }
             else{
                 throw new BankException("Customer with ID : "+id+" not found, please try again...");
@@ -36,22 +41,17 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
             log.error(e);
         }
 
-        return customer;
-    }
-
-    @Override
-    public Customer getCustomerByAccount(int accountNumber) throws BankException {
-        return null;
+        throw new BankException("Was not able to find customer by ID : " + id);
     }
 
     @Override
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Customer getCustomerByContactNumber(long contactNumber) throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
     }
 
     @Override
-    public List<Customer> getCustomersByName(String name) throws BankException {
-        return null;
+    public List<Customer> getCustomersByFirstName(String first_name) throws BankException {
+        throw new NotImplementedException();
     }
 }

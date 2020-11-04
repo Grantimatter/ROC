@@ -9,12 +9,14 @@ public class InputUtil {
     private static Logger log = Logger.getLogger(InputUtil.class);
 
     public static String getStringInput(){
+        System.out.print(": ");
         String str = scanner.nextLine();
         log.debug("User Input : " + str);
         return isValidInput(str) ? str : null;
     }
 
     public static int getIntInput(){
+        System.out.print(": ");
         String str = scanner.nextLine();
         log.debug("User Input : " + str);
         try {
@@ -27,9 +29,16 @@ public class InputUtil {
     }
 
     public static double getDoubleInput(){
+        System.out.print(": ");
         String str = scanner.nextLine();
         log.debug("User Input : " + str);
-        return isValidInput(str) ? Double.parseDouble(str) : 0d;
+        double inputDouble = 0;
+        try{
+            inputDouble = Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            log.warn("You must enter a valid number!");
+        }
+        return inputDouble;
     }
 
     private static boolean isValidInput(String str){

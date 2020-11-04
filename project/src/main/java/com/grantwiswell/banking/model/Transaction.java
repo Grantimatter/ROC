@@ -1,5 +1,8 @@
 package com.grantwiswell.banking.model;
 
+import javafx.util.converter.TimeStringConverter;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Transaction {
@@ -8,35 +11,29 @@ public class Transaction {
     private int account_from;
     private int account_to;
     private double amount;
-    private Date date_created;
-
+    private Timestamp timestamp;
     private String status;
 
-    public Transaction(int account_from, int account_to, double amount, Date date_created) {
+    public Transaction(int account_from, int account_to, double amount, Timestamp timestamp) {
         this.account_from = account_from;
         this.account_to = account_to;
         this.amount = amount;
-        this.date_created = date_created;
+        this.timestamp = timestamp;
     }
 
-    public Transaction(int account_from, int account_to, double amount, Date date_created, String status) {
-        this(account_from, account_to, amount, date_created);
+    public Transaction(int account_from, int account_to, double amount, Timestamp timestamp, String status) {
+        this(account_from, account_to, amount, timestamp);
         this.status = status;
     }
 
-    public Transaction(int id, int account_from, int account_to, double amount, Date date_created, String status) {
-        this(account_from, account_to, amount, date_created, status);
+    public Transaction(int id, int account_from, int account_to, double amount, Timestamp timestamp, String status) {
+        this(account_from, account_to, amount, timestamp, status);
         this.id = id;
     }
 
+    public Timestamp getTimestamp() { return timestamp; }
 
-    public Date getDate_created() {
-        return date_created;
-    }
-
-    public void setDate_created(Date date_created) {
-        this.date_created = date_created;
-    }
+    public void setTimestamp(Timestamp timestamp) { this.timestamp = timestamp; }
 
     public int getId() {
         return id;
@@ -84,7 +81,7 @@ public class Transaction {
                 " From : " + account_from +
                 ", To : " + account_to +
                 ", Amount : " + amount +
-                ", status : " + status.toUpperCase() +
+                (status != null ? ", status : " + status.toUpperCase() : "") +
                 '}';
     }
 }

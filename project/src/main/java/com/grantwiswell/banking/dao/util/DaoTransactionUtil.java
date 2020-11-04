@@ -14,14 +14,15 @@ public class DaoTransactionUtil {
     public static Transaction getTransactionFromResultSet(ResultSet resultSet) {
         Transaction transaction = null;
         try {
-            transaction = new Transaction(
-                    resultSet.getInt("id"),
-                    resultSet.getInt("account_from"),
-                    resultSet.getInt("account_to"),
-                    resultSet.getDouble("amount"),
-                    resultSet.getTimestamp("date_created"),
-                    resultSet.getString("status")
-            );
+                transaction = new Transaction(
+                        resultSet.getInt("id"),
+                        resultSet.getInt("account_from"),
+                        resultSet.getInt("account_to"),
+                        resultSet.getDouble("amount"),
+                        resultSet.getTimestamp("date_created"),
+                        resultSet.getString("status")
+                );
+                log.debug("Transaction retrieved from result set : " + transaction);
         } catch (SQLException e) {
             log.warn(e);
         }

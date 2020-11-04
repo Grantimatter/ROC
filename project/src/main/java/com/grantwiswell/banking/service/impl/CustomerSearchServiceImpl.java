@@ -3,9 +3,11 @@ package com.grantwiswell.banking.service.impl;
 import com.grantwiswell.banking.dao.CustomerSearchDao;
 import com.grantwiswell.banking.dao.impl.CustomerSearchDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import org.apache.log4j.Logger;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
             try{
                 customer = customerSearchDao.getCustomerById(id);
             } catch (BankException e) {
-                log.info(e);
+                log.warn(e.getMessage());
             }
         }
         else{
@@ -31,27 +33,33 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
     }
 
     @Override
-    public Customer getCustomerByAccount(int accountNumber) throws BankException {
-        return null;
+    public Customer getCustomerByAccount(Account account) throws BankException {
+        Customer customer = null;
+        try{
+            customer = customerSearchDao.getCustomerById(account.getCustomer_id());
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return customer;
     }
 
     @Override
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Customer getCustomerByContactNumber(long contactNumber) throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public List<Customer> getAllCustomers() throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public List<Customer> getCustomersByName(String name) throws BankException {
-        return null;
+        throw new NotImplementedException();
     }
 }

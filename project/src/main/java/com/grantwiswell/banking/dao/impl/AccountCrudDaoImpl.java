@@ -27,7 +27,7 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             preparedStatement.setString(4, account.getName().toUpperCase());
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Account was unable to be created...");
-            log.info("Account Created : " + account);
+            log.debug("Account Created : " + account);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -41,7 +41,6 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             preparedStatement.setInt(2, account.getId());
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Error completing deposit, please try again later");
-            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(depositAmount) + " deposited into " + account.getName() + " (#"+account.getId()+")");
         }catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -55,7 +54,6 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             preparedStatement.setInt(2, account.getId());
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Error completing withdrawal, please try again later.");
-            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(withdrawalAmount) + " withdrawn from " + account.getName() + " (#"+account.getId()+")");
         }catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

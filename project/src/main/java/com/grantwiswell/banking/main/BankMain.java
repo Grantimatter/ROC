@@ -14,7 +14,7 @@ public class BankMain {
         int choice = 0;
         log.info("Welcome to the Banking App!");
         do {
-            log.info(MenuFormatting.createOptionsMenu("Main Menu","Customer Login", "Employee Login", "<- Exit"));
+            log.info(MenuFormatting.createOptionsMenu("Main Menu","Customer Login", "Employee Login", "Exit"));
             choice = InputUtil.getIntInput();
             switch (choice){
                 case 1:

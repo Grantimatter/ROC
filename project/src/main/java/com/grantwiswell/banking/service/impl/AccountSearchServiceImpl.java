@@ -24,7 +24,7 @@ public class AccountSearchServiceImpl implements AccountSearchService {
             try {
                 account = accountSearchDao.getAccountByNumber(number);
             } catch (BankException e) {
-                log.info(e.getMessage());
+                log.warn(e.getMessage());
             }
         }
         else{
@@ -47,7 +47,7 @@ public class AccountSearchServiceImpl implements AccountSearchService {
             try {
                 accounts = accountSearchDao.getAccountsByCustomerId(customerId);
             } catch(BankException e){
-                log.info(e.getMessage());
+                log.warn(e.getMessage());
             }
         }else{
             throw new BankException("Invalid ID... Customer ID must be a 3-digit whole number");

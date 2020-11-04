@@ -39,7 +39,7 @@ public class AccountMenu {
                     totalBalance += customer.getAccounts().get(i).getBalance();
                 }
 
-                optionStrings[optionStrings.length-1] = "<- Customer Menu";
+                optionStrings[optionStrings.length-1] = "Customer Menu";
 
                 log.info(MenuFormatting.createOptionsMenu("Accounts | " + customer.getFirst_name() +" " + customer.getLast_name() + " | "+ customer.getContactEmail() + " | Total Balance : "+ NumberFormat.getCurrencyInstance(Locale.US).format(totalBalance), optionStrings));
                 choice = InputUtil.getIntInput();
@@ -60,7 +60,7 @@ public class AccountMenu {
     private static void startAccountViewMenu(Account account){
         int choice = 0;
         do{
-                log.info(MenuFormatting.createOptionsMenu(account.toString(), "Make A Deposit", "Make A Withdrawal", "Transfer Funds", "Delete Account", "<- View Accounts"));
+                log.info(MenuFormatting.createOptionsMenu(account.toString(), "Make A Deposit", "Make A Withdrawal", "Transfer Funds", "Delete Account", "View Accounts"));
                 choice = InputUtil.getIntInput();
                 switch (choice){
                     case 1:
@@ -69,7 +69,7 @@ public class AccountMenu {
                             double amount = InputUtil.getDoubleInput();
                             accountCrudService.depositToAccount(amount, account);
                         }catch(BankException e){
-                            log.info(e.getMessage());
+                            log.warn(e.getMessage());
                         }
                         break;
                     case 2:
@@ -78,7 +78,7 @@ public class AccountMenu {
                         double amount = InputUtil.getDoubleInput();
                         accountCrudService.withdrawalFromAccount(amount, account);
                         }catch(BankException e){
-                        log.info(e.getMessage());
+                        log.warn(e.getMessage());
                     }
                         break;
                     case 3:
