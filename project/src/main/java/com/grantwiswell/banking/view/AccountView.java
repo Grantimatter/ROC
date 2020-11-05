@@ -1,6 +1,8 @@
-package com.grantwiswell.banking.main.menu;
+package com.grantwiswell.banking.view;
 
+import com.grantwiswell.banking.control.TransactionController;
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.main.menu.MenuFormatting;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.AccountCrudService;
@@ -17,14 +19,14 @@ import org.apache.log4j.Logger;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class AccountMenu {
+public class AccountView {
 
     private static AccountCrudService accountCrudService = new AccountCrudServiceImpl();
     private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
     private static CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
     private static TransactionService transactionService = new TransactionServiceImpl();
 
-    private static Logger log = Logger.getLogger(AccountMenu.class);
+    private static Logger log = Logger.getLogger(AccountView.class);
 
     public static void startAccountListMenu(Customer customer){
         int choice = 0;
@@ -82,7 +84,7 @@ public class AccountMenu {
                     }
                         break;
                     case 3:
-                        TransactionMenu.startTransactionListMenu(account);
+                        TransactionController.startTransactionListMenu(account);
 
                         break;
                     case 4:

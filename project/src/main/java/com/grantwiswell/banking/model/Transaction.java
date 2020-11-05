@@ -1,9 +1,6 @@
 package com.grantwiswell.banking.model;
 
-import javafx.util.converter.TimeStringConverter;
-
 import java.sql.Timestamp;
-import java.util.Date;
 
 public class Transaction {
 

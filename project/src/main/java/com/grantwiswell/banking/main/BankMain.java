@@ -1,7 +1,7 @@
 package com.grantwiswell.banking.main;
 
 import com.grantwiswell.banking.util.InputUtil;
-import com.grantwiswell.banking.main.menu.CustomerMenu;
+import com.grantwiswell.banking.view.CustomerView;
 import com.grantwiswell.banking.main.menu.MenuFormatting;
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ public class BankMain {
             choice = InputUtil.getIntInput();
             switch (choice){
                 case 1:
-                    CustomerMenu.startCustomerLoginDialog();
+                    CustomerView.startCustomerLoginDialog();
                     break;
                 case 2: log.info("Option not yet implemented, try again soon!");
                     break;

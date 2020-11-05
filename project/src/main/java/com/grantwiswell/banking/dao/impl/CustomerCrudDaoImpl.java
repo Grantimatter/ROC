@@ -25,6 +25,7 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
             preparedStatement.setString(3,customer.getContactEmail());
             preparedStatement.setString(4,customer.getPassword());
             preparedStatement.setDate(5, new java.sql.Date(customer.getDob().getTime()));
+            preparedStatement.setString(6, customer.getStatus());
             results = preparedStatement.executeUpdate();
             if(results == 0){ throw new BankException("Unable to add customer account..."); }
             log.debug("Created new customer : " + customer);
@@ -33,5 +34,17 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
         }
 
         return results > 0;
+    }
+
+    @Override
+    public void acceptCustomer(int id) throws BankException {
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(CustomerCrud.ACCEPT_CUSTOMER);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            log.info("Customer with ID : " + id + " has been accepted!");
+        }catch (SQLException | ClassNotFoundException e) {
+            log.error(e);
+        }
     }
 }

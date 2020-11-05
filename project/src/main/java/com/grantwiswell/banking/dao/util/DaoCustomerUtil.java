@@ -21,7 +21,8 @@ public class DaoCustomerUtil {
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("contact_email"),
-                    resultSet.getLong("contact_number")
+                    resultSet.getLong("contact_number"),
+                    resultSet.getString("status")
             );
         } catch (SQLException e) {
             e.printStackTrace();

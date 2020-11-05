@@ -2,13 +2,11 @@ package com.grantwiswell.banking.model;
 
 public class Employee {
     private int id;
-    private int pin;
     private String name;
     private String privilege;
 
-    public Employee(int id, int pin, String name, String privilege) {
+    public Employee(int id, String name, String privilege) {
         this.id = id;
-        this.pin = pin;
         this.name = name;
         this.privilege = privilege;
     }
@@ -19,14 +17,6 @@ public class Employee {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPin() {
-        return pin;
-    }
-
-    public void setPin(int pin) {
-        this.pin = pin;
     }
 
     public String getName() {
@@ -49,7 +39,6 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", pin=" + pin +
                 ", name='" + name + '\'' +
                 ", privilege='" + privilege + '\'' +
                 '}';

@@ -5,6 +5,7 @@ import com.grantwiswell.banking.dao.impl.CustomerCrudDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerCrudService;
+import com.grantwiswell.banking.service.CustomerSearchService;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -19,6 +20,7 @@ import java.util.Date;
 public class CustomerCrudServiceImpl implements CustomerCrudService {
 
     CustomerCrudDao customerCrudDao = new CustomerCrudDaoImpl();
+    CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
     private Logger log = Logger.getLogger(CustomerCrudServiceImpl.class);
 
     @Override
@@ -51,13 +53,24 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
 
         boolean createSuccessful = false;
         try{
-            Customer customer = new Customer(names[0], names[1], contact_email, password, dob);
+            Customer customer = new Customer(names[0], names[1], contact_email, password, dob, "PENDING");
             createSuccessful = customerCrudDao.createNewCustomer(customer);
         } catch (BankException e) {
             log.warn(e.getMessage());
         }
 
         return createSuccessful;
+    }
+
+    @Override
+    public void acceptCustomer(int id) throws BankException {
+        try{
+            Customer customer = customerSearchService.getCustomerById(id);
+            if(!customer.getStatus().equalsIgnoreCase("PENDING")) throw new BankException("Customer is not eligible to be accepted!");
+            customerCrudDao.acceptCustomer(customer.getId());
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
     }
 
     private boolean isValidEmail(String email){

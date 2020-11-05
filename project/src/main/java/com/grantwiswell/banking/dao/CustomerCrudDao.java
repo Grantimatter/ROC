@@ -5,4 +5,5 @@ import com.grantwiswell.banking.model.Customer;
 
 public interface CustomerCrudDao {
     public boolean createNewCustomer(Customer customer) throws BankException;
+    public void acceptCustomer(int id) throws BankException;
 }

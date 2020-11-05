@@ -1,6 +1,7 @@
-package com.grantwiswell.banking.main.menu;
+package com.grantwiswell.banking.view;
 
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.main.menu.MenuFormatting;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.AccountCrudService;
 import com.grantwiswell.banking.service.CustomerCrudService;
@@ -16,13 +17,13 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerMenu {
+public class CustomerView {
 
     private static CustomerLoginService customerLoginService = new CustomerLoginServiceImpl();
     private static CustomerCrudService customerCrudService = new CustomerCrudServiceImpl();
     private static AccountCrudService accountCrudService = new AccountCrudServiceImpl();
     private static CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
-    private static Logger log = Logger.getLogger(CustomerMenu.class);
+    private static Logger log = Logger.getLogger(CustomerView.class);
 
     public static void startCustomerLoginDialog() {
         int choice = 0;
@@ -114,7 +115,7 @@ public class CustomerMenu {
             } else if (choiceArray.length == 3) {
                 switch(choice){
                     case 1:
-                        AccountMenu.startAccountListMenu(customer);
+                        AccountView.startAccountListMenu(customer);
                         break;
                     case 2:
                         createNewAccountDialog(customer);

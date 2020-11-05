@@ -10,17 +10,18 @@ public class Customer {
     private String last_name;
     private String password;
     private String contactEmail;
+    private String status;
     private long contactNumber;
-
     private Date dob;
 
-    public Customer(int id, List<Account> accounts, String first_name, String last_name, String contactEmail, long contactNumber) {
+    public Customer(int id, List<Account> accounts, String first_name, String last_name, String contactEmail, long contactNumber, String status) {
         this.id = id;
         this.accounts = accounts;
         this.first_name = first_name;
         this.last_name = last_name;
         this.contactEmail = contactEmail;
         this.contactNumber = contactNumber;
+        this.status = status;
     }
 
     public Customer(int id, String first_name, String last_name, String password, String contactEmail) {
@@ -31,18 +32,22 @@ public class Customer {
         this.contactEmail = contactEmail;
     }
 
-    public Customer(String first_name, String last_name, String contactEmail, String password, Date dob) {
+    public Customer(String first_name, String last_name, String contactEmail, String password, Date dob, String status) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.password = password;
         this.contactEmail = contactEmail;
         this.dob = dob;
+        this.status = status;
     }
 
-    public Customer(int id, List<Account> accounts, String first_name, String last_name, String password, String contactEmail, long contactNumber) {
-        this(id, accounts, first_name, last_name, contactEmail, contactNumber);
+    public Customer(int id, List<Account> accounts, String first_name, String last_name, String password, String contactEmail, long contactNumber, String status) {
+        this(id, accounts, first_name, last_name, contactEmail, contactNumber, status);
         this.password = password;
     }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public Date getDob() {
         return dob;
