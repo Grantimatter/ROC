@@ -1,8 +1,8 @@
-package com.grantwiswell.banking.main.menu;
+package com.grantwiswell.banking.util.menu;
 
 public class MenuFormatting {
     // Format a menu with a title and menu options
-    public static String createOptionsMenu(String title, String... options) {
+    public static String createOptionsMenu(String title, String exitOption, String... options) {
         // Count the longest line in the menu so borders will be appropriate length
         int longest = 0;
         // UNICODE Characters
@@ -32,11 +32,12 @@ public class MenuFormatting {
         // Count the longest string
         for(int i = 0; i < options.length; i++){
             String s = (i + 1 + ") " + options[i]);
-            if (s.length() > longest) longest = s.length() + 6;
+            if (s.length() + 3 > longest) longest = s.length() + 3;
         }
 
         // Set title to longest if it is longer than all options
-        longest = title.length() + 2 > longest ? title.length() + 2 : longest;
+        longest = title.length() + 4 > longest ? title.length() + 4 : longest;
+        longest = exitOption.length() + 7 > longest ? exitOption.length() + 7 : longest;
 
         //  Create menu borders
         String upperBorder = Character.toString(doubleTopLeft);
@@ -62,24 +63,26 @@ public class MenuFormatting {
         spacer += wallChar;
 
         for (int i = 0; i < options.length; i++) {
-            String s = (i + 1 + ") " + (i == options.length-1 ? escapeChar + " " : "") + options[i]);
-            if(i == options.length-1) {
-                //sb.append(menuBoxOuterWallChar);
-                //sb.append(spacer + "\n");
-                sb.append(divider);
-                sb.append("\n");
-            }
+            String s = (i + 1 + ") " + options[i]);
 
             sb.append(wallChar + " " + s);
 
             if(s.length() != longest + 2){
-                for (int x = s.length(); x < longest-1; x++){
+                for (int x = s.length(); x < longest - 1; x++){
                     sb.append(" ");
                 }
                 sb.append(wallChar);
             }
             sb.append("\n");
         }
+
+        if(options.length == 0) sb.append(spacer + "\n");
+        String exitOptionFull = wallChar + " " + (options.length + 1) + ") " + escapeChar + " " + exitOption;
+        sb.append(divider + "\n" + exitOptionFull);
+        for (int i = exitOptionFull.length(); i < longest + 1; i++) {
+            sb.append(" ");
+        }
+        sb.append(wallChar + "\n");
 
         sb.insert(0, "\n");
 
@@ -99,7 +102,7 @@ public class MenuFormatting {
         sb.insert(0, titleBottom);
         sb.insert(0, titleBuilder.toString() + "\n");
         sb.insert(0, upperBorder + "\n");
-        // Return divider bottom
+// Return divider bottom
         sb.append(bottomBorder);
         return "\n" + sb.toString() + "\n";
     }

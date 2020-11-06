@@ -29,7 +29,7 @@ public class TransactionDaoImpl implements TransactionDao {
             preparedStatement.setTimestamp(4, transaction.getTimestamp());
             int results = preparedStatement.executeUpdate();
             if (results == 0) throw new BankException("Transaction was unable to be created.");
-            log.debug("Transaction created : " + transaction.toString());
+            log.debug("Transaction created: " + transaction.toString());
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -60,7 +60,7 @@ public class TransactionDaoImpl implements TransactionDao {
             preparedStatement.setInt(2, account_id);
             transactions = DaoTransactionUtil.getTransactionsFromResultSet(preparedStatement.executeQuery());
             if (transactions.size() <= 0) throw new BankException("No transactions were found.");
-            log.debug("Transactions from account : " + account_id + "\n" + transactions);
+            log.debug("Transactions from account: " + account_id + "\n" + transactions);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -71,7 +71,7 @@ public class TransactionDaoImpl implements TransactionDao {
     public Transaction getNewTransaction(Transaction transaction) throws BankException {
         Transaction newTransaction = null;
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            log.debug("Looking for Transaction : " + transaction);
+            log.debug("Looking for Transaction: " + transaction);
             PreparedStatement preparedStatement = connection.prepareStatement(TransactionQueries.GET_NEW_TRANSACTION);
             preparedStatement.setInt(1, transaction.getAccount_from());
             preparedStatement.setInt(2, transaction.getAccount_to());
@@ -80,7 +80,7 @@ public class TransactionDaoImpl implements TransactionDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 newTransaction = DaoTransactionUtil.getTransactionFromResultSet(resultSet);
-                log.debug("Found New Transaction : " + newTransaction);
+                log.debug("Found New Transaction: " + newTransaction);
             }
             else throw new BankException("Was not able to retrieve newly created transaction");
         }catch (SQLException | ClassNotFoundException e) {
@@ -93,7 +93,7 @@ public class TransactionDaoImpl implements TransactionDao {
     public String getTransactionStatus(Transaction transaction) throws BankException {
         try(Connection connection = PostgresSqlConnection.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(TransactionQueries.GET_TRANSACTION_STATUS);
-            log.debug("Looking up transaction with ID : " + transaction.getId());
+            log.debug("Looking up transaction with ID: " + transaction.getId());
             preparedStatement.setInt(1, transaction.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
@@ -130,5 +130,17 @@ public class TransactionDaoImpl implements TransactionDao {
         }catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions() throws BankException {
+        List<Transaction> transactionList = null;
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(TransactionQueries.GET_TRANSACTION_DATA);
+            transactionList = DaoTransactionUtil.getTransactionsFromResultSet(preparedStatement.executeQuery());
+        }catch (SQLException | ClassNotFoundException e) {
+            log.error(e);
+        }
+        return transactionList;
     }
 }

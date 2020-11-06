@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DaoAccountUtil {
 
@@ -18,11 +20,24 @@ public class DaoAccountUtil {
                     resultSet.getInt("customer_id"),
                     resultSet.getInt("id"),
                     resultSet.getDouble("balance"),
-                    resultSet.getString("name")
+                    resultSet.getString("name"),
+                    resultSet.getString("status")
             );
         } catch (SQLException e) {
             log.warn(e);
         }
         return account;
+    }
+
+    public static List<Account> getAccountsFromResultSet(ResultSet resultSet){
+        List<Account> accountList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                accountList.add(getAccountFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            log.warn(e.getMessage());
+        }
+        return accountList;
     }
 }

@@ -28,7 +28,7 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
             preparedStatement.setString(6, customer.getStatus());
             results = preparedStatement.executeUpdate();
             if(results == 0){ throw new BankException("Unable to add customer account..."); }
-            log.debug("Created new customer : " + customer);
+            log.debug("Created new customer: " + customer);
         } catch (SQLException | ClassNotFoundException e) {
                 log.error(e);
         }
@@ -42,7 +42,7 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
             PreparedStatement preparedStatement = connection.prepareStatement(CustomerCrud.ACCEPT_CUSTOMER);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-            log.info("Customer with ID : " + id + " has been accepted!");
+            log.info("Customer with ID: " + id + " has been accepted!");
         }catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

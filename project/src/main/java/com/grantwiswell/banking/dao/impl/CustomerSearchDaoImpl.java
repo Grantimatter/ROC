@@ -31,17 +31,17 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 customer = DaoCustomerUtil.getCustomerFromResultSet(resultSet);
-                log.debug("Customer found by ID : " + customer);
+                log.debug("Customer found by ID: " + customer);
                 return customer;
             }
             else{
-                throw new BankException("Customer with ID : "+id+" not found, please try again...");
+                throw new BankException("Customer with ID: "+id+" not found, please try again...");
             }
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
 
-        throw new BankException("Was not able to find customer by ID : " + id);
+        throw new BankException("Was not able to find customer by ID: " + id);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
                 customers.add(DaoCustomerUtil.getCustomerFromResultSet(resultSet));
             }
             if(customers.size() == 0) throw new BankException("There are no customers in the database.");
-            log.debug("All customers : " + customers);
+            log.debug("All customers: " + customers);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }
@@ -74,5 +74,18 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
     @Override
     public List<Customer> getCustomersByFirstName(String first_name) throws BankException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public List<Customer> getCustomersByStatus(String status) throws BankException {
+        List<Customer> customerList = new ArrayList<>();
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(CustomerQueries.GET_CUSTOMER_BY_STATUS);
+            preparedStatement.setString(1, status);
+            customerList = DaoCustomerUtil.getCustomersFromResultSet(preparedStatement.executeQuery());
+        }catch (SQLException | ClassNotFoundException e) {
+            log.error(e);
+        }
+        return customerList;
     }
 }

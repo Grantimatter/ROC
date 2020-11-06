@@ -23,7 +23,7 @@ public class AccountCrudServiceImpl implements AccountCrudService {
         if (customer_id < 100 || customer_id > 999) throw new BankException("Customer ID is invalid");
         if (balance <= 0) throw new BankException ("You cannot start an account with a negative balance...");
         try {
-            Account account = new Account(customer_id, RandomUtil.generateAccountNumber(), balance, name);
+            Account account = new Account(customer_id, RandomUtil.generateAccountNumber(), balance, name, "PENDING");
             accountCrudDao.createNewAccount(account);
         } catch (BankException e) {
             log.warn(e.getMessage());

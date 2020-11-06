@@ -61,7 +61,16 @@ public class AccountSearchDaoImpl implements AccountSearchDao {
     }
 
     @Override
-    public Account[] getAccountInBalanceRange(double minBalance, double maxBalance) throws BankException {
-        return new Account[0];
+    public List<Account> getAccountsByStatus(String status) throws BankException {
+        List<Account> accountList = new ArrayList<>();
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.GET_ACCOUNTS_BY_STATUS);
+            preparedStatement.setString(1, status);
+            accountList = DaoAccountUtil.getAccountsFromResultSet(preparedStatement.executeQuery());
+        }catch (SQLException | ClassNotFoundException e) {
+            log.error(e);
+        }
+        if(accountList.size() == 0) throw new BankException("Unable to find any accounts with the status " + status);
+        return accountList;
     }
 }

@@ -37,10 +37,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", privilege='" + privilege + '\'' +
-                '}';
+        return "User: " + name
+                + " | Privilege: " + privilege.toUpperCase()
+                + " | Employee ID: " + id;
     }
 }

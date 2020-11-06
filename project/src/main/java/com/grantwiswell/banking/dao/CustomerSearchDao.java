@@ -12,4 +12,5 @@ public interface CustomerSearchDao {
     public Customer getCustomerByContactNumber(long contactNumber) throws BankException;
     public List<Customer> getAllCustomers() throws BankException;
     public List<Customer> getCustomersByFirstName(String name) throws BankException;
+    public List<Customer> getCustomersByStatus(String status) throws BankException;
 }

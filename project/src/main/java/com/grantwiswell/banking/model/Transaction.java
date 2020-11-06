@@ -1,6 +1,8 @@
 package com.grantwiswell.banking.model;
 
 import java.sql.Timestamp;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Transaction {
 
@@ -74,11 +76,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction {" +
-                " From : " + account_from +
-                ", To : " + account_to +
-                ", Amount : " + amount +
-                (status != null ? ", status : " + status.toUpperCase() : "") +
-                '}';
+        return  "| From: #" + account_from +
+                " | To: #" + account_to +
+                " | Amount: " + NumberFormat.getCurrencyInstance(Locale.US).format(amount) +
+                (status != null ? " | Status: " + status.toUpperCase(): "") + " |";
     }
 }

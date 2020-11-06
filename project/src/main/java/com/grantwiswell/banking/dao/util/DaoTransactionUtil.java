@@ -22,7 +22,7 @@ public class DaoTransactionUtil {
                         resultSet.getTimestamp("date_created"),
                         resultSet.getString("status")
                 );
-                log.debug("Transaction retrieved from result set : " + transaction);
+                log.debug("Transaction retrieved from result set: " + transaction);
         } catch (SQLException e) {
             log.warn(e);
         }

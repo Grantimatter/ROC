@@ -11,17 +11,17 @@ public class InputUtil {
     public static String getStringInput(){
         System.out.print(": ");
         String str = scanner.nextLine();
-        log.debug("User Input : " + str);
-        return isValidInput(str) ? str : null;
+        log.debug("User Input: " + str);
+        return isValidInput(str) ? str: null;
     }
 
     public static int getIntInput(){
         System.out.print(": ");
         String str = scanner.nextLine();
-        log.debug("User Input : " + str);
+        log.debug("User Input: " + str);
         try {
             int input = Integer.parseInt(str);
-            return isValidInput(str) ? Integer.parseInt(str) : 0;
+            return isValidInput(str) ? Integer.parseInt(str): 0;
         } catch (NumberFormatException e) {
             log.info("Please input an integer value (0-9... etc.)");
         }
@@ -31,7 +31,7 @@ public class InputUtil {
     public static double getDoubleInput(){
         System.out.print(": ");
         String str = scanner.nextLine();
-        log.debug("User Input : " + str);
+        log.debug("User Input: " + str);
         double inputDouble = 0;
         try{
             inputDouble = Double.parseDouble(str);
@@ -42,6 +42,6 @@ public class InputUtil {
     }
 
     private static boolean isValidInput(String str){
-        return (str != null && str.length() > 0) ? true : false;
+        return (str != null && str.length() > 0) ? true: false;
     }
 }

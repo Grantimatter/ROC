@@ -9,6 +9,7 @@ import com.grantwiswell.banking.service.CustomerSearchService;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerSearchServiceImpl implements CustomerSearchService {
@@ -61,5 +62,17 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
     @Override
     public List<Customer> getCustomersByName(String name) throws BankException {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public List<Customer> getCustomersByStatus(String status) throws BankException {
+        if(!(status.equalsIgnoreCase("ACCEPTED") || status.equalsIgnoreCase("PENDING") || status.equalsIgnoreCase("REJECTED"))){ throw new BankException(status + " is not a recognized status! Please try again..."); }
+        List<Customer> customerList = new ArrayList<>();
+        try{
+            customerList = customerSearchDao.getCustomersByStatus(status);
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return customerList;
     }
 }

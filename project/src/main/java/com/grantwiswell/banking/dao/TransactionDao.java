@@ -13,5 +13,5 @@ public interface TransactionDao {
     public void completeTransaction(Transaction transaction) throws BankException;
     public String getTransactionStatus(Transaction transaction) throws BankException;
     public void rejectTransaction(Transaction transaction) throws BankException;
-
+    public List<Transaction> getAllTransactions() throws BankException;
 }

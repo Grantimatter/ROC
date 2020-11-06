@@ -54,4 +54,19 @@ public class AccountSearchServiceImpl implements AccountSearchService {
         }
         return accounts;
     }
+
+    @Override
+    public List<Account> getAccountsByStatus(String status) throws BankException {
+        List<Account> accountList = new ArrayList<>();
+        if(!(status.equalsIgnoreCase("APPROVED") || status.equalsIgnoreCase("PENDING") || status.equalsIgnoreCase("REJECTED")) ){
+            throw new BankException(status + " is not a valid status...");
+        }
+        try{
+            accountList = accountSearchDao.getAccountsByStatus(status);
+            log.debug("Accounts found: " + accountList);
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return accountList;
+    }
 }

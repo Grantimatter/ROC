@@ -24,9 +24,14 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
         } else{
             throw new BankException("Password must be at least 8 characters... Try again");
         }
-        if(customer.getStatus().equalsIgnoreCase("PENDING")) throw new BankException("User has not been approved, please contact the bank to have your account approved by an employee!");
-        if(customer.getStatus().equalsIgnoreCase("TERMINATED")) throw new BankException("User account has been terminated. You may no longer bank with us under this account");
-        if(!customer.getStatus().equalsIgnoreCase("ACCEPTED")) throw new BankException("User does not have access to the bank at this time, sorry for the inconvenience");
+        if(customer != null) {
+            if (customer.getStatus().equalsIgnoreCase("PENDING"))
+                throw new BankException("User has not been approved, please contact the bank to have your account approved by an employee!");
+            if (customer.getStatus().equalsIgnoreCase("TERMINATED"))
+                throw new BankException("User account has been terminated. You may no longer bank with us under this account");
+            if (!customer.getStatus().equalsIgnoreCase("ACCEPTED"))
+                throw new BankException("User does not have access to the bank at this time, sorry for the inconvenience");
+        }
         return customer;
     }
 }

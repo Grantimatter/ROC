@@ -14,4 +14,5 @@ public interface CustomerSearchService {
     public Customer getCustomerByContactNumber(long contactNumber) throws BankException;
     public List<Customer> getAllCustomers() throws BankException;
     public List<Customer> getCustomersByName(String name) throws BankException;
+    public List<Customer> getCustomersByStatus(String status) throws BankException;
 }

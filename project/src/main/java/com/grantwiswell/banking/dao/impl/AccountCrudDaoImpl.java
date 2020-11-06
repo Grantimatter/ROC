@@ -27,7 +27,7 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
             preparedStatement.setString(4, account.getName().toUpperCase());
             int results = preparedStatement.executeUpdate();
             if(results == 0) throw new BankException("Account was unable to be created...");
-            log.debug("Account Created : " + account);
+            log.debug("Account Created: " + account);
         } catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

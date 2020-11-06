@@ -8,12 +8,14 @@ public class Account {
     private int id;
     private double balance;
     private String name;
+    private String status;
 
-    public Account(int customer_id, int id, double balance, String name) {
+    public Account(int customer_id, int id, double balance, String name, String status) {
         this.customer_id = customer_id;
         this.id = id;
         this.balance = balance;
         this.name = name;
+        this.status = status;
     }
 
     public int getCustomer_id() {
@@ -51,7 +53,7 @@ public class Account {
     @Override
     public String toString() {
         return  name.toUpperCase() +
-                " | Acct# : " + id +
-                " | Balance : " + NumberFormat.getCurrencyInstance(Locale.US).format(balance);
+                " | Acct#: " + id +
+                " | Balance: " + NumberFormat.getCurrencyInstance(Locale.US).format(balance);
     }
 }

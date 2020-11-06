@@ -24,12 +24,13 @@ public class Customer {
         this.status = status;
     }
 
-    public Customer(int id, String first_name, String last_name, String password, String contactEmail) {
+    public Customer(int id, String first_name, String last_name, String password, String contactEmail, String status) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.password = password;
         this.contactEmail = contactEmail;
+        this.status = status;
     }
 
     public Customer(String first_name, String last_name, String contactEmail, String password, Date dob, String status) {
@@ -115,12 +116,9 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer {" +
-                "id=" + id +
-                ", accounts=" + accounts.toString() +
-                ", name='" + first_name + " " + last_name + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", contactNumber=" + contactNumber +
-                '}';
+        return "Name: " + first_name + " " + last_name +
+                " | Email: " + contactEmail +
+                (contactNumber > 100000 ? " | Phone Number: " : "") +
+                " | ID: " + id;
     }
 }

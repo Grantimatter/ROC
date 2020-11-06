@@ -1,22 +1,21 @@
 package com.grantwiswell.banking.view;
 
-import com.grantwiswell.banking.control.TransactionController;
-import com.grantwiswell.banking.exception.BankException;
-import com.grantwiswell.banking.main.menu.MenuFormatting;
+import com.grantwiswell.banking.util.menu.Menu;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.AccountCrudService;
 import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.service.CustomerSearchService;
-import com.grantwiswell.banking.service.TransactionService;
 import com.grantwiswell.banking.service.impl.AccountCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.AccountSearchServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
-import com.grantwiswell.banking.service.impl.TransactionServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
+import com.grantwiswell.banking.util.menu.MenuOption;
 import org.apache.log4j.Logger;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class AccountView {
@@ -24,79 +23,60 @@ public class AccountView {
     private static AccountCrudService accountCrudService = new AccountCrudServiceImpl();
     private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
     private static CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
-    private static TransactionService transactionService = new TransactionServiceImpl();
 
     private static Logger log = Logger.getLogger(AccountView.class);
 
-    public static void startAccountListMenu(Customer customer){
-        int choice = 0;
-        int accountNumberLength = 0;
-            do {
-                accountNumberLength = customer.getAccounts().size();
-                String[] optionStrings = new String[accountNumberLength + 1];
-                double totalBalance = 0;
-
-                for(int i = 0; i < accountNumberLength; i++){
-                    optionStrings[i] =  "| " + customer.getAccounts().get(i).toString() + " | ";
-                    totalBalance += customer.getAccounts().get(i).getBalance();
-                }
-
-                optionStrings[optionStrings.length-1] = "Customer Menu";
-
-                log.info(MenuFormatting.createOptionsMenu("Accounts | " + customer.getFirst_name() +" " + customer.getLast_name() + " | "+ customer.getContactEmail() + " | Total Balance : "+ NumberFormat.getCurrencyInstance(Locale.US).format(totalBalance), optionStrings));
-                choice = InputUtil.getIntInput();
-                for(int i = 0; i < accountNumberLength; i++){
-                    if(choice - 1 == i){
-                        startAccountViewMenu(customer.getAccounts().get(i));
-                    }
-                }
-
-                try {
-                    customer = customerSearchService.getCustomerById(customer.getId());
-                } catch (BankException e) {
-                    log.info("Error updating customer information");
-                }
-            } while(choice != accountNumberLength + 1);
+    public List<MenuOption> updateAccountMenuOptions(List<Account> accountList){
+        List<MenuOption> accountMenuOptions = new ArrayList<>();
+        for(Account acc:accountList){
+            accountMenuOptions.add(new MenuOption(acc.toString(), x -> startAccountViewMenu(acc)));
+        }
+        return accountMenuOptions;
     }
 
-    private static void startAccountViewMenu(Account account){
-        int choice = 0;
-        do{
-                log.info(MenuFormatting.createOptionsMenu(account.toString(), "Make A Deposit", "Make A Withdrawal", "Transfer Funds", "Delete Account", "View Accounts"));
-                choice = InputUtil.getIntInput();
-                switch (choice){
-                    case 1:
-                        try{
-                            log.info("Please input the amount you would like to deposit...");
-                            double amount = InputUtil.getDoubleInput();
-                            accountCrudService.depositToAccount(amount, account);
-                        }catch(BankException e){
-                            log.warn(e.getMessage());
-                        }
-                        break;
-                    case 2:
-                        try{
-                        log.info("Please input the amount you would like to withdrawal...");
-                        double amount = InputUtil.getDoubleInput();
-                        accountCrudService.withdrawalFromAccount(amount, account);
-                        }catch(BankException e){
-                        log.warn(e.getMessage());
-                    }
-                        break;
-                    case 3:
-                        TransactionController.startTransactionListMenu(account);
+    public double getBalanceFromAccounts(List<Account> accountList){
+        double totalBalance = 0;
+        for(Account acc:accountList){
+            totalBalance += acc.getBalance();
+        }
+        return totalBalance;
+    }
 
-                        break;
-                    case 4:
-                        log.info("Deleting Account is not yet implemented. Please check back soon!");
-                        break;
-                    case 5:
-                        break;
+    public void startAccountListMenu(Customer customer) {
+        customer = customerSearchService.getCustomerById(customer.getId());
+        Customer newCustomer = customer;
+        List<MenuOption> accountMenuOptions = updateAccountMenuOptions(newCustomer.getAccounts());
+        double totalBalance = getBalanceFromAccounts(newCustomer.getAccounts());
 
-                    default: log.info("Please select a valid option (1-5)");
-                        break;
-                }
-            account = accountSearchService.getAccountById(account.getId());
-        }while(choice != 5);
+        String menuTitle = "Accounts | " + newCustomer.getFirst_name() + " " + newCustomer.getLast_name() + " | " + newCustomer.getContactEmail() + " | Total Balance: " + NumberFormat.getCurrencyInstance(Locale.US).format(totalBalance);
+        Menu accountListMenu = new Menu(menuTitle, "User Profile").setIsLooping(false);
+        accountListMenu.setAfterLoopConsumer(x -> startAccountListMenu(newCustomer));
+        accountListMenu.addOptions(accountMenuOptions);
+        accountListMenu.startMenu();
+    }
+
+    private void startAccountViewMenu(Account account) {
+        account = accountSearchService.getAccountById(account.getId());
+        Account updatedAccount = account;
+
+        Menu accountViewMenu = new Menu(account.toString(),"View Accounts").setIsLooping(false);
+        accountViewMenu.addOption("Make Deposit", x -> startDeposit(updatedAccount));
+        accountViewMenu.addOption("Make A Withdrawal", x -> startWithdrawal(updatedAccount));
+        accountViewMenu.addOption("Transfer Funds", x -> new TransactionView().showTransactionListMenu(updatedAccount));
+        accountViewMenu.setAfterLoopConsumer(x -> startAccountViewMenu(updatedAccount));
+
+        accountViewMenu.startMenu();
+    }
+
+    public void startDeposit(Account account){
+        log.info("Please input the amount you would like to deposit...");
+        double amount = InputUtil.getDoubleInput();
+        accountCrudService.depositToAccount(amount, account);
+    }
+
+    public void startWithdrawal(Account account){
+        log.info("Please input the amount you would like to withdrawal...");
+        double amount = InputUtil.getDoubleInput();
+        accountCrudService.withdrawalFromAccount(amount, account);
     }
 }

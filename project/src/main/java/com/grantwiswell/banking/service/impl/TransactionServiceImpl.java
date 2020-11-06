@@ -3,6 +3,7 @@ package com.grantwiswell.banking.service.impl;
 import com.grantwiswell.banking.dao.TransactionDao;
 import com.grantwiswell.banking.dao.impl.TransactionDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.model.Transaction;
@@ -12,6 +13,7 @@ import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.TransactionService;
 import org.apache.log4j.Logger;
 
+import java.sql.Connection;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -130,5 +132,16 @@ public class TransactionServiceImpl implements TransactionService {
         } catch (BankException e) {
             log.warn(e.getMessage());
         }
+    }
+
+    @Override
+    public List<Transaction> getAllTransactions() throws BankException {
+        List<Transaction> transactionList = null;
+        try{
+            transactionList = transactionDao.getAllTransactions();
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return transactionList;
     }
 }
