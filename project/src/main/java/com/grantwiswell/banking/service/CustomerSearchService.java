@@ -13,6 +13,7 @@ public interface CustomerSearchService {
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException;
     public Customer getCustomerByContactNumber(long contactNumber) throws BankException;
     public List<Customer> getAllCustomers() throws BankException;
-    public List<Customer> getCustomersByName(String name) throws BankException;
+    public List<Customer> getCustomersByFirstName(String name) throws BankException;
+    public List<Customer> getCustomersByLastName(String name) throws BankException;
     public List<Customer> getCustomersByStatus(String status) throws BankException;
 }

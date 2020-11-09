@@ -6,6 +6,7 @@ import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerSearchService;
+import com.grantwiswell.banking.service.impl.util.ValidationUtil;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -46,7 +47,14 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
 
     @Override
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException {
-        throw new NotImplementedException();
+        try{
+            if(ValidationUtil.isValidEmail(contactEmail)){
+                return customerSearchDao.getCustomerByContactEmail(contactEmail);
+            }
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -56,12 +64,22 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
 
     @Override
     public List<Customer> getAllCustomers() throws BankException {
+        try{
+            return customerSearchDao.getAllCustomers();
+        }catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Customer> getCustomersByFirstName(String name) throws BankException {
         throw new NotImplementedException();
     }
 
     @Override
-    public List<Customer> getCustomersByName(String name) throws BankException {
-        throw new NotImplementedException();
+    public List<Customer> getCustomersByLastName(String name) throws BankException {
+        return null;
     }
 
     @Override

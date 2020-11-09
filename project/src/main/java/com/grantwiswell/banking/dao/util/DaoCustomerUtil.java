@@ -1,8 +1,8 @@
 package com.grantwiswell.banking.dao.util;
 
+import com.grantwiswell.banking.dao.AccountSearchDao;
+import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.model.Customer;
-import com.grantwiswell.banking.service.AccountSearchService;
-import com.grantwiswell.banking.service.impl.AccountSearchServiceImpl;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ import java.util.List;
 public class DaoCustomerUtil {
 
     private static Logger log = Logger.getLogger(DaoCustomerUtil.class);
-    private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
+    private static AccountSearchDao accountSearchDao = new AccountSearchDaoImpl();
 
     public static Customer getCustomerFromResultSet(ResultSet resultSet){
         Customer customer = null;
@@ -21,12 +21,13 @@ public class DaoCustomerUtil {
             int id = resultSet.getInt("id");
             customer = new Customer(
                     id,
-                    accountSearchService.getAccountsByCustomerId(id),
+                    accountSearchDao.getAccountsByCustomerId(id),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"),
                     resultSet.getString("contact_email"),
                     resultSet.getLong("contact_number"),
-                    resultSet.getString("status")
+                    resultSet.getString("status"),
+                    resultSet.getDate("dob")
             );
         } catch (SQLException e) {
             log.warn(e.getMessage());

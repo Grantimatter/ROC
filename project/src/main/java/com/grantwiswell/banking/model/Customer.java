@@ -1,5 +1,8 @@
 package com.grantwiswell.banking.model;
 
+import sun.java2d.pipe.SpanShapeRenderer;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +17,7 @@ public class Customer {
     private long contactNumber;
     private Date dob;
 
-    public Customer(int id, List<Account> accounts, String first_name, String last_name, String contactEmail, long contactNumber, String status) {
+    public Customer(int id, List<Account> accounts, String first_name, String last_name, String contactEmail, long contactNumber, String status, Date dob) {
         this.id = id;
         this.accounts = accounts;
         this.first_name = first_name;
@@ -22,6 +25,7 @@ public class Customer {
         this.contactEmail = contactEmail;
         this.contactNumber = contactNumber;
         this.status = status;
+        this.dob = dob;
     }
 
     public Customer(int id, String first_name, String last_name, String password, String contactEmail, String status) {
@@ -42,8 +46,8 @@ public class Customer {
         this.status = status;
     }
 
-    public Customer(int id, List<Account> accounts, String first_name, String last_name, String password, String contactEmail, long contactNumber, String status) {
-        this(id, accounts, first_name, last_name, contactEmail, contactNumber, status);
+    public Customer(int id, List<Account> accounts, String first_name, String last_name, String password, String contactEmail, long contactNumber, String status, Date dob) {
+        this(id, accounts, first_name, last_name, contactEmail, contactNumber, status, dob);
         this.password = password;
     }
 
@@ -116,9 +120,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Name: " + first_name + " " + last_name +
-                " | Email: " + contactEmail +
-                (contactNumber > 100000 ? " | Phone Number: " : "") +
-                " | ID: " + id;
+        return String.format("Name: %s %s | Email: %s %s| Status: %s | DOB: %s | ID: %d",
+                first_name, last_name, contactEmail,
+                (contactNumber > 100000 ? String.format("| Phone Number: %s ",contactNumber) : " "),
+                status, new SimpleDateFormat("MMMM dd, yyyy").format(dob),
+                id);
     }
 }

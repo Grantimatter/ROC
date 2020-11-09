@@ -44,7 +44,18 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
 
     @Override
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException {
-        throw new NotImplementedException();
+        Customer customer = null;
+        try(Connection connection = PostgresSqlConnection.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(CustomerQueries.GET_CUSTOMER_BY_EMAIL);
+            preparedStatement.setString(1,contactEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                customer = DaoCustomerUtil.getCustomerFromResultSet(resultSet);
+            }
+        }catch (SQLException | ClassNotFoundException e) {
+            log.error(e);
+        }
+        return customer;
     }
 
     @Override
@@ -71,6 +82,11 @@ public class CustomerSearchDaoImpl implements CustomerSearchDao {
 
     @Override
     public List<Customer> getCustomersByFirstName(String first_name) throws BankException {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public List<Customer> getCustomersByLastName(String name) throws BankException {
         throw new NotImplementedException();
     }
 

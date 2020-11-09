@@ -44,7 +44,7 @@ public class MenuFormatting {
             stringBuilder.append(leftAlignString((i + 1) + ") "+options[i], width, WALL_CHAR, ' '));
         }
         stringBuilder.append(divider);
-        stringBuilder.append(leftAlignString(String.format("%d) %c%s", options.length + 1, RETURN_CHAR, exitOption),width, WALL_CHAR, ' '));
+        stringBuilder.append(leftAlignString(String.format("%d) %c %s", options.length + 1, RETURN_CHAR, exitOption),width, WALL_CHAR, ' '));
         stringBuilder.append(bottomBorder);
 
         return stringBuilder.toString();
@@ -53,14 +53,13 @@ public class MenuFormatting {
     public static String centerString(String str, int width, char wall, char divider){
         int padding = (width - str.length()) / 2;
         String formatted = String.format("%c%"+(padding + str.length())+"s", wall, str);
-        return endPadString(formatted, width, wall, divider).replace(' ', divider);
+        return endPadString(formatted, width, wall, divider);
     }
 
     public static String leftAlignString(String str, int width, char wall, char divider){
         StringBuilder sb = new StringBuilder(str);
         sb.insert(0,wall + " ");
-        int widthLeft = width - sb.length() + 1;
-        return String.format("%s%"+widthLeft+"c%n", sb.toString(), wall).replace(' ', divider);
+        return endPadString(sb.toString(), width, wall, divider);
     }
 
     public static String endPadString(String str, int width, char wall, char divider) {

@@ -12,7 +12,6 @@ import com.grantwiswell.banking.service.impl.CustomerCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerLoginServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
-import com.grantwiswell.banking.util.menu.MenuOption;
 import org.apache.log4j.Logger;
 
 public class CustomerView {
@@ -24,22 +23,6 @@ public class CustomerView {
     private CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
 
     private Customer customer;
-
-    public CustomerView() {
-    }
-
-    public CustomerView(Customer customer) {
-        this.customer = customer;
-    }
-
-    public void startCustomerLoginMenu() {
-        Menu customerLoginMenu = new Menu("Customer Login", "Main Menu");
-        customerLoginMenu.addOption(new MenuOption("Returning Customer", x -> startReturningLoginDialog()));
-        customerLoginMenu.addOption(new MenuOption("New Customer", x -> startNewCustomerDialog()));
-
-        // Start initial login menu
-        customerLoginMenu.startMenu();
-    }
 
     public void startNewCustomerDialog() {
         log.info("Please input an email to be associated with your account...");
@@ -79,7 +62,11 @@ public class CustomerView {
     }
 
     public void startCustomerLoggedInMenu() {
-        customer = customerSearchService.getCustomerById(customer.getId());
+        try {
+            customer = customerSearchService.getCustomerById(customer.getId());
+        } catch (BankException e) {
+            e.getMessage();
+        }
         String menuTitle = customer.getFirst_name() + " " + customer.getLast_name() + " | " + customer.getContactEmail();
         Menu customerLoggedInMenu = new Menu(menuTitle, "Logout").setIsLooping(false);
         customerLoggedInMenu.setAfterLoopConsumer(x -> startCustomerLoggedInMenu());

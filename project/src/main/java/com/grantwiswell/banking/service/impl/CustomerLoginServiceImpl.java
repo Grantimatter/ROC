@@ -5,6 +5,8 @@ import com.grantwiswell.banking.dao.impl.CustomerLoginDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerLoginService;
+import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import com.grantwiswell.banking.util.CustomerUtil;
 import org.apache.log4j.Logger;
 
 public class CustomerLoginServiceImpl implements CustomerLoginService {
@@ -15,7 +17,7 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
     @Override
     public Customer getCustomerFromLogin(String contactEmail, String password) throws BankException {
         Customer customer = null;
-        if(password != null && password.length() > 7){
+        if(ValidationUtil.isValidEmail(contactEmail) && password != null && password.length() > 7){
             try{
                 customer = customerLoginDao.getCustomerFromLogin(contactEmail, password);
             } catch (BankException e) {

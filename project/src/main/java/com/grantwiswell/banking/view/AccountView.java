@@ -1,5 +1,6 @@
 package com.grantwiswell.banking.view;
 
+import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.util.menu.Menu;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
@@ -47,7 +48,11 @@ public class AccountView {
     }
 
     public void startAccountListMenu(Customer customer) {
-        customer = customerSearchService.getCustomerById(customer.getId());
+        try {
+            customer = customerSearchService.getCustomerById(customer.getId());
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
         Customer newCustomer = customer;
         List<MenuOption> accountMenuOptions = updateAccountMenuOptions(newCustomer.getAccounts());
         double totalBalance = getBalanceFromAccounts(newCustomer.getAccounts());
@@ -60,7 +65,12 @@ public class AccountView {
     }
 
     private void startAccountViewMenu(Account account) {
-        account = accountSearchService.getAccountById(account.getId());
+        try {
+            account = accountSearchService.getAccountById(account.getId());
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+
         Account updatedAccount = account;
 
         Menu accountViewMenu = new Menu(account.toString(),"View Accounts").setIsLooping(false);
@@ -75,12 +85,20 @@ public class AccountView {
     public void startDeposit(Account account){
         log.info("Please input the amount you would like to deposit...");
         double amount = InputUtil.getDoubleInput();
-        accountCrudService.depositToAccount(amount, account);
+        try {
+            accountCrudService.depositToAccount(amount, account);
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
     }
 
     public void startWithdrawal(Account account){
         log.info("Please input the amount you would like to withdrawal...");
         double amount = InputUtil.getDoubleInput();
-        accountCrudService.withdrawalFromAccount(amount, account);
+        try {
+            accountCrudService.withdrawalFromAccount(amount, account);
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
     }
 }
