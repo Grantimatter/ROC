@@ -5,12 +5,10 @@ import com.grantwiswell.banking.dao.queries.CustomerQueries;
 import com.grantwiswell.banking.dao.util.DaoCustomerUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
-import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.xml.bind.NotIdentifiableEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;

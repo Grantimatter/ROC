@@ -4,10 +4,12 @@ import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.model.Transaction;
+import com.grantwiswell.banking.service.AccountCrudService;
 import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.service.CustomerCrudService;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.TransactionService;
+import com.grantwiswell.banking.service.impl.AccountCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.AccountSearchServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
@@ -19,10 +21,8 @@ import com.grantwiswell.banking.service.EmployeeLoginService;
 import com.grantwiswell.banking.service.impl.EmployeeLoginServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
 import com.grantwiswell.banking.util.menu.MenuOption;
-import javafx.scene.input.Mnemonic;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import sun.util.resources.cldr.so.CurrencyNames_so;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class EmployeeView {
     private AccountSearchService accountSearchService = new AccountSearchServiceImpl();
     private TransactionService transactionService = new TransactionServiceImpl();
     private CustomerCrudService customerCrudService = new CustomerCrudServiceImpl();
+    private AccountCrudService accountCrudService = new AccountCrudServiceImpl();
 
     private Employee employee;
 
@@ -57,7 +58,6 @@ public class EmployeeView {
     }
 
     public void viewEmployeeLoggedInMenu(){
-
         Menu employeeMenu = new Menu(employee.toString(), "Logout");
         employeeMenu.addOption("Search Functions", x -> viewEmployeeSearchOptions());
         employeeMenu.addOption("View Pending Users", x -> viewPendingUsersList());
@@ -67,7 +67,7 @@ public class EmployeeView {
     }
 
     public void viewEmployeeSearchOptions(){
-        throw new NotImplementedException();
+        log.info("Not yet implemented!");
     }
 
     public List<MenuOption> getUserMenuOptionsFromList(List<Customer> customers){
@@ -86,82 +86,57 @@ public class EmployeeView {
             log.error(e.getMessage());
         }
 
-        Menu pendingUsersListMenu = new Menu("Pending Users", "Employee Menu");
+        Menu pendingUsersListMenu = new Menu("Pending Users", "Employee Menu").setIsLooping(false);
+        pendingUsersListMenu.setAfterLoopConsumer(x -> viewPendingUsersList());
         pendingUsersListMenu.addOptions(getUserMenuOptionsFromList(pendingCustomers));
 
         pendingUsersListMenu.startMenu();
     }
 
     public void viewPendingUserActions(Customer customer){
-        int choice = 0;
-        do{
-            log.info(MenuFormatting.createOptionsMenu( "PENDING USER: " + customer.toString(), "Pending Users", "Accept User", "Reject User"));
-            choice = InputUtil.getIntInput();
-            switch (choice){
-                case 1:
-                    break;
-            }
-        }while(choice != 3);
+        Customer updatedCustomer = customerSearchService.getCustomerById(customer.getId());
+        Menu pendingUserActionMenu = new Menu(customer.toString() + " | Status: " + customer.getStatus(), "Pending Users").setIsLooping(false);
+        pendingUserActionMenu.setAfterLoopConsumer(x -> viewPendingUserActions(updatedCustomer));
+        if(updatedCustomer.getStatus().equalsIgnoreCase("PENDING")){
+            pendingUserActionMenu.addOption("Accept User", x -> customerCrudService.acceptCustomer(updatedCustomer.getId()));
+            pendingUserActionMenu.addOption("Reject User", x -> customerCrudService.rejectCustomer(updatedCustomer.getId()));
+        }
+
+        pendingUserActionMenu.startMenu();
+    }
+
+    public List<MenuOption> getMenuOptionsFromAccountList(List<Account> accountList){
+        List<MenuOption> menuOptionList = new ArrayList<>();
+        for(Account acc:accountList){
+            menuOptionList.add(new MenuOption(acc.toString(), x -> viewPendingAccountMenu(acc)));
+        }
+        return menuOptionList;
     }
 
     public void viewPendingAccountsList(){
-        int choice = 0;
-        List<Account> pendingAccounts = new ArrayList<>();
-        do {
-            try {
-                // Retrieve list of pending accounts
-                pendingAccounts = accountSearchService.getAccountsByStatus("PENDING");
-                if (pendingAccounts.size() == 0){
-                    log.info("There are no pending accounts!");
-                    return;
-                }
-                String[] pendingAccountStrings = new String[pendingAccounts.size()];
-                for (int i = 0; i < pendingAccountStrings.length; i++) {
-                    pendingAccountStrings[i] = pendingAccounts.get(i).toString();
-                }
-
-                // Print out pending accounts menu and get selection
-                log.info(MenuFormatting.createOptionsMenu("Pending Accounts", "Employee Menu", pendingAccountStrings));
-                choice = InputUtil.getIntInput();
-
-                // Get the account chosen
-                if(choice > 0 && choice <= pendingAccounts.size()){
-                    viewPendingAccountMenu(pendingAccounts.get(choice - 1));
-                }else if(choice != pendingAccounts.size() + 1){
-                    log.info("Not a valid choice! Please choose a valid option... (1-"+(pendingAccounts.size()+1)+")");
-                }
-
-            } catch (BankException e) {
-                log.warn(e.getMessage());
-            }
-        }while (choice != pendingAccounts.size() + 1);
+        List<Account> pendingAccountList = new ArrayList<>();
+        try {
+            pendingAccountList = accountSearchService.getAccountsByStatus("PENDING");
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+        Menu pendingAccountListMenu = new Menu("Pending Accounts", "Employee Menu").setIsLooping(false);
+        pendingAccountListMenu.setAfterLoopConsumer(x -> viewPendingAccountsList());
+        if(pendingAccountList.size() > 0){
+            pendingAccountListMenu.addOptions(getMenuOptionsFromAccountList(pendingAccountList));
+        }
+        pendingAccountListMenu.startMenu();
     }
 
     public void viewPendingAccountMenu(Account account){
-
-        Menu pendingAccountMenu = new Menu(account.toString(), "Pending Accounts");
-        pendingAccountMenu.addOption("Accept Account", x -> acc.acceptCustomer());
-
-        int choice = 0;
-        do{
-            try{
-                log.info(MenuFormatting.createOptionsMenu(account.toString(), "Pending Accounts", "Accept Account", "Reject Account"));
-                choice = InputUtil.getIntInput();
-                switch (choice){
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    default: log.warn("Invalid option chosen, please try again!");
-                        break;
-                }
-
-            } catch (BankException e) {
-                log.warn(e.getMessage());
-            }
-        }while(choice != 3);
+        Account updatedAccount = accountSearchService.getAccountById(account.getId());
+        Menu pendingAccountMenu = new Menu(account.toString(), "Pending Accounts").setIsLooping(false);
+        pendingAccountMenu.setAfterLoopConsumer(x -> viewPendingAccountMenu(updatedAccount));
+        if(updatedAccount.getStatus().equalsIgnoreCase("PENDING")){
+            pendingAccountMenu.addOption("Accept Account", x -> accountCrudService.updateAccountStatus(updatedAccount, "ACCEPTED"));
+            pendingAccountMenu.addOption("Reject Account", x-> accountCrudService.updateAccountStatus(updatedAccount, "REJECTED"));
+        }
+        pendingAccountMenu.startMenu();
     }
 
     public void viewAllTransactionsList(){

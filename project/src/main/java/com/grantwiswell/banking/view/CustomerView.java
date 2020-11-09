@@ -79,8 +79,10 @@ public class CustomerView {
     }
 
     public void startCustomerLoggedInMenu() {
+        customer = customerSearchService.getCustomerById(customer.getId());
         String menuTitle = customer.getFirst_name() + " " + customer.getLast_name() + " | " + customer.getContactEmail();
-        Menu customerLoggedInMenu = new Menu(menuTitle, "Logout");
+        Menu customerLoggedInMenu = new Menu(menuTitle, "Logout").setIsLooping(false);
+        customerLoggedInMenu.setAfterLoopConsumer(x -> startCustomerLoggedInMenu());
         customerLoggedInMenu.setBeforePrintConsumer(x -> customer = customerSearchService.getCustomerById(customer.getId()));
         if (customer.getAccounts().size() > 0)
             customerLoggedInMenu.addOption("View Account" + (customer.getAccounts().size() > 1 ? "s" : ""), x -> new AccountView().startAccountListMenu(customer));
@@ -96,6 +98,7 @@ public class CustomerView {
         double balance = InputUtil.getDoubleInput();
         try {
             accountCrudService.createNewAccount(customer.getId(), balance, accountName);
+            log.info("Account \""+accountName+"\" created. Please contact an employee to have your account approved for use");
         } catch (BankException e) {
             log.warn(e.getMessage());
         }

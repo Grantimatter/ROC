@@ -29,7 +29,10 @@ public class AccountView {
     public List<MenuOption> updateAccountMenuOptions(List<Account> accountList){
         List<MenuOption> accountMenuOptions = new ArrayList<>();
         for(Account acc:accountList){
-            accountMenuOptions.add(new MenuOption(acc.toString(), x -> startAccountViewMenu(acc)));
+            if(acc.getStatus().equalsIgnoreCase("ACCEPTED"))
+                accountMenuOptions.add(new MenuOption(acc.toString(), x -> startAccountViewMenu(acc)));
+            else if(acc.getStatus().equalsIgnoreCase("PENDING"))
+                accountMenuOptions.add(new MenuOption(acc.toString() + " | Status: " + acc.getStatus(), x -> log.info("This account has not been accepted!")));
         }
         return accountMenuOptions;
     }
@@ -37,7 +40,8 @@ public class AccountView {
     public double getBalanceFromAccounts(List<Account> accountList){
         double totalBalance = 0;
         for(Account acc:accountList){
-            totalBalance += acc.getBalance();
+            if(acc.getStatus().equalsIgnoreCase("ACCEPTED"))
+                totalBalance += acc.getBalance();
         }
         return totalBalance;
     }

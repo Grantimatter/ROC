@@ -21,7 +21,7 @@ public class AccountCrudServiceImpl implements AccountCrudService {
     @Override
     public void createNewAccount(int customer_id, double balance, String name) throws BankException {
         if (customer_id < 100 || customer_id > 999) throw new BankException("Customer ID is invalid");
-        if (balance <= 0) throw new BankException ("You cannot start an account with a negative balance...");
+        if (balance <= 0) throw new BankException("You cannot start an account with a negative balance...");
         try {
             Account account = new Account(customer_id, RandomUtil.generateAccountNumber(), balance, name, "PENDING");
             accountCrudDao.createNewAccount(account);
@@ -36,7 +36,7 @@ public class AccountCrudServiceImpl implements AccountCrudService {
         if (depositAmount <= 0) throw new BankException("You must deposit a positive amount of money...");
         try {
             accountCrudDao.depositToAccount(depositAmount, account);
-            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(depositAmount) + " deposited into " + account.getName() + " (#"+account.getId()+")");
+            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(depositAmount) + " deposited into " + account.getName() + " (#" + account.getId() + ")");
         } catch (BankException e) {
             log.warn(e.getMessage());
         }
@@ -49,9 +49,27 @@ public class AccountCrudServiceImpl implements AccountCrudService {
             throw new BankException("You cannot withdrawal more money than you have in your account...");
         try {
             accountCrudDao.withdrawalFromAccount(withdrawalAmount, account);
-            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(withdrawalAmount) + " withdrawn from " + account.getName() + " (#"+account.getId()+")");
+            log.info(NumberFormat.getCurrencyInstance(Locale.US).format(withdrawalAmount) + " withdrawn from " + account.getName() + " (#" + account.getId() + ")");
         } catch (BankException e) {
             log.warn(e.getMessage());
         }
+    }
+
+    @Override
+    public void updateAccountStatus(Account account, String status) throws BankException {
+        if (validateStatus(status)) {
+            try {
+                accountCrudDao.updateAccountStatus(account, status);
+                log.info("Account #" + account.getId() + " status has been updated to " + status);
+            } catch (BankException e) {
+                log.warn(e.getMessage());
+            }
+        }
+    }
+
+    private static boolean validateStatus(String status) {
+        if (status.equalsIgnoreCase("ACCEPTED") || status.equalsIgnoreCase("REJECTED") || status.equalsIgnoreCase("PENDING"))
+            return true;
+        return false;
     }
 }

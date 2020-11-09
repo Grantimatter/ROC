@@ -37,12 +37,13 @@ public class CustomerCrudDaoImpl implements CustomerCrudDao {
     }
 
     @Override
-    public void acceptCustomer(int id) throws BankException {
+    public void updateCustomerStatus(int id, String status) throws BankException {
         try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(CustomerCrud.ACCEPT_CUSTOMER);
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = connection.prepareStatement(CustomerCrud.UPDATE_CUSTOMER_STATUS);
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, id);
             preparedStatement.executeUpdate();
-            log.info("Customer with ID: " + id + " has been accepted!");
+            log.info("Customer with ID: " + id + " has had their status updated to " + status);
         }catch (SQLException | ClassNotFoundException e) {
             log.error(e);
         }

@@ -1,109 +1,71 @@
 package com.grantwiswell.banking.util.menu;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 public class MenuFormatting {
-    // Format a menu with a title and menu options
+
+    private static final char TOP_LEFT_CORNER_CHAR = '\u250C';
+    private static char TOP_RIGHT_CORNER_CHAR = '\u2510';
+    private static char BOTTOM_LEFT_CORNER_CHAR = '\u2514';
+    private static char BOTTOM_RIGHT_CORNER_CHAR = '\u2518';
+    private static char WALL_CHAR = '\u2502';
+    private static char FLOOR_CEILING_CHAR = '\u2500';
+    private static char DIVIDER_CHAR = '\u2500';
+    private static char DOUBLE_DIVIDER_CHAR = '\u2550';
+    private static char DOUBLE_BOTTOM_LEFT_CORNER_CHAR = '\u255A';
+    private static char DOUBLE_BOTTOM_RIGHT_CORNER_CHAR = '\u255D';
+    private static char DOUBLE_TOP_LEFT_CORNER_CHAR = '\u2554';
+    private static char DOUBLE_TOP_RIGHT_CORNER_CHAR = '\u2557';
+    private static char T_LEFT_TO_RIGHT = '\u251C';
+    private static char DOUBLE_T_LEFT_TO_RIGHT = '\u2560';
+    private static char T_RIGHT_TO_LEFT = '\u2524';
+    private static char DOUBLE_T_RIGHT_TO_LEFT = '\u2563';
+    private static char RETURN_CHAR = '\u2190';
+    private static char DOUBLE_WALL_CHAR = '\u2551';
+
     public static String createOptionsMenu(String title, String exitOption, String... options) {
-        // Count the longest line in the menu so borders will be appropriate length
-        int longest = 0;
-        // UNICODE Characters
-        char topLeftCornerChar = '\u250C';
-        char topRightCornerChar = '\u2510';
-        char bottomLeftCornerChar = '\u2514';
-        char bottomRightCornerChar = '\u2518';
-        char wallChar = '\u2502';
-        char floorCeilingChar = '\u2500';
-        char dividerChar = '\u2500';
-        char doubleDivider = '\u2550';
-        char doubleBottomLeft = '\u255A';
-        char doubleBottomRight = '\u255D';
-        char doubleTopLeft = '\u2554';
-        char doubleTopRight = '\u2557';
-        char tLeftToRight = '\u251C';
-        char doubleTLeftToRight = '\u2560';
-        char tRightToLeft = '\u2524';
-        char doubleTRightToLeft = '\u2563';
-        char escapeChar = '\u2190';
-        char doubleWallChar = '\u2551';
-
-        // Create StringBuilder for the menu and add all of the options
-        StringBuilder sb = new StringBuilder();
-        StringBuilder titleBuilder = new StringBuilder(doubleWallChar + title);
-
-        // Count the longest string
-        for(int i = 0; i < options.length; i++){
-            String s = (i + 1 + ") " + options[i]);
-            if (s.length() + 3 > longest) longest = s.length() + 3;
+        // Define the width of the menu based on the longest string;
+        int width = 0;
+        for (String s : options) {
+            if (s.length() > width) width = s.length();
         }
+        if (title.length() > width) width = title.length();
+        if (exitOption.length() > width) width = exitOption.length();
+        width += 7;
 
-        // Set title to longest if it is longer than all options
-        longest = title.length() + 4 > longest ? title.length() + 4 : longest;
-        longest = exitOption.length() + 7 > longest ? exitOption.length() + 7 : longest;
+        String topBorder = String.format("%c%" + width + "c%n", DOUBLE_TOP_LEFT_CORNER_CHAR, DOUBLE_TOP_RIGHT_CORNER_CHAR).replace(' ', DOUBLE_DIVIDER_CHAR);
+        String titleFormatted = centerString(title, width, DOUBLE_WALL_CHAR, ' ');
+        String titleDivider = String.format("%c%" + width + "c%n", DOUBLE_T_LEFT_TO_RIGHT, DOUBLE_T_RIGHT_TO_LEFT).replace(' ', DOUBLE_DIVIDER_CHAR);
+        String divider = String.format("%c%" + width + "c%n", T_LEFT_TO_RIGHT, T_RIGHT_TO_LEFT).replace(' ', DIVIDER_CHAR);
+        String bottomBorder = String.format("%c%" + width + "c%n", BOTTOM_LEFT_CORNER_CHAR, BOTTOM_RIGHT_CORNER_CHAR).replace(' ', DIVIDER_CHAR);
 
-        //  Create menu borders
-        String upperBorder = Character.toString(doubleTopLeft);
-        String bottomBorder = Character.toString(bottomLeftCornerChar);
-        String upperBottomBorder = "";
-        String divider = Character.toString(tLeftToRight);
-        String titleDivider = Character.toString(doubleTopLeft);
-        String titleBottom = Character.toString(doubleTLeftToRight);
-        String spacer = Character.toString(wallChar);
-
-        for (int i = 0; i < longest; i++) {
-            upperBottomBorder += floorCeilingChar;
-            divider += dividerChar;
-            titleDivider += doubleDivider;
-            titleBottom += doubleDivider;
-            spacer += " ";
-        }
-        upperBorder = titleDivider + doubleTopRight;
-        bottomBorder += upperBottomBorder + bottomRightCornerChar;
-        divider += tRightToLeft;
-        titleDivider += doubleTopRight;
-        titleBottom += doubleTRightToLeft;
-        spacer += wallChar;
-
+        StringBuilder stringBuilder = new StringBuilder(topBorder + titleFormatted + titleDivider);
         for (int i = 0; i < options.length; i++) {
-            String s = (i + 1 + ") " + options[i]);
-
-            sb.append(wallChar + " " + s);
-
-            if(s.length() != longest + 2){
-                for (int x = s.length(); x < longest - 1; x++){
-                    sb.append(" ");
-                }
-                sb.append(wallChar);
-            }
-            sb.append("\n");
+            stringBuilder.append(leftAlignString((i + 1) + ") "+options[i], width, WALL_CHAR, ' '));
         }
+        stringBuilder.append(divider);
+        stringBuilder.append(leftAlignString(String.format("%d) %c%s", options.length + 1, RETURN_CHAR, exitOption),width, WALL_CHAR, ' '));
+        stringBuilder.append(bottomBorder);
 
-        if(options.length == 0) sb.append(spacer + "\n");
-        String exitOptionFull = wallChar + " " + (options.length + 1) + ") " + escapeChar + " " + exitOption;
-        sb.append(divider + "\n" + exitOptionFull);
-        for (int i = exitOptionFull.length(); i < longest + 1; i++) {
-            sb.append(" ");
-        }
-        sb.append(wallChar + "\n");
+        return stringBuilder.toString();
+    }
 
-        sb.insert(0, "\n");
+    public static String centerString(String str, int width, char wall, char divider){
+        int padding = (width - str.length()) / 2;
+        String formatted = String.format("%c%"+(padding + str.length())+"s", wall, str);
+        return endPadString(formatted, width, wall, divider).replace(' ', divider);
+    }
 
-        // Create Title StringBuilder
-        int titleLength = (doubleWallChar + title).length();
-        int titleMiddle = (titleLength +1) / 2;
-        for (int i = 0; i < (titleDivider.length() / 2) - titleMiddle; i++) {
-            titleBuilder.insert(1, " ");
-        }
+    public static String leftAlignString(String str, int width, char wall, char divider){
+        StringBuilder sb = new StringBuilder(str);
+        sb.insert(0,wall + " ");
+        int widthLeft = width - sb.length() + 1;
+        return String.format("%s%"+widthLeft+"c%n", sb.toString(), wall).replace(' ', divider);
+    }
 
-        for(int i = titleBuilder.length(); i < longest + 1; i++){
-            titleBuilder.append(" ");
-        }
-        titleBuilder.append(doubleWallChar);
-
-        // Title Divider
-        sb.insert(0, titleBottom);
-        sb.insert(0, titleBuilder.toString() + "\n");
-        sb.insert(0, upperBorder + "\n");
-// Return divider bottom
-        sb.append(bottomBorder);
-        return "\n" + sb.toString() + "\n";
+    public static String endPadString(String str, int width, char wall, char divider) {
+        int widthLeft = (width - str.length()) + 1;
+        str += String.format("%" + widthLeft + "c%n", wall);
+        return str.replace(' ', divider);
     }
 }

@@ -18,6 +18,8 @@ public class Account {
         this.status = status;
     }
 
+    public String getStatus(){ return status; }
+
     public int getCustomer_id() {
         return customer_id;
     }

@@ -8,9 +8,6 @@ import com.grantwiswell.banking.service.CustomerCrudService;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import org.apache.log4j.Logger;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -67,7 +64,18 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
         try{
             Customer customer = customerSearchService.getCustomerById(id);
             if(!customer.getStatus().equalsIgnoreCase("PENDING")) throw new BankException("Customer is not eligible to be accepted!");
-            customerCrudDao.acceptCustomer(customer.getId());
+            customerCrudDao.updateCustomerStatus(customer.getId(), "ACCEPTED");
+        } catch (BankException e) {
+            log.warn(e.getMessage());
+        }
+    }
+
+    @Override
+    public void rejectCustomer(int id) throws BankException {
+        try{
+            Customer customer = customerSearchService.getCustomerById(id);
+            if(customer.getStatus().equalsIgnoreCase("REJECTED")) throw new BankException("Customer is already rejected!");
+            customerCrudDao.updateCustomerStatus(customer.getId(), "REJECTED");
         } catch (BankException e) {
             log.warn(e.getMessage());
         }
