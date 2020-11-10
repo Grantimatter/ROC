@@ -20,9 +20,12 @@
 *.rar
 *.iml
 *.prefs
+*.classpath
+*.project
 
 #Directorys
 vimfiles/
+target/
 .metadata/
 META-INF/
 .idea/
