@@ -1,15 +1,19 @@
 package Comparator;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class User implements Comparable<User>{
 
     private int age;
     private String name;
+    private double balance;
 
-    public User(int age, String name) {
+    public User(int age, String name, double balance) {
         this.age = age;
         this.name = name;
+        this.balance = balance;
     }
 
     @Override
@@ -33,8 +37,16 @@ public class User implements Comparable<User>{
         this.name = name;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
-        return String.format("Name: %s | Age: %d", name, age);
+        return String.format("Name: %s | Age: %d | Balance: %s", name, age, NumberFormat.getCurrencyInstance(Locale.US).format(balance));
     }
 }
