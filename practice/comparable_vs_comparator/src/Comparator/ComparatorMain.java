@@ -21,6 +21,12 @@ public class ComparatorMain {
         Collections.sort(userList, nameComparator);
         System.out.println("\nUsers sorted by Name");
         printList(userList);
+
+        // Sort by Age
+        AgeComparator ageComparator = new AgeComparator();
+        Collections.sort(userList, ageComparator);
+        System.out.println("\nUsers sorted by Age");
+        printList(userList);
     }
 
     public static void printList(List<User> list){
