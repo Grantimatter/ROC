@@ -15,6 +15,7 @@ public class Menu {
     protected Consumer beforePrintConsumer;
     protected Consumer afterPrintConsumer;
     protected boolean isLooping = true;
+    protected boolean hasRowDividers = false;
     protected String title = "Menu";
     protected String exitOption = "Exit";
 
@@ -44,7 +45,7 @@ public class Menu {
         do {
             // Run a command before printing is started if one is supplied
             if(beforePrintConsumer != null) beforePrintConsumer.accept(1);
-            log.info(MenuFormatting.createOptionsMenu(title, exitOption, optionTitleArray));
+            log.info(MenuFormatting.createOptionsMenu(title, exitOption, hasRowDividers, optionTitleArray));
 
             // Get the user input
             choice = InputUtil.getIntInput();
@@ -115,6 +116,11 @@ public class Menu {
 
     public Menu setExitOption(String option) {
         exitOption = option;
+        return this;
+    }
+
+    public Menu setHasRowDividers(boolean hasRowDividers){
+        this.hasRowDividers = hasRowDividers;
         return this;
     }
 }

@@ -76,9 +76,9 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return  "| From: #" + account_from +
-                " | To: #" + account_to +
-                " | Amount: " + NumberFormat.getCurrencyInstance(Locale.US).format(amount) +
-                (status != null ? " | Status: " + status.toUpperCase(): "") + " |";
+        return  "From: #" + account_from +
+                " \u2502 To: #" + account_to +
+                " \u2502 Amount: " + NumberFormat.getCurrencyInstance(Locale.US).format(amount) +
+                (status != null ? " \u2502 Status: " + status.toUpperCase(): "") + " \u2502";
     }
 }

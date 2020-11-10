@@ -8,6 +8,7 @@ import com.grantwiswell.banking.service.impl.CustomerCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
 import com.grantwiswell.banking.util.menu.Menu;
+import com.grantwiswell.banking.util.sorting.NameComparator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -55,12 +56,14 @@ public class EmployeeFunctionsView {
         }
     }
 
-    public void viewCustomerList(List<Customer> customerList, String orderedBy){
+    public void viewCustomerList(List<Customer> customerList, String searchedBy){
         // Return if there is nothing to display
         if(customerList == null  || customerList.size() == 0) return;
 
-        Menu customerListMenu = new Menu("Customers"+(orderedBy.length() > 0 ? "Ordered by: " + orderedBy : "")).setIsLooping(false);
-        customerListMenu.setAfterLoopConsumer(x -> viewCustomerList(customerList, orderedBy));
+        Menu customerListMenu = new Menu("Customers"+(searchedBy.length() > 0 ? "Searched by: " + searchedBy : "")).setIsLooping(false);
+        customerListMenu.setAfterLoopConsumer(x -> viewCustomerList(customerList, searchedBy));
+        NameComparator nameComparator = new NameComparator();
+        customerList.sort(nameComparator);
         for (Customer customer:customerList){
             customerListMenu.addOption(customer.toString(), x-> viewCustomer(customer));
         }

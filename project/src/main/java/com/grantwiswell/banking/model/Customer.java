@@ -1,12 +1,12 @@
 package com.grantwiswell.banking.model;
 
-import sun.java2d.pipe.SpanShapeRenderer;
+import com.grantwiswell.banking.util.FormatStrings;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Customer {
+public class Customer implements Comparable<Customer> {
     private int id;
     private List<Account> accounts;
     private String first_name;
@@ -120,10 +120,15 @@ public class Customer {
 
     @Override
     public String toString() {
-        return String.format("Name: %s %s | Email: %s %s| Status: %s | DOB: %s | ID: %d",
-                first_name, last_name, contactEmail,
-                (contactNumber > 100000 ? String.format("| Phone Number: %s ",contactNumber) : " "),
+        return String.format(" Name: %s, %s \u2502 Email: %s \u2502 Number: %s \u2502 Status: %s \u2502 Birthday: %s \u2502 ID: %d",
+                last_name, first_name, contactEmail,
+                (contactNumber > 100000 ? (String.format(FormatStrings.formatPhoneNumber(contactNumber))) : "N/A"),
                 status, new SimpleDateFormat("MMMM dd, yyyy").format(dob),
                 id);
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+        return this.getLast_name().compareTo(o.getLast_name());
     }
 }
