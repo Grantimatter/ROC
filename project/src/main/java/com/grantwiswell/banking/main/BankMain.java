@@ -20,7 +20,7 @@ public class BankMain {
         log.info("| Welcome to the Wiswell Banking App! |");
         mainMenu.startMenu();
 
-        log.info("Thank you for using the Banking App. Have a great day!");
+        log.info("Thank you for banking with Wiswell Bank! Have a great day!");
         log.debug("Application closed");
     }
 
