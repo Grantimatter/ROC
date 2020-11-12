@@ -16,6 +16,6 @@ class QueryUtilTest {
         log.info("Customer Found with id 629:\n" + customer);
 
         customer = DaoCustomerUtil.getNextCustomerFromResultSet(QueryUtil.sendQuery(CustomerQueries.GET_CUSTOMER_BY_EMAIL, "wmacronaldc@unesco.org"));
-        log.info("Customer Found with Email wmacronaldc@unesco.org : "+customer);
+        log.info("Customer Found with Email wmacronaldc@unesco.org : "+ customer);
     }
 }

@@ -1,5 +1,5 @@
 # Wiswell Bank
-A database-connected banking application using Postgresql and accessed using a JDBC with DAO (Data Access Object) design pattern.
+A database-connected banking application using Postgresql and accessed using a JDBC with a DAO (Data Access Object) design pattern.
 
 
 Author: ***Grant Wiswell***

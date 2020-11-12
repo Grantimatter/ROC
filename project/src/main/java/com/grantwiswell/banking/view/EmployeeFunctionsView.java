@@ -1,9 +1,12 @@
 package com.grantwiswell.banking.view;
 
 import com.grantwiswell.banking.exception.BankException;
+import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
+import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.service.CustomerCrudService;
 import com.grantwiswell.banking.service.CustomerSearchService;
+import com.grantwiswell.banking.service.impl.AccountSearchServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerCrudServiceImpl;
 import com.grantwiswell.banking.service.impl.CustomerSearchServiceImpl;
 import com.grantwiswell.banking.util.InputUtil;
@@ -19,6 +22,7 @@ public class EmployeeFunctionsView {
     private static Logger log = Logger.getLogger(EmployeeFunctionsView.class);
     private static CustomerSearchService customerSearchService = new CustomerSearchServiceImpl();
     private static CustomerCrudService customerCrudService = new CustomerCrudServiceImpl();
+    private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
 
     public void viewSearchFunctionsMenu(){
         Menu searchFunctionsMenu = new Menu("Customer Search", "Employee Menu");
@@ -84,7 +88,20 @@ public class EmployeeFunctionsView {
         if (updatedCustomer.getStatus().equalsIgnoreCase("PENDING")) {
             userActionMenu.addOption("Accept User", x -> customerCrudService.acceptCustomer(updatedCustomer.getId()));
             userActionMenu.addOption("Reject User", x -> customerCrudService.rejectCustomer(updatedCustomer.getId()));
+        } else if(updatedCustomer.getStatus().equalsIgnoreCase("ACCEPTED")){
+            List<Account> accountList = accountSearchService.getAccountsByCustomerId(customer.getId());
+            if(accountList != null && accountList.size() > 0){
+                listAccountsMenu(customer, accountList);
+            }
         }
         userActionMenu.startMenu();
+    }
+
+    private static void listAccountsMenu(Customer customer, List<Account> accountList){
+        Menu accountListMenu = new Menu(customer.toString(), "Search Functions");
+        for (Account account:accountList){
+            accountListMenu.addOption(account.toString(), x -> log.info(account.toString()));
+        }
+        accountListMenu.startMenu();
     }
 }
