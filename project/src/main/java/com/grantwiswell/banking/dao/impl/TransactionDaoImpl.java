@@ -55,7 +55,7 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public String getTransactionStatus(Transaction transaction) throws BankException {
-        String transactionStatus = DaoTransactionUtil.getNextTransactionFromResultSet(QueryUtil.sendQuery(TransactionQueries.GET_TRANSACTION_STATUS, transaction.getId())).getStatus().toUpperCase();
+        String transactionStatus = DaoTransactionUtil.getNextTransactionFromResultSet(QueryUtil.sendQuery(TransactionQueries.GET_TRANSACTION_BY_ID, transaction.getId())).getStatus();
         if (transactionStatus == null || transactionStatus.length() == 0) throw new BankException("Unable to retrieve transaction status");
         return transactionStatus;
     }
@@ -69,7 +69,7 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public int rejectTransaction(Transaction transaction) throws BankException {
-        int results = QueryUtil.sendUpdate(TransactionQueries.UPDATE_TRANSACTION_STATUS, transaction.getId(), "REJECTED");
+        int results = QueryUtil.sendUpdate(TransactionQueries.UPDATE_TRANSACTION_STATUS, "REJECTED", transaction.getId());
         if (results == 0) throw new BankException("Unable to reject transaction #" + transaction.getId());
         return results;
     }

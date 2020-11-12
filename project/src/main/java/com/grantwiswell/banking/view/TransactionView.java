@@ -112,7 +112,6 @@ public class TransactionView {
             log.info("Please input the amount you would like to transfer to account #" + account_id);
             double amount = InputUtil.getDoubleInput();
             transactionService.createTransaction(account.getId(), account_id, amount);
-            account = accountSearchService.getAccountById(account.getId());
         } catch (BankException e) {
             InputUtil.setMessagePrompt(e.getMessage());
         }

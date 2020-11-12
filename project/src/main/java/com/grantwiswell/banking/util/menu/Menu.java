@@ -48,7 +48,7 @@ public class Menu {
             if(beforePrintConsumer != null) beforePrintConsumer.accept(1);
             ScreenUtil.clearScreen();
             log.info(MenuFormatting.createOptionsMenu(title, exitOption, hasRowDividers, optionTitleArray));
-            log.info("Please Select an option (1-" + (optionTitleArray.length + 1) + ")\n");
+            log.info("Please Select an option (1-" + (optionTitleArray.length + 1) + ")");
 
             // Get the user input
             choice = InputUtil.getIntInput();

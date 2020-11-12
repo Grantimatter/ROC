@@ -77,7 +77,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction getTransactionById(int id) throws BankException {
-        if(!ValidationUtil.isValidAccountId(id)) throw new BankException("Invalid account ID: #" + id);
         try {
             return transactionDao.getTransactionById(id);
         } catch (BankException e) {
