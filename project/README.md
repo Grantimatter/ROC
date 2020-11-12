@@ -4,12 +4,14 @@ A database-connected banking application using Postgresql and accessed using a J
 
 Author: ***Grant Wiswell***
 
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃         Wiswell Bank!        ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ 1)                           │
-│ 2)                           │
-│ 3)                           │
+│ 1) It's Amazing!             │
+│ 2) Stupendous!               │
+│ 3) Aesthetically Pleasing!   │
 ├──────────────────────────────┤
-│ 4) ← Exit Application        │
+│ 4) ← Goodbye!                │
 ╰──────────────────────────────╯
+```
