@@ -2,6 +2,8 @@ package com.grantwiswell.banking.dao.util;
 
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
+import com.grantwiswell.banking.model.Customer;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -24,9 +26,20 @@ public class DaoAccountUtil {
                     resultSet.getString("status")
             );
         } catch (SQLException e) {
-            log.warn(e);
+            log.error(e);
         }
         return account;
+    }
+
+    public static Account getNextAccountFromResultSet(ResultSet resultSet){
+        try {
+            if(resultSet.next()){
+                return getAccountFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
+        return null;
     }
 
     public static List<Account> getAccountsFromResultSet(ResultSet resultSet){
@@ -36,7 +49,7 @@ public class DaoAccountUtil {
                 accountList.add(getAccountFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            log.warn(e.getMessage());
+            log.error(e.getMessage());
         }
         return accountList;
     }

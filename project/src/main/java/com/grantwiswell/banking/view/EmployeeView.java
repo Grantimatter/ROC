@@ -51,7 +51,7 @@ public class EmployeeView {
         try {
             employee = employeeLoginService.employeeLogin(user_name, password);
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -77,7 +77,7 @@ public class EmployeeView {
         try {
             pendingCustomers = customerSearchService.getCustomersByStatus("PENDING");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
 
         Menu pendingUsersListMenu = new Menu("Pending Users", "Employee Menu").setIsLooping(false);
@@ -112,11 +112,11 @@ public class EmployeeView {
         try {
             pendingAccountList = accountSearchService.getAccountsByStatus("PENDING");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         Menu pendingAccountListMenu = new Menu("Pending Accounts", "Employee Menu").setIsLooping(false);
         pendingAccountListMenu.setAfterLoopConsumer(x -> viewPendingAccountsList());
-        if (pendingAccountList.size() > 0) {
+        if (pendingAccountList != null && pendingAccountList.size() > 0) {
             pendingAccountListMenu.addOptions(getMenuOptionsFromAccountList(pendingAccountList));
         }
         pendingAccountListMenu.startMenu();
@@ -134,7 +134,7 @@ public class EmployeeView {
             }
             pendingAccountMenu.startMenu();
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -142,11 +142,13 @@ public class EmployeeView {
         List<Transaction> transactionList;
         try {
             transactionList = transactionService.getAllTransactions();
+            String allTransactionsString = "";
             for (Transaction t : transactionList) {
-                log.info(t.toString());
+                allTransactionsString += t.toString()+"\n";
             }
+            InputUtil.setMessagePrompt(allTransactionsString);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 }

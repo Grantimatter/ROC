@@ -7,6 +7,7 @@ import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -20,29 +21,23 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
 
     @Override
     public Customer getCustomerById(int id) throws BankException {
-        Customer customer = null;
-        if(id > 99 && id < 10000){
+        if(!ValidationUtil.isValidCustomerId(id)) throw new BankException("This is an invalid ID");
             try{
-                customer = customerSearchDao.getCustomerById(id);
+                return customerSearchDao.getCustomerById(id);
             } catch (BankException e) {
-                log.warn(e.getMessage());
+                InputUtil.setMessagePrompt(e.getMessage());
             }
-        }
-        else{
-            throw new BankException("Invalid ID! ID must be a 3 digit number");
-        }
-        return customer;
+        return null;
     }
 
     @Override
     public Customer getCustomerByAccount(Account account) throws BankException {
-        Customer customer = null;
         try{
-            customer = customerSearchDao.getCustomerById(account.getCustomer_id());
+            return customerSearchDao.getCustomerById(account.getCustomer_id());
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return customer;
+        return null;
     }
 
     @Override
@@ -52,45 +47,51 @@ public class CustomerSearchServiceImpl implements CustomerSearchService {
                 return customerSearchDao.getCustomerByContactEmail(contactEmail);
             }
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         return null;
-    }
-
-    @Override
-    public Customer getCustomerByContactNumber(long contactNumber) throws BankException {
-        throw new NotImplementedException();
     }
 
     @Override
     public List<Customer> getAllCustomers() throws BankException {
         try{
             return customerSearchDao.getAllCustomers();
-        }catch (BankException e) {
-            log.warn(e.getMessage());
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         return null;
     }
 
     @Override
     public List<Customer> getCustomersByFirstName(String name) throws BankException {
-        throw new NotImplementedException();
+        if(name == null || name.length() ==0) throw new BankException("An invalid first name has been entered");
+        try {
+            return customerSearchDao.getCustomersByFirstName(name);
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
+        return null;
     }
 
     @Override
     public List<Customer> getCustomersByLastName(String name) throws BankException {
+        if(name == null || name.length() ==0) throw new BankException("An invalid last name has been entered");
+        try {
+            return customerSearchDao.getCustomersByLastName(name);
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
         return null;
     }
 
     @Override
     public List<Customer> getCustomersByStatus(String status) throws BankException {
         if(!(status.equalsIgnoreCase("ACCEPTED") || status.equalsIgnoreCase("PENDING") || status.equalsIgnoreCase("REJECTED"))){ throw new BankException(status + " is not a recognized status! Please try again..."); }
-        List<Customer> customerList = new ArrayList<>();
         try{
-            customerList = customerSearchDao.getCustomersByStatus(status);
+            return customerSearchDao.getCustomersByStatus(status);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return customerList;
+        return null;
     }
 }

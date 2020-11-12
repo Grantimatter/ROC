@@ -7,6 +7,7 @@ import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerCrudService;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
@@ -30,15 +31,14 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
         try{
             localDob = LocalDate.parse(dobString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
         } catch (Exception e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        log.info(localDob);
+        log.debug(localDob);
 
         if(Period.between(localDob, LocalDate.now()).getYears() < 16) throw new BankException("You must be at least 16 years old to register");
 
         Date dob = Date.from(localDob.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        //if()
         if (!dob.before(new Date())) throw new BankException("You cannot be born today...");
 
         String[] names = fullName.split(" ");
@@ -52,9 +52,9 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
         boolean createSuccessful = false;
         try{
             Customer customer = new Customer(names[0], names[1], contact_email, password, dob, "PENDING");
-            createSuccessful = customerCrudDao.createNewCustomer(customer);
+            createSuccessful = customerCrudDao.createNewCustomer(customer) > 0;
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
 
         return createSuccessful;
@@ -62,23 +62,25 @@ public class CustomerCrudServiceImpl implements CustomerCrudService {
 
     @Override
     public void acceptCustomer(int id) throws BankException {
+        if(!ValidationUtil.isValidCustomerId(id)) throw new BankException("ID must be a 3-digit number");
         try{
             Customer customer = customerSearchService.getCustomerById(id);
             if(!customer.getStatus().equalsIgnoreCase("PENDING")) throw new BankException("Customer is not eligible to be accepted!");
             customerCrudDao.updateCustomerStatus(customer.getId(), "ACCEPTED");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
     @Override
     public void rejectCustomer(int id) throws BankException {
+        if(!ValidationUtil.isValidCustomerId(id)) throw new BankException("ID must be a 3-digit number");
         try{
             Customer customer = customerSearchService.getCustomerById(id);
             if(customer.getStatus().equalsIgnoreCase("REJECTED")) throw new BankException("Customer is already rejected!");
             customerCrudDao.updateCustomerStatus(customer.getId(), "REJECTED");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 }

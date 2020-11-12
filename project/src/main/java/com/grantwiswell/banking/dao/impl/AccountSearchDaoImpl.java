@@ -6,8 +6,10 @@ import com.grantwiswell.banking.dao.util.DaoAccountUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Account;
+import com.grantwiswell.banking.service.impl.util.QueryUtil;
 import org.apache.log4j.Logger;
 
+import javax.management.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,56 +23,22 @@ public class AccountSearchDaoImpl implements AccountSearchDao {
 
     @Override
     public Account getAccountByNumber(int number) throws BankException {
-        Account account = null;
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.GET_ACCOUNT_BY_NUMBER);
-            preparedStatement.setInt(1, number);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                account = DaoAccountUtil.getAccountFromResultSet(resultSet);
-            }
-            else{
-                throw new BankException("Account with number "+number+" not found...");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+        Account account = DaoAccountUtil.getNextAccountFromResultSet(QueryUtil.sendQuery(AccountQueries.GET_ACCOUNT_BY_NUMBER, number));
+        if(account == null) throw new BankException("Account #"+number+" was unable to be found");
         return account;
     }
 
     @Override
     public List<Account> getAccountsByCustomerId(int customerId) throws BankException {
-        List<Account> accountList = new ArrayList<>();
-
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.GET_ACCOUNTS_BY_CUSTOMER_ID);
-            preparedStatement.setInt(1, customerId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                Account account = DaoAccountUtil.getAccountFromResultSet(resultSet);
-                accountList.add(account);
-            }
-
-            log.debug(accountList);
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
-
+        List<Account> accountList = DaoAccountUtil.getAccountsFromResultSet(QueryUtil.sendQuery(AccountQueries.GET_ACCOUNTS_BY_CUSTOMER_ID, customerId));
+        //if(accountList == null || accountList.size() == 0) throw new BankException("Customer has no accounts");
         return accountList;
     }
 
     @Override
     public List<Account> getAccountsByStatus(String status) throws BankException {
-        List<Account> accountList = new ArrayList<>();
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountQueries.GET_ACCOUNTS_BY_STATUS);
-            preparedStatement.setString(1, status);
-            accountList = DaoAccountUtil.getAccountsFromResultSet(preparedStatement.executeQuery());
-        }catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
-        if(accountList.size() == 0) throw new BankException("Unable to find any accounts with the status " + status);
+        List<Account> accountList = DaoAccountUtil.getAccountsFromResultSet(QueryUtil.sendQuery(AccountQueries.GET_ACCOUNTS_BY_STATUS, status));
+        if(accountList == null || accountList.size() == 0) throw new BankException("No accounts found with status \""+status+"\"");
         return accountList;
     }
 }

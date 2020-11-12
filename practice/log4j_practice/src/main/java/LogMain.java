@@ -8,7 +8,7 @@ public class LogMain {
         log.trace("Hello from TRACE");
         log.debug("Hello from DEBUG");
         log.info("Hello from INFO");
-        log.warn("Hello from WARN");
+        InputUtil.setMessagePrompt("Hello from WARN");
         log.error("Hello from ERROR");
         log.fatal("Hello from FATAL");
 

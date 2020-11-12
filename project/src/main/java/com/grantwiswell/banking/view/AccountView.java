@@ -51,7 +51,7 @@ public class AccountView {
         try {
             customer = customerSearchService.getCustomerById(customer.getId());
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         Customer newCustomer = customer;
         List<MenuOption> accountMenuOptions = updateAccountMenuOptions(newCustomer.getAccounts());
@@ -68,7 +68,7 @@ public class AccountView {
         try {
             account = accountSearchService.getAccountById(account.getId());
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
 
         Account updatedAccount = account;
@@ -88,7 +88,7 @@ public class AccountView {
         try {
             accountCrudService.depositToAccount(amount, account);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public class AccountView {
         try {
             accountCrudService.withdrawalFromAccount(amount, account);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.grantwiswell.banking.dao.util;
 
 import com.grantwiswell.banking.model.Transaction;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -24,9 +25,20 @@ public class DaoTransactionUtil {
                 );
                 log.debug("Transaction retrieved from result set: " + transaction);
         } catch (SQLException e) {
-            log.warn(e);
+            log.error(e);
         }
         return transaction;
+    }
+
+    public static Transaction getNextTransactionFromResultSet(ResultSet resultSet){
+        try {
+            if(resultSet.next()){
+                return getTransactionFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
+        return null;
     }
 
     public static List<Transaction> getTransactionsFromResultSet(ResultSet resultSet){
@@ -36,7 +48,7 @@ public class DaoTransactionUtil {
                     transactions.add(getTransactionFromResultSet(resultSet));
                 }
             } catch (SQLException e) {
-                log.warn(e);
+                log.error(e);
             }
             return transactions;
     }

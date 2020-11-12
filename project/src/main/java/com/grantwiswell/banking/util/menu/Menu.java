@@ -1,6 +1,7 @@
 package com.grantwiswell.banking.util.menu;
 
 import com.grantwiswell.banking.util.InputUtil;
+import com.grantwiswell.banking.util.ScreenUtil;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -45,7 +46,9 @@ public class Menu {
         do {
             // Run a command before printing is started if one is supplied
             if(beforePrintConsumer != null) beforePrintConsumer.accept(1);
+            ScreenUtil.clearScreen();
             log.info(MenuFormatting.createOptionsMenu(title, exitOption, hasRowDividers, optionTitleArray));
+            log.info("Please Select an option (1-" + (optionTitleArray.length + 1) + ")\n");
 
             // Get the user input
             choice = InputUtil.getIntInput();
@@ -55,7 +58,7 @@ public class Menu {
                 menuOptionList.get(choice - 1).activateOption();
             } else if(choice > menuOptionList.size() + 1 || choice <= 0) {
                 // Warn user of choice that is not available
-                log.warn("Please select a valid option (1 - " + (menuOptionList.size() + 1) + ")");
+                InputUtil.setMessagePrompt("Please select a valid option (1 - " + (menuOptionList.size() + 1) + ")");
             }
 
             // Run a command after printing is completed if one is supplied

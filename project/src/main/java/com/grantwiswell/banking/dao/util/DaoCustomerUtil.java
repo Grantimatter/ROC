@@ -3,6 +3,7 @@ package com.grantwiswell.banking.dao.util;
 import com.grantwiswell.banking.dao.AccountSearchDao;
 import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.model.Customer;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -30,9 +31,20 @@ public class DaoCustomerUtil {
                     resultSet.getDate("dob")
             );
         } catch (SQLException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         return customer;
+    }
+
+    public static Customer getNextCustomerFromResultSet(ResultSet resultSet){
+        try {
+            if(resultSet.next()){
+                return getCustomerFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
+        return null;
     }
 
     public static List<Customer> getCustomersFromResultSet(ResultSet resultSet){
@@ -42,7 +54,7 @@ public class DaoCustomerUtil {
                 customerList.add(getCustomerFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         return customerList;
     }

@@ -11,6 +11,8 @@ import com.grantwiswell.banking.service.AccountCrudService;
 import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.service.TransactionService;
+import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -30,10 +32,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void createTransaction(int account_from_id, int account_to_id, double amount) throws BankException {
-        if (account_from_id == account_to_id)
-            throw new BankException("You cannot start a transfer into the same account");
-        if (account_from_id < 100000 || account_from_id > 999999 || account_to_id < 100000 || account_to_id > 999999)
-            throw new BankException("One of the accounts entered is an invalid number. Account numbers must be 6 digits");
+        if (account_from_id == account_to_id) throw new BankException("You cannot start a transfer into the same account");
+        if (!ValidationUtil.isValidAccountId(account_from_id)) throw new BankException("Account that funds are coming from is not a valid account");
+        if (!ValidationUtil.isValidAccountId(account_to_id)) throw new BankException("Destination account is not a valid account. Account ID must be a 6-digit number");
         try {
             Account account_from = accountSearchService.getAccountById(account_from_id);
             Account account_to = accountSearchService.getAccountById(account_to_id);
@@ -52,7 +53,7 @@ public class TransactionServiceImpl implements TransactionService {
                 customer_from = customerSearchService.getCustomerByAccount(account_from);
                 customer_to = customerSearchService.getCustomerByAccount(account_to);
             } catch (BankException e) {
-                log.warn(e.getMessage());
+                InputUtil.setMessagePrompt(e.getMessage());
             }
 
             if (customer_from != null && customer_to != null && customer_from.getId() == customer_to.getId()) {
@@ -60,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService {
                 completeTransaction(transactionDao.getNewTransaction(transaction));
             }
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -69,32 +70,31 @@ public class TransactionServiceImpl implements TransactionService {
         try {
             transaction = transactionDao.getNewTransaction(transaction);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         return transaction;
     }
 
     @Override
     public Transaction getTransactionById(int id) throws BankException {
-        Transaction transaction = null;
+        if(!ValidationUtil.isValidAccountId(id)) throw new BankException("Invalid account ID: #" + id);
         try {
-            transaction = transactionDao.getTransactionById(id);
+            return transactionDao.getTransactionById(id);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return transaction;
+        return null;
     }
 
     @Override
     public List<Transaction> getTransactionsByAccountId(int account_id) throws BankException {
-        List<Transaction> transactions = new ArrayList<>();
-        if (account_id > 999999 || account_id < 100000) throw new BankException("Invalid account number. Account number must be 6 digits");
+        if (!ValidationUtil.isValidAccountId(account_id)) throw new BankException("Invalid account number. Account number must be 6 digits");
         try {
-            transactions = transactionDao.getTransactions(account_id);
+            return transactionDao.getTransactions(account_id);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return transactions;
+        return null;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class TransactionServiceImpl implements TransactionService {
         try {
             return transactionDao.getTransactionStatus(transaction);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         throw new BankException("Unable to determine transaction status");
     }
@@ -115,9 +115,8 @@ public class TransactionServiceImpl implements TransactionService {
         try {
             accountCrudService.depositToAccount(transaction.getAmount(), accountSearchService.getAccountById(transaction.getAccount_to()));
             transactionDao.completeTransaction(transaction);
-            log.info("Transaction has been completed");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -130,18 +129,17 @@ public class TransactionServiceImpl implements TransactionService {
             accountCrudService.depositToAccount(transaction.getAmount(), account_from);
             log.info("Transaction rejected and " + NumberFormat.getCurrencyInstance(Locale.US).format(transaction.getAmount()) + " has been deposited back into account #"+transaction.getAccount_from());
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
     @Override
     public List<Transaction> getAllTransactions() throws BankException {
-        List<Transaction> transactionList = null;
         try{
-            transactionList = transactionDao.getAllTransactions();
+            return transactionDao.getAllTransactions();
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return transactionList;
+        return null;
     }
 }

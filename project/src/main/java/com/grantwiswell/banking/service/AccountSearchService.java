@@ -9,5 +9,4 @@ public interface AccountSearchService {
     public Account getAccountById(int number) throws BankException;
     public List<Account> getAccountsByCustomerId(int customerId) throws BankException;
     public List<Account> getAccountsByStatus(String status) throws BankException;
-    public List<Account> getAccountInBalanceRange(double minBalance, double maxBalance) throws BankException;
 }

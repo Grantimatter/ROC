@@ -5,6 +5,8 @@ import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.service.AccountSearchService;
+import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -19,54 +21,39 @@ public class AccountSearchServiceImpl implements AccountSearchService {
 
     @Override
     public Account getAccountById(int number) throws BankException {
-        Account account = null;
-        if(number > 99999 && number < 1000000){
-            try {
-                account = accountSearchDao.getAccountByNumber(number);
-            } catch (BankException e) {
-                log.warn(e.getMessage());
-            }
-        }
-        else{
+        if (!ValidationUtil.isValidAccountId(number))
             throw new BankException("Invalid Account Number. Account number must be a 6 digits");
+        try {
+            return accountSearchDao.getAccountByNumber(number);
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return account;
-    }
 
-    @Override
-    public List<Account> getAccountInBalanceRange(double minBalance, double maxBalance) throws BankException {
-        List<Account> accounts = new ArrayList();
-            throw new NotImplementedException();
-        //return accounts;
+        return null;
     }
 
     @Override
     public List<Account> getAccountsByCustomerId(int customerId) throws BankException {
-        List<Account> accounts = new ArrayList();
-        if(customerId > 99 && customerId < 1000){
-            try {
-                accounts = accountSearchDao.getAccountsByCustomerId(customerId);
-            } catch(BankException e){
-                log.warn(e.getMessage());
-            }
-        }else{
+        if (!ValidationUtil.isValidCustomerId(customerId))
             throw new BankException("Invalid ID... Customer ID must be a 3-digit whole number");
+        try {
+            return accountSearchDao.getAccountsByCustomerId(customerId);
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return accounts;
+
+        return null;
     }
 
     @Override
     public List<Account> getAccountsByStatus(String status) throws BankException {
-        List<Account> accountList = new ArrayList<>();
-        if(!(status.equalsIgnoreCase("APPROVED") || status.equalsIgnoreCase("PENDING") || status.equalsIgnoreCase("REJECTED")) ){
+        if (!(status.equalsIgnoreCase("ACCEPTED") || status.equalsIgnoreCase("PENDING") || status.equalsIgnoreCase("REJECTED")))
             throw new BankException(status + " is not a valid status...");
-        }
-        try{
-            accountList = accountSearchDao.getAccountsByStatus(status);
-            log.debug("Accounts found: " + accountList);
+        try {
+            return accountSearchDao.getAccountsByStatus(status);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
-        return accountList;
+        return null;
     }
 }

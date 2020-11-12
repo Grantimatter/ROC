@@ -5,8 +5,10 @@ import com.grantwiswell.banking.dao.queries.AccountCrud;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Account;
+import com.grantwiswell.banking.service.impl.util.QueryUtil;
 import org.apache.log4j.Logger;
 
+import javax.management.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -18,59 +20,30 @@ public class AccountCrudDaoImpl implements AccountCrudDao {
     private Logger log = Logger.getLogger(AccountCrudDaoImpl.class);
 
     @Override
-    public void createNewAccount(Account account) throws BankException {
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountCrud.CREATE_NEW_ACCOUNT);
-            preparedStatement.setInt(1, account.getCustomer_id());
-            preparedStatement.setInt(2, account.getId());
-            preparedStatement.setDouble(3, account.getBalance());
-            preparedStatement.setString(4, account.getName().toUpperCase());
-            preparedStatement.setString(5, account.getStatus().toUpperCase());
-            int results = preparedStatement.executeUpdate();
-            if(results == 0) throw new BankException("Account was unable to be created...");
-            log.debug("Account Created: " + account);
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+    public int createNewAccount(Account account) throws BankException {
+        int results = QueryUtil.sendUpdate(AccountCrud.CREATE_NEW_ACCOUNT, account.getCustomer_id(), account.getId(), account.getBalance(), account.getName(), account.getStatus());
+        if (results == 0) throw new BankException("Unable to create new account..." + account.getName());
+        return results;
     }
 
     @Override
-    public void depositToAccount(double depositAmount, Account account) throws BankException {
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = PostgresSqlConnection.getConnection().prepareStatement(AccountCrud.DEPOSIT_TO_ACCOUNT);
-            preparedStatement.setDouble(1, depositAmount);
-            preparedStatement.setInt(2, account.getId());
-            int results = preparedStatement.executeUpdate();
-            if(results == 0) throw new BankException("Error completing deposit, please try again later");
-        }catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+    public int depositToAccount(double depositAmount, Account account) throws BankException {
+        int results = QueryUtil.sendUpdate(AccountCrud.DEPOSIT_TO_ACCOUNT, depositAmount, account.getId());
+        if (results == 0) throw new BankException("Unable to Deposit to account #" + account.getId());
+        return results;
     }
 
     @Override
-    public void withdrawalFromAccount(double withdrawalAmount, Account account) throws BankException {
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountCrud.WITHDRAWAL_FROM_ACCOUNT);
-            preparedStatement.setDouble(1, withdrawalAmount);
-            preparedStatement.setInt(2, account.getId());
-            int results = preparedStatement.executeUpdate();
-            if(results == 0) throw new BankException("Error completing withdrawal, please try again later.");
-        }catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+    public int withdrawalFromAccount(double withdrawalAmount, Account account) throws BankException {
+        int results = QueryUtil.sendUpdate(AccountCrud.WITHDRAWAL_FROM_ACCOUNT, withdrawalAmount, account.getId());
+        if (results == 0) throw new BankException("Unable to withdrawal from account #" + account.getId());
+        return results;
     }
 
     @Override
-    public void updateAccountStatus(Account account, String status) throws BankException {
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(AccountCrud.UPDATE_ACCOUNT_STATUS);
-            preparedStatement.setString(1,status);
-            preparedStatement.setInt(2, account.getId());
-            int results = preparedStatement.executeUpdate();
-            if(results > 0) log.debug(account.getId() + " status updated to " + status);
-            else throw new BankException("Status of account #"+account.getId()+" was unable to be updated");
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+    public int updateAccountStatus(Account account, String status) throws BankException {
+        int results = QueryUtil.sendUpdate(AccountCrud.UPDATE_ACCOUNT_STATUS, status, account.getId());
+        if (results == 0) throw new BankException("Unable to update account #" + account.getId() + " status to " + status);
+        return results;
     }
 }

@@ -54,7 +54,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return  name.toUpperCase() +
+        return  " " + name.toUpperCase() +
                 " \u2502 Acct#: " + id +
                 " \u2502 Balance: " + NumberFormat.getCurrencyInstance(Locale.US).format(balance);
     }

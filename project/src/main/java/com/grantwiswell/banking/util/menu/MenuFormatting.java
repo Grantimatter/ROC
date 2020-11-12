@@ -3,6 +3,7 @@ package com.grantwiswell.banking.util.menu;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.apache.log4j.Logger;
 
+import java.nio.file.Watchable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -12,22 +13,22 @@ public class MenuFormatting {
     private static final char TOP_LEFT_CORNER_CHAR = '\u250C';
     private static final char LIGHT_CROSS = '\u253C';
     private static final char TOP_RIGHT_CORNER_CHAR = '\u2510';
-    private static final char BOTTOM_LEFT_CORNER_CHAR = '\u2514';
-    private static final char BOTTOM_RIGHT_CORNER_CHAR = '\u2518';
+    private static final char BOTTOM_LEFT_CORNER_CHAR = '\u2570';
+    private static final char BOTTOM_RIGHT_CORNER_CHAR = '\u256F';
     private static final char WALL_CHAR = '\u2502';
     private static final char FLOOR_CEILING_CHAR = '\u2500';
     private static final char DIVIDER_CHAR = '\u2500';
-    private static final char DOUBLE_DIVIDER_CHAR = '\u2550';
+    private static final char DOUBLE_DIVIDER_CHAR = '\u2501';
     private static final char DOUBLE_BOTTOM_LEFT_CORNER_CHAR = '\u255A';
     private static final char DOUBLE_BOTTOM_RIGHT_CORNER_CHAR = '\u255D';
-    private static final char DOUBLE_TOP_LEFT_CORNER_CHAR = '\u2554';
-    private static final char DOUBLE_TOP_RIGHT_CORNER_CHAR = '\u2557';
+    private static final char DOUBLE_TOP_LEFT_CORNER_CHAR = '\u250F';
+    private static final char DOUBLE_TOP_RIGHT_CORNER_CHAR = '\u2513';
     private static final char T_LEFT_TO_RIGHT = '\u251C';
-    private static final char DOUBLE_T_LEFT_TO_RIGHT = '\u2560';
+    private static final char DOUBLE_T_LEFT_TO_RIGHT = '\u2521';
     private static final char T_RIGHT_TO_LEFT = '\u2524';
-    private static final char DOUBLE_T_RIGHT_TO_LEFT = '\u2563';
+    private static final char DOUBLE_T_RIGHT_TO_LEFT = '\u2529';
     private static final char RETURN_CHAR = '\u2190';
-    private static final char DOUBLE_WALL_CHAR = '\u2551';
+    private static final char DOUBLE_WALL_CHAR = '\u2503';
 
     private static Logger log = Logger.getLogger(MenuFormatting.class);
 
@@ -65,14 +66,18 @@ public class MenuFormatting {
 
         StringBuilder stringBuilder = new StringBuilder(topBorder + titleFormatted + titleDivider);
         for (int i = 0; i < options.length; i++) {
-            stringBuilder.append(WALL_CHAR + " " + leftAlignString((i + 1) + ") " + options[i], width, ' '));
-            if (stringBuilder.charAt(stringBuilder.length() - 1) == ' ') stringBuilder.append(WALL_CHAR + "\n");
-            else stringBuilder.append("\n");
+            String line = WALL_CHAR + " " + leftAlignString((i + 1) + ") " + options[i], width, ' ');
+
+            if(line.charAt(line.length() - 1) == ' '){
+                line += WALL_CHAR;
+            }
             if (hasRowDividers && i < options.length - 1) {
                 stringBuilder.append(divider);
             }
+            stringBuilder.append(line+"\n");
         }
         stringBuilder.append(divider);
+        // Exit Option
         stringBuilder.append(WALL_CHAR + " " + leftAlignString(String.format("%d) %c %s", options.length + 1, RETURN_CHAR, exitOption), width, ' ') + "\u2502\n");
         stringBuilder.append(bottomBorder);
 
@@ -96,7 +101,6 @@ public class MenuFormatting {
         // Go through every cell and make sure that it is the new maximum width
         for (int x = 0; x < options.size(); x++) {
             int rowDigitsDifference = (Integer.toString(options.size()).length() - Integer.toString(x + 1).length());
-            log.info("Row " + x + " digits in row#: " + rowDigitsDifference);
             String option = String.format("%" + (rowDigitsDifference > 0 ? (rowDigitsDifference + 1) + "c" : "c"), WALL_CHAR);
             String optionDivider = String.format("%n%c%" + (4 + Integer.toString(options.size()).length()) + "c", T_LEFT_TO_RIGHT, LIGHT_CROSS);
             for (int y = 0; y < maxCellCount; y++) {
@@ -115,7 +119,7 @@ public class MenuFormatting {
                     optionDivider += String.format("%" + (cellLength) + "c", T_RIGHT_TO_LEFT);
                 option += WALL_CHAR;
             }
-            formattedCells[x] = option + optionDivider.replace(' ', DIVIDER_CHAR);
+            formattedCells[x] = option + (x < options.size() - 1 ? optionDivider.replace(' ', DIVIDER_CHAR) : "");
         }
         return formattedCells;
     }

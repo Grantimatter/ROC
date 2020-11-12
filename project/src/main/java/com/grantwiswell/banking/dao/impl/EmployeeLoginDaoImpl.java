@@ -6,6 +6,7 @@ import com.grantwiswell.banking.dao.util.DaoEmployeeUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Employee;
+import com.grantwiswell.banking.service.impl.util.QueryUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -18,21 +19,8 @@ public class EmployeeLoginDaoImpl implements EmployeeLoginDao {
     private static Logger log = Logger.getLogger(EmployeeLoginDaoImpl.class);
 
     public Employee employeeLogin(String user_name, String password){
-        Employee employee = null;
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(EmployeeQueries.GET_EMPLOYEE_BY_LOGIN);
-            preparedStatement.setString(1, user_name);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                employee = DaoEmployeeUtil.getEmployeeFromResultSet(resultSet);
-            }
-            else{
-                throw new BankException("Employee username and password combo not found...");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e.getMessage());
-        }
+        Employee employee = DaoEmployeeUtil.getNextEmployeeFromResultSet(QueryUtil.sendQuery(EmployeeQueries.GET_EMPLOYEE_BY_LOGIN, user_name, password));
+        if(employee == null) throw new BankException("Employee credentials not found!");
         return employee;
     }
 }

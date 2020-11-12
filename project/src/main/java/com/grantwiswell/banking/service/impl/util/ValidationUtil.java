@@ -9,4 +9,11 @@ public class ValidationUtil {
         else return false;
     }
 
+    public static boolean isValidCustomerId(int id){
+        return id > 99 && id < 1000;
+    }
+
+    public static boolean isValidAccountId(int id){
+        return id > 99999 && id < 1000000;
+    }
 }

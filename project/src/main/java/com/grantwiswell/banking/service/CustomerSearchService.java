@@ -11,7 +11,6 @@ public interface CustomerSearchService {
     public Customer getCustomerById(int id) throws BankException;
     public Customer getCustomerByAccount(Account account) throws BankException;
     public Customer getCustomerByContactEmail(String contactEmail) throws BankException;
-    public Customer getCustomerByContactNumber(long contactNumber) throws BankException;
     public List<Customer> getAllCustomers() throws BankException;
     public List<Customer> getCustomersByFirstName(String name) throws BankException;
     public List<Customer> getCustomersByLastName(String name) throws BankException;

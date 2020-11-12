@@ -6,6 +6,7 @@ import com.grantwiswell.banking.dao.util.DaoCustomerUtil;
 import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.jdbutil.PostgresSqlConnection;
 import com.grantwiswell.banking.model.Customer;
+import com.grantwiswell.banking.service.impl.util.QueryUtil;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -18,20 +19,8 @@ public class CustomerLoginDaoImpl implements CustomerLoginDao {
     private Logger log = Logger.getLogger(CustomerLoginDaoImpl.class);
 
     public Customer getCustomerFromLogin(String contactEmail, String password) throws BankException{
-        Customer customer = null;
-        try(Connection connection = PostgresSqlConnection.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(CustomerQueries.GET_CUSTOMER_BY_LOGIN);
-            preparedStatement.setString(1, contactEmail.toUpperCase());
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                customer = DaoCustomerUtil.getCustomerFromResultSet(resultSet);
-            }
-            else { throw new BankException("User and Password combo not found, please try again..."); }
-            log.debug("Customer " + customer.getContactEmail() + " logged in successfully");
-        } catch (SQLException | ClassNotFoundException e) {
-            log.error(e);
-        }
+        Customer customer = DaoCustomerUtil.getNextCustomerFromResultSet(QueryUtil.sendQuery(CustomerQueries.GET_CUSTOMER_BY_LOGIN, contactEmail, password));
+        if(customer == null) throw new BankException("No customer found with those login credentials");
         return customer;
     }
 

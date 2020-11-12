@@ -9,5 +9,5 @@ public class CustomerQueries {
     public static final String GET_CUSTOMERS_BY_LAST_NAME = GET_CUSTOMER_DATA + " WHERE last_name ILIKE ?;";
     public static final String GET_CUSTOMER_BY_EMAIL = GET_CUSTOMER_DATA + " WHERE contact_email ILIKE ?;";
     public static final String GET_CUSTOMER_BY_PHONE = GET_CUSTOMER_DATA + " WHERE contact_number ?;";
-    public static final String GET_CUSTOMER_BY_STATUS = GET_CUSTOMER_DATA + " WHERE status ILIKE ?;";
+    public static final String GET_CUSTOMERS_BY_STATUS = GET_CUSTOMER_DATA + " WHERE status ILIKE ?;";
 }

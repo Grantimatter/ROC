@@ -43,16 +43,18 @@ public class EmployeeFunctionsView {
             log.info("Please input the customer ID");
             viewCustomer(customerSearchService.getCustomerById(InputUtil.getIntInput()));
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
     public void viewCustomerByEmail(){
         try{
             log.info("Please input the customer email");
-            viewCustomer(customerSearchService.getCustomerByContactEmail(InputUtil.getStringInput()));
+            Customer customer = customerSearchService.getCustomerByContactEmail(InputUtil.getStringInput());
+            if(customer == null) throw new BankException("Customer could not be found");
+            viewCustomer(customer);
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -71,7 +73,12 @@ public class EmployeeFunctionsView {
     }
 
     public static void viewCustomer(Customer customer){
-        Customer updatedCustomer = customerSearchService.getCustomerById(customer.getId());
+        try{
+            customer = customerSearchService.getCustomerById(customer.getId());
+        } catch (BankException e) {
+            InputUtil.setMessagePrompt(e.getMessage());
+        }
+        Customer updatedCustomer = customer;
         Menu userActionMenu = new Menu(customer.toString(), "Customer Search").setIsLooping(false);
         userActionMenu.setAfterLoopConsumer(x -> viewCustomer(updatedCustomer));
         if (updatedCustomer.getStatus().equalsIgnoreCase("PENDING")) {

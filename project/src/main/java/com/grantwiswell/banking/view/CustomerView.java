@@ -27,13 +27,12 @@ public class CustomerView {
     public void startNewCustomerDialog() {
         log.info("Please input an email to be associated with your account...");
         String email = InputUtil.getStringInput();
-        log.info("Please input your desired password...");
+        log.info("Please input your desired password (At least 8 characters)...");
         String password = InputUtil.getStringInput();
         log.info("Please input your first and last name...");
         String full_name = InputUtil.getStringInput();
         log.info("Please input your date of birth in mm-dd-yyyy format");
         String dob = InputUtil.getStringInput();
-
         try {
             if (customerCrudService.createNewCustomer(email, password, full_name, dob)) {
                 customer = customerLoginService.getCustomerFromLogin(email, password);
@@ -41,7 +40,7 @@ public class CustomerView {
             }
             if (customer != null) startCustomerLoggedInMenu();
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -57,7 +56,7 @@ public class CustomerView {
                 startCustomerLoggedInMenu();
             }
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 
@@ -65,7 +64,7 @@ public class CustomerView {
         try {
             customer = customerSearchService.getCustomerById(customer.getId());
         } catch (BankException e) {
-            e.getMessage();
+            InputUtil.setMessagePrompt(e.getMessage());
         }
         String menuTitle = customer.getFirst_name() + " " + customer.getLast_name() + " | " + customer.getContactEmail();
         Menu customerLoggedInMenu = new Menu(menuTitle, "Logout").setIsLooping(false);
@@ -85,9 +84,9 @@ public class CustomerView {
         double balance = InputUtil.getDoubleInput();
         try {
             accountCrudService.createNewAccount(customer.getId(), balance, accountName);
-            log.info("Account \""+accountName+"\" created. Please contact an employee to have your account approved for use");
+            InputUtil.setMessagePrompt("Account \""+accountName+"\" created. Please contact an employee to have your account approved for use");
         } catch (BankException e) {
-            log.warn(e.getMessage());
+            InputUtil.setMessagePrompt(e.getMessage());
         }
     }
 }

@@ -7,6 +7,7 @@ import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerLoginService;
 import com.grantwiswell.banking.service.impl.util.ValidationUtil;
 import com.grantwiswell.banking.util.CustomerUtil;
+import com.grantwiswell.banking.util.InputUtil;
 import org.apache.log4j.Logger;
 
 public class CustomerLoginServiceImpl implements CustomerLoginService {
@@ -21,7 +22,7 @@ public class CustomerLoginServiceImpl implements CustomerLoginService {
             try{
                 customer = customerLoginDao.getCustomerFromLogin(contactEmail, password);
             } catch (BankException e) {
-                log.warn(e.getMessage());
+                InputUtil.setMessagePrompt(e.getMessage());
             }
         } else{
             throw new BankException("Password must be at least 8 characters... Try again");
