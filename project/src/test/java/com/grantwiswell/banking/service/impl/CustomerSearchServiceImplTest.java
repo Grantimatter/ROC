@@ -1,7 +1,5 @@
 package com.grantwiswell.banking.service.impl;
 
-import com.grantwiswell.banking.dao.impl.CustomerSearchDaoImpl;
-import com.grantwiswell.banking.exception.BankException;
 import com.grantwiswell.banking.model.Customer;
 import com.grantwiswell.banking.service.CustomerSearchService;
 import com.grantwiswell.banking.util.RandomUtil;
@@ -22,7 +20,7 @@ class CustomerSearchServiceImplTest {
 
     @Test
     void getCustomerByContactEmail() {
-        assertCustomer(customerSearchService.getCustomerByContactEmail("wiswellgrant@gmail.com"));
+        assertCustomer(customerSearchService.getCustomerByContactEmail("chloecrichton@gmail.com"));
     }
 
     @Test
@@ -37,7 +35,7 @@ class CustomerSearchServiceImplTest {
 
     @Test
     void getCustomersByLastName() {
-        assertCustomers(customerSearchService.getCustomersByLastName("Wiswell"));
+        assertCustomers(customerSearchService.getCustomersByLastName("Crichton"));
     }
 
     @Test

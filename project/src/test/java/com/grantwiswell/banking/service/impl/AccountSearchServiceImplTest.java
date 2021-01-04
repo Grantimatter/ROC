@@ -1,20 +1,22 @@
 package com.grantwiswell.banking.service.impl;
 
-import com.grantwiswell.banking.dao.impl.AccountSearchDaoImpl;
 import com.grantwiswell.banking.model.Account;
 import com.grantwiswell.banking.service.AccountSearchService;
 import com.grantwiswell.banking.service.impl.util.ValidationUtil;
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class AccountSearchServiceImplTest {
 
+    private static Logger log = Logger.getLogger(AccountSearchServiceImplTest.class);
+
     private static AccountSearchService accountSearchService = new AccountSearchServiceImpl();
 
     @Test
     void testGetAccountById() {
-        assertAccount(accountSearchService.getAccountById(911626));
+        assertAccount(accountSearchService.getAccountById(442931));
     }
 
     @Test

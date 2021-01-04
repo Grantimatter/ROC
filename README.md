@@ -1,4 +1,4 @@
-# Revature Training Repository
+# Revature ROC Training
 A repository that contains Java projects created during Revature's 4-week training program.
 
 Instructor:  Dr. Vinay Ingalahahlli.

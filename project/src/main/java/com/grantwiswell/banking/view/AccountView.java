@@ -33,7 +33,7 @@ public class AccountView {
             if(acc.getStatus().equalsIgnoreCase("ACCEPTED"))
                 accountMenuOptions.add(new MenuOption(acc.toString(), x -> startAccountViewMenu(acc)));
             else if(acc.getStatus().equalsIgnoreCase("PENDING"))
-                accountMenuOptions.add(new MenuOption(acc.toString() + " | Status: " + acc.getStatus(), x -> log.info("This account has not been accepted!")));
+                accountMenuOptions.add(new MenuOption(acc.toString() + " | Status: " + acc.getStatus(), x -> InputUtil.setMessagePrompt("This account has not been accepted!")));
         }
         return accountMenuOptions;
     }
